@@ -1,0 +1,210 @@
+{
+  "meta": {
+    "description": "Interactive circuit simulator specifications per chapter for BEE SaaS",
+    "tech": "React + custom SVG canvas or Falstad Circuit Simulator iframe"
+  },
+  "simulators": [
+    {
+      "id": "sim_ohms_law",
+      "chapter": "ch2",
+      "title": "Ohm's Law Explorer",
+      "description": "Adjust voltage source and resistor; observe current and power in real time",
+      "components": ["VoltageSource", "Resistor", "Ammeter", "Voltmeter"],
+      "controls": [
+        { "label": "Voltage (V)", "min": 0, "max": 24, "step": 0.5, "default": 12 },
+        { "label": "Resistance (Ω)", "min": 1, "max": 100, "step": 1, "default": 10 }
+      ],
+      "outputs": ["Current (A) = V/R", "Power (W) = V²/R"],
+      "visual": "Animated current flow arrows"
+    },
+    {
+      "id": "sim_kvl_series",
+      "chapter": "ch2",
+      "title": "KVL in Series Circuit",
+      "description": "Add up to 4 resistors in series; verify KVL with live voltage labels",
+      "components": ["VoltageSource", "Resistor×4", "VoltageProbes"],
+      "controls": [
+        { "label": "V_source", "min": 1, "max": 30 },
+        { "label": "R1", "min": 1, "max": 50 },
+        { "label": "R2", "min": 1, "max": 50 },
+        { "label": "R3", "min": 1, "max": 50 }
+      ],
+      "outputs": ["V across each R", "Sum of voltages = V_source (KVL check)"]
+    },
+    {
+      "id": "sim_kcl_node",
+      "chapter": "ch2",
+      "title": "KCL Node Demonstrator",
+      "description": "Three resistors meeting at a node; show currents in/out",
+      "components": ["CurrentSource×2", "Resistor×3", "CurrentArrows"],
+      "outputs": ["I1 + I2 = I3 (KCL verification)"]
+    },
+    {
+      "id": "sim_thevenin",
+      "chapter": "ch4",
+      "title": "Thévenin Equivalent Finder",
+      "description": "Original circuit on left, Thévenin equivalent on right. Sweep R_L and compare load current/power for both.",
+      "components": ["OriginalCircuit", "ThéveninEquivalent", "VariableLoad"],
+      "controls": [{ "label": "R_L", "min": 0.1, "max": 100 }],
+      "outputs": ["V_Th", "R_Th", "I_L", "P_L", "Power Transfer Curve"]
+    },
+    {
+      "id": "sim_max_power",
+      "chapter": "ch4",
+      "title": "Maximum Power Transfer",
+      "description": "Plot P_L vs R_L curve; highlight peak at R_L = R_Th",
+      "components": ["ThéveninSource", "VariableLoad"],
+      "controls": [
+        { "label": "V_Th", "min": 1, "max": 30 },
+        { "label": "R_Th", "min": 1, "max": 50 }
+      ],
+      "outputs": ["P_L vs R_L chart", "Peak power marker"]
+    },
+    {
+      "id": "sim_rc_charging",
+      "chapter": "ch7",
+      "title": "RC Charging / Discharging",
+      "description": "Visualize capacitor voltage and current during charge and discharge. Marks τ, 2τ, 5τ on plot.",
+      "components": ["VoltageSource", "Switch", "Resistor", "Capacitor"],
+      "controls": [
+        { "label": "V_s (V)", "min": 1, "max": 20, "default": 10 },
+        { "label": "R (kΩ)", "min": 0.1, "max": 100, "default": 10 },
+        { "label": "C (μF)", "min": 1, "max": 1000, "default": 100 }
+      ],
+      "outputs": ["v_C(t) waveform", "i_C(t) waveform", "τ marker", "Time to 63.2% and 99.3%"]
+    },
+    {
+      "id": "sim_rl_response",
+      "chapter": "ch7",
+      "title": "RL Step Response",
+      "description": "Inductor current buildup with time constant display",
+      "components": ["VoltageSource", "Switch", "Resistor", "Inductor"],
+      "controls": [
+        { "label": "V_s (V)", "min": 1, "max": 24 },
+        { "label": "R (Ω)", "min": 1, "max": 200 },
+        { "label": "L (mH)", "min": 1, "max": 1000 }
+      ],
+      "outputs": ["i_L(t) waveform", "τ = L/R marker"]
+    },
+    {
+      "id": "sim_rlc_response",
+      "chapter": "ch8",
+      "title": "RLC Step Response — Damping Explorer",
+      "description": "Vary R, L, C; see overdamped / critically damped / underdamped waveforms. Labels show α vs ω_0.",
+      "components": ["VoltageSource", "Resistor", "Inductor", "Capacitor"],
+      "controls": [
+        { "label": "R (Ω)", "min": 0.1, "max": 200 },
+        { "label": "L (H)", "min": 0.01, "max": 5 },
+        { "label": "C (F)", "min": 0.001, "max": 1 }
+      ],
+      "outputs": [
+        "Response waveform",
+        "α = R/(2L)",
+        "ω_0 = 1/√(LC)",
+        "Damping mode label (Overdamped / Critical / Underdamped)",
+        "Overshoot % (if underdamped)"
+      ]
+    },
+    {
+      "id": "sim_phasor",
+      "chapter": "ch9",
+      "title": "Phasor Diagram Animator",
+      "description": "Rotating phasor visualization for V and I. Shows phase angle between them.",
+      "components": ["PhasorCanvas", "WaveformCanvas"],
+      "controls": [
+        { "label": "V_m (V)", "min": 1, "max": 20 },
+        { "label": "I_m (A)", "min": 0.1, "max": 10 },
+        { "label": "Phase angle φ (°)", "min": -90, "max": 90 },
+        { "label": "Frequency (Hz)", "min": 1, "max": 1000 }
+      ],
+      "outputs": ["Rotating phasor diagram", "Time-domain v(t) and i(t) waveforms"]
+    },
+    {
+      "id": "sim_impedance",
+      "chapter": "ch9",
+      "title": "RLC Impedance Calculator",
+      "description": "Input R, L, C and frequency; display impedance magnitude, angle, and phasor.",
+      "controls": [
+        { "label": "R (Ω)" },
+        { "label": "L (mH)" },
+        { "label": "C (μF)" },
+        { "label": "f (Hz)" }
+      ],
+      "outputs": ["|Z|", "θ (angle)", "Z in rectangular form", "Impedance phasor"]
+    },
+    {
+      "id": "sim_power_triangle",
+      "chapter": "ch11",
+      "title": "AC Power Triangle",
+      "description": "Interactive power triangle showing P, Q, S. Adjust load to see pf change.",
+      "controls": [
+        { "label": "V_rms (V)" },
+        { "label": "I_rms (A)" },
+        { "label": "Phase angle θ (°)", "min": 0, "max": 90 }
+      ],
+      "outputs": ["P (W) = S·cosθ", "Q (VAR) = S·sinθ", "S (VA)", "pf = cosθ", "Power triangle diagram"]
+    },
+    {
+      "id": "sim_pf_correction",
+      "chapter": "ch11",
+      "title": "Power Factor Correction",
+      "description": "Add capacitor to improve lagging power factor of inductive load",
+      "controls": [
+        { "label": "Load P (kW)" },
+        { "label": "Load pf (lagging)" },
+        { "label": "Correction capacitor C (μF)" },
+        { "label": "Supply frequency" }
+      ],
+      "outputs": ["Old pf", "New pf after correction", "Reactive power reduction", "Current reduction"]
+    },
+    {
+      "id": "sim_transformer",
+      "chapter": "ch13",
+      "title": "Ideal Transformer Simulator",
+      "description": "Adjust turns ratio; see voltage/current transformation and reflected impedance",
+      "controls": [
+        { "label": "N1 (primary turns)" },
+        { "label": "N2 (secondary turns)" },
+        { "label": "V1 (primary voltage)" },
+        { "label": "Z_L (load impedance)" }
+      ],
+      "outputs": ["V2 = (N2/N1)×V1", "I2 = (N1/N2)×I1", "Z_in = (N1/N2)²×Z_L", "Turns ratio n"]
+    },
+    {
+      "id": "sim_bode",
+      "chapter": "ch14",
+      "title": "Bode Plot Generator",
+      "description": "Enter transfer function poles and zeros; generate magnitude and phase Bode plots",
+      "controls": [
+        { "label": "Poles (comma-separated)", "type": "text" },
+        { "label": "Zeros (comma-separated)", "type": "text" },
+        { "label": "DC gain K" }
+      ],
+      "outputs": ["|H(ω)| dB vs log(ω)", "∠H(ω) vs log(ω)", "Corner frequencies marked"]
+    },
+    {
+      "id": "sim_resonance",
+      "chapter": "ch14",
+      "title": "RLC Resonance Frequency Sweep",
+      "description": "Plot |H(ω)| for series/parallel RLC. Shows resonant peak, Q, bandwidth.",
+      "controls": [
+        { "label": "R (Ω)" },
+        { "label": "L (mH)" },
+        { "label": "C (μF)" },
+        { "label": "Type", "options": ["Series", "Parallel"] }
+      ],
+      "outputs": ["Frequency response curve", "ω_0 marker", "3dB bandwidth", "Q factor"]
+    },
+    {
+      "id": "sim_fourier",
+      "chapter": "ch17",
+      "title": "Fourier Series Builder",
+      "description": "Select waveform; add harmonics one-by-one and watch the reconstruction improve",
+      "controls": [
+        { "label": "Waveform", "options": ["Square", "Sawtooth", "Triangle", "Custom"] },
+        { "label": "N harmonics", "min": 1, "max": 50 }
+      ],
+      "outputs": ["Time-domain reconstruction", "Frequency spectrum bars", "Harmonic coefficients table", "THD (Total Harmonic Distortion)"]
+    }
+  ]
+}

@@ -1,0 +1,654 @@
+{
+  "course": "Basic Electrical Engineering (BEE)",
+  "level": "University — First Year",
+  "description": "A comprehensive university-level Basic Electrical Engineering course covering DC circuits, AC circuits, and advanced analysis techniques. Based on Alexander & Sadiku (5th ed.) and Boylestad Introductory Circuit Analysis.",
+  "sources": [
+    {
+      "id": "sadiku",
+      "title": "Fundamentals of Electric Circuits, 5th Edition",
+      "authors": ["Charles K. Alexander", "Matthew N.O. Sadiku"],
+      "file": "resources/Sadiku-FundamentalsOfElectricCircuits-5th.pdf"
+    },
+    {
+      "id": "boylestad",
+      "title": "Introductory Circuit Analysis",
+      "authors": ["Robert L. Boylestad"],
+      "file": "resources/Boylestad-IntroductoryCircuitAnalysis.pdf"
+    },
+    {
+      "id": "youtube",
+      "title": "ELECTRICAL ENGINEERING - BY TIKLE'S ACADEMY",
+      "url": "https://www.youtube.com/playlist?list=PLDN15nk5uLiCSOqr7-rUz6-GtdTAjlvul",
+      "videoCount": 643
+    }
+  ],
+  "parts": [
+    {
+      "id": "part1",
+      "title": "DC Circuits",
+      "chapters": ["ch1","ch2","ch3","ch4","ch5","ch6","ch7","ch8"]
+    },
+    {
+      "id": "part2",
+      "title": "AC Circuits",
+      "chapters": ["ch9","ch10","ch11","ch12","ch13","ch14"]
+    },
+    {
+      "id": "part3",
+      "title": "Advanced Circuit Analysis",
+      "chapters": ["ch15","ch16","ch17","ch18","ch19"]
+    }
+  ],
+  "chapters": [
+    {
+      "id": "ch1",
+      "part": "part1",
+      "number": 1,
+      "title": "Basic Concepts",
+      "sadiku_pages": "3–27",
+      "boylestad_chapters": "1,2",
+      "topics": [
+        "Introduction to Electric Circuits",
+        "Systems of Units (SI)",
+        "Charge and Current",
+        "Voltage",
+        "Power and Energy",
+        "Circuit Elements (Active vs Passive)",
+        "Applications: TV Picture Tube, Electricity Bills",
+        "Problem Solving Methodology"
+      ],
+      "key_formulas": [
+        { "name": "Current", "formula": "i = dq/dt", "unit": "Amperes (A)" },
+        { "name": "Voltage", "formula": "v = dw/dq", "unit": "Volts (V)" },
+        { "name": "Power", "formula": "p = dw/dt = v·i", "unit": "Watts (W)" },
+        { "name": "Energy", "formula": "w = ∫p dt", "unit": "Joules (J)" },
+        { "name": "Energy (kWh)", "formula": "W = P × t", "unit": "kWh" }
+      ],
+      "simulator_demos": [
+        "Simple DC circuit: battery + lamp",
+        "Current direction convention (conventional vs electron flow)",
+        "Active vs passive element identification"
+      ],
+      "difficulty": "beginner"
+    },
+    {
+      "id": "ch2",
+      "part": "part1",
+      "number": 2,
+      "title": "Basic Laws",
+      "sadiku_pages": "29–80",
+      "boylestad_chapters": "3,4,5,6",
+      "topics": [
+        "Ohm's Law",
+        "Nodes, Branches, and Loops",
+        "Kirchhoff's Current Law (KCL)",
+        "Kirchhoff's Voltage Law (KVL)",
+        "Series Resistors and Voltage Division",
+        "Parallel Resistors and Current Division",
+        "Wye-Delta (Y-Δ) Transformations",
+        "Delta-to-Wye Conversion",
+        "Applications: Lighting Systems, DC Meters"
+      ],
+      "key_formulas": [
+        { "name": "Ohm's Law", "formula": "v = iR", "unit": "V" },
+        { "name": "Resistance", "formula": "R = ρL/A", "unit": "Ohms (Ω)" },
+        { "name": "KCL", "formula": "Σi_in = Σi_out", "unit": "A" },
+        { "name": "KVL", "formula": "Σv = 0 (around any closed loop)", "unit": "V" },
+        { "name": "Series Resistance", "formula": "R_eq = R1 + R2 + ... + Rn", "unit": "Ω" },
+        { "name": "Parallel Resistance", "formula": "1/R_eq = 1/R1 + 1/R2 + ... + 1/Rn", "unit": "Ω" },
+        { "name": "Voltage Divider", "formula": "v1 = (R1/(R1+R2)) × v", "unit": "V" },
+        { "name": "Current Divider", "formula": "i1 = (R2/(R1+R2)) × i", "unit": "A" },
+        { "name": "Y to Δ", "formula": "Ra = (R1R2+R2R3+R3R1)/R1", "unit": "Ω" },
+        { "name": "Δ to Y", "formula": "R1 = RaRb/(Ra+Rb+Rc)", "unit": "Ω" }
+      ],
+      "simulator_demos": [
+        "Ohm's Law: vary V and R, observe I",
+        "KCL node verification",
+        "KVL loop verification",
+        "Series-parallel resistor combinations",
+        "Voltage and current divider circuits",
+        "Wye-Delta circuit transformation"
+      ],
+      "difficulty": "beginner"
+    },
+    {
+      "id": "ch3",
+      "part": "part1",
+      "number": 3,
+      "title": "Methods of Analysis",
+      "sadiku_pages": "81–126",
+      "boylestad_chapters": "8",
+      "topics": [
+        "Nodal Analysis (Node Voltage Method)",
+        "Nodal Analysis with Voltage Sources (Supernodes)",
+        "Mesh Analysis (Mesh Current Method)",
+        "Mesh Analysis with Current Sources (Supermesh)",
+        "Nodal vs Mesh Analysis Comparison",
+        "Circuit Analysis by Inspection",
+        "Applications: DC Transistor Circuits"
+      ],
+      "key_formulas": [
+        { "name": "Nodal Analysis (KCL at node)", "formula": "Σ(v_n - v_k)/R_nk = I_n", "unit": "A" },
+        { "name": "Mesh equation (KVL)", "formula": "Σ(R_ij × i_j) = Σv_sources", "unit": "V" },
+        { "name": "Conductance matrix", "formula": "GV = I", "unit": "A" },
+        { "name": "Resistance matrix", "formula": "RI = V", "unit": "V" }
+      ],
+      "simulator_demos": [
+        "2-node nodal analysis walkthrough",
+        "3-mesh circuit analysis",
+        "Supernode demonstration",
+        "Supermesh demonstration"
+      ],
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "ch4",
+      "part": "part1",
+      "number": 4,
+      "title": "Circuit Theorems",
+      "sadiku_pages": "127–173",
+      "boylestad_chapters": "9",
+      "topics": [
+        "Linearity Property and Superposition",
+        "Source Transformation",
+        "Thévenin's Theorem",
+        "Norton's Theorem",
+        "Maximum Power Transfer",
+        "Applications: Source Modeling, Resistance Measurement"
+      ],
+      "key_formulas": [
+        { "name": "Superposition", "formula": "v = v1 + v2 + ... (one source at a time)", "unit": "V" },
+        { "name": "Thévenin Voltage", "formula": "V_Th = V_oc (open-circuit voltage)", "unit": "V" },
+        { "name": "Thévenin Resistance", "formula": "R_Th = V_oc / I_sc", "unit": "Ω" },
+        { "name": "Norton Current", "formula": "I_N = I_sc (short-circuit current)", "unit": "A" },
+        { "name": "Norton Resistance", "formula": "R_N = R_Th", "unit": "Ω" },
+        { "name": "Max Power Transfer", "formula": "P_max when R_L = R_Th; P_max = V_Th²/(4R_Th)", "unit": "W" }
+      ],
+      "simulator_demos": [
+        "Superposition: enable/disable sources",
+        "Source transformation: voltage→current source",
+        "Thevenin equivalent finder",
+        "Norton equivalent finder",
+        "Maximum power transfer curve (RL sweep)"
+      ],
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "ch5",
+      "part": "part1",
+      "number": 5,
+      "title": "Operational Amplifiers",
+      "sadiku_pages": "175–213",
+      "boylestad_chapters": null,
+      "topics": [
+        "Introduction to Op Amps",
+        "Ideal Op Amp Model",
+        "Inverting Amplifier",
+        "Noninverting Amplifier",
+        "Summing Amplifier",
+        "Difference Amplifier",
+        "Cascaded Op Amp Circuits",
+        "Applications: DAC, Instrumentation Amplifiers"
+      ],
+      "key_formulas": [
+        { "name": "Inverting Amp Gain", "formula": "v_o = -(R_f/R_1) × v_i", "unit": "V" },
+        { "name": "Noninverting Amp Gain", "formula": "v_o = (1 + R_f/R_1) × v_i", "unit": "V" },
+        { "name": "Summing Amp", "formula": "v_o = -(R_f/R_1)v_1 - (R_f/R_2)v_2 ...", "unit": "V" },
+        { "name": "Difference Amp", "formula": "v_o = (R_2/R_1)(v_2 - v_1)", "unit": "V" },
+        { "name": "Unity Gain (Buffer)", "formula": "v_o = v_i", "unit": "V" }
+      ],
+      "simulator_demos": [
+        "Inverting amplifier with adjustable gain",
+        "Noninverting amplifier",
+        "Summing amplifier (audio mixer concept)",
+        "Difference amplifier"
+      ],
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "ch6",
+      "part": "part1",
+      "number": 6,
+      "title": "Capacitors and Inductors",
+      "sadiku_pages": "215–251",
+      "boylestad_chapters": "10,11",
+      "topics": [
+        "Capacitor: Structure, v-i Relationship",
+        "Energy Stored in Capacitor",
+        "Series and Parallel Capacitors",
+        "Inductor: Structure, v-i Relationship",
+        "Energy Stored in Inductor",
+        "Series and Parallel Inductors",
+        "Applications: Integrator, Differentiator, Analog Computer"
+      ],
+      "key_formulas": [
+        { "name": "Capacitor i-v", "formula": "i = C dv/dt", "unit": "A" },
+        { "name": "Capacitor voltage", "formula": "v = (1/C)∫i dt + v(0)", "unit": "V" },
+        { "name": "Capacitor energy", "formula": "w = (1/2)Cv²", "unit": "J" },
+        { "name": "Series capacitors", "formula": "1/C_eq = 1/C1 + 1/C2 + ...", "unit": "F" },
+        { "name": "Parallel capacitors", "formula": "C_eq = C1 + C2 + ...", "unit": "F" },
+        { "name": "Inductor v-i", "formula": "v = L di/dt", "unit": "V" },
+        { "name": "Inductor current", "formula": "i = (1/L)∫v dt + i(0)", "unit": "A" },
+        { "name": "Inductor energy", "formula": "w = (1/2)Li²", "unit": "J" },
+        { "name": "Series inductors", "formula": "L_eq = L1 + L2 + ...", "unit": "H" },
+        { "name": "Parallel inductors", "formula": "1/L_eq = 1/L1 + 1/L2 + ...", "unit": "H" }
+      ],
+      "simulator_demos": [
+        "Capacitor charging/discharging animation",
+        "Inductor current buildup",
+        "RC integrator circuit",
+        "RL differentiator circuit"
+      ],
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "ch7",
+      "part": "part1",
+      "number": 7,
+      "title": "First-Order Circuits",
+      "sadiku_pages": "253–311",
+      "boylestad_chapters": "24",
+      "topics": [
+        "Source-Free RC Circuit (Natural Response)",
+        "Source-Free RL Circuit (Natural Response)",
+        "Singularity Functions (Step, Impulse, Ramp)",
+        "Step Response of RC Circuit",
+        "Step Response of RL Circuit",
+        "First-Order Op Amp Circuits",
+        "Applications: Delay Circuits, Photoflash, Relay, Automobile Ignition"
+      ],
+      "key_formulas": [
+        { "name": "RC Time Constant", "formula": "τ = RC", "unit": "s" },
+        { "name": "RL Time Constant", "formula": "τ = L/R", "unit": "s" },
+        { "name": "RC Natural Response", "formula": "v(t) = V_0 · e^(-t/τ)", "unit": "V" },
+        { "name": "RL Natural Response", "formula": "i(t) = I_0 · e^(-t/τ)", "unit": "A" },
+        { "name": "General 1st order", "formula": "x(t) = x(∞) + [x(0) - x(∞)]e^(-t/τ)", "unit": "—" },
+        { "name": "Step Response RC", "formula": "v(t) = V_s(1 - e^(-t/τ)) + V_0·e^(-t/τ)", "unit": "V" }
+      ],
+      "simulator_demos": [
+        "RC charging/discharging with time constant visualization",
+        "RL natural response",
+        "Step response with variable τ slider",
+        "Photoflash unit simulation"
+      ],
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "ch8",
+      "part": "part1",
+      "number": 8,
+      "title": "Second-Order Circuits",
+      "sadiku_pages": "313–367",
+      "boylestad_chapters": null,
+      "topics": [
+        "Finding Initial and Final Values",
+        "Source-Free Series RLC Circuit",
+        "Source-Free Parallel RLC Circuit",
+        "Overdamped, Critically Damped, Underdamped Responses",
+        "Step Response of Series RLC",
+        "Step Response of Parallel RLC",
+        "General Second-Order Circuits",
+        "Duality",
+        "Applications: Automobile Ignition, Smoothing Circuits"
+      ],
+      "key_formulas": [
+        { "name": "Characteristic equation (series RLC)", "formula": "s² + (R/L)s + 1/(LC) = 0", "unit": "—" },
+        { "name": "Damping coeff (series)", "formula": "α = R/(2L)", "unit": "rad/s" },
+        { "name": "Natural frequency", "formula": "ω_0 = 1/√(LC)", "unit": "rad/s" },
+        { "name": "Overdamped (α>ω_0)", "formula": "x(t) = A1·e^(s1·t) + A2·e^(s2·t)", "unit": "—" },
+        { "name": "Critically damped (α=ω_0)", "formula": "x(t) = (A1 + A2·t)e^(-αt)", "unit": "—" },
+        { "name": "Underdamped (α<ω_0)", "formula": "x(t) = e^(-αt)(A1cos(ω_d·t)+A2sin(ω_d·t))", "unit": "—" },
+        { "name": "Damped frequency", "formula": "ω_d = √(ω_0² - α²)", "unit": "rad/s" }
+      ],
+      "simulator_demos": [
+        "Series RLC with α/ω_0 sliders (overdamped/underdamped/critical)",
+        "Parallel RLC step response",
+        "Response waveform comparison across damping modes"
+      ],
+      "difficulty": "advanced"
+    },
+    {
+      "id": "ch9",
+      "part": "part2",
+      "number": 9,
+      "title": "Sinusoids and Phasors",
+      "sadiku_pages": "369–411",
+      "boylestad_chapters": "13,14",
+      "topics": [
+        "Sinusoidal Signals: Amplitude, Frequency, Phase",
+        "Phase Relationships (Leading/Lagging)",
+        "Phasor Representation",
+        "Phasor Domain (Frequency Domain)",
+        "Phasor Relationships for R, L, C",
+        "Impedance and Admittance",
+        "KCL/KVL in Frequency Domain",
+        "Impedance Combinations",
+        "Applications: Phase Shifters, AC Bridges"
+      ],
+      "key_formulas": [
+        { "name": "Sinusoid", "formula": "v(t) = V_m·cos(ωt + φ)", "unit": "V" },
+        { "name": "Angular frequency", "formula": "ω = 2πf = 2π/T", "unit": "rad/s" },
+        { "name": "Phasor", "formula": "V = V_m∠φ", "unit": "V" },
+        { "name": "Resistor impedance", "formula": "Z_R = R", "unit": "Ω" },
+        { "name": "Inductor impedance", "formula": "Z_L = jωL", "unit": "Ω" },
+        { "name": "Capacitor impedance", "formula": "Z_C = 1/(jωC) = -j/(ωC)", "unit": "Ω" },
+        { "name": "Admittance", "formula": "Y = 1/Z = G + jB", "unit": "S (Siemens)" }
+      ],
+      "simulator_demos": [
+        "Sinusoidal waveform with adjustable Vm, f, φ",
+        "Phasor diagram animator",
+        "Phase shift between V and I for R, L, C"
+      ],
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "ch10",
+      "part": "part2",
+      "number": 10,
+      "title": "Sinusoidal Steady-State Analysis",
+      "sadiku_pages": "413–456",
+      "boylestad_chapters": "15,16,17",
+      "topics": [
+        "Nodal Analysis in AC Circuits",
+        "Mesh Analysis in AC Circuits",
+        "Superposition in AC Circuits",
+        "Source Transformation (AC)",
+        "Thévenin and Norton Equivalents (AC)",
+        "Op Amp AC Circuits",
+        "Applications: Capacitance Multiplier, Oscillators"
+      ],
+      "key_formulas": [
+        { "name": "AC Ohm's Law (phasor)", "formula": "V = ZI", "unit": "V" },
+        { "name": "AC Thevenin", "formula": "Z_Th = V_Th / I_N", "unit": "Ω" },
+        { "name": "Voltage divider (AC)", "formula": "V_2 = Z_2/(Z_1+Z_2) × V_s", "unit": "V" }
+      ],
+      "simulator_demos": [
+        "AC nodal analysis step-by-step",
+        "AC Thévenin equivalent circuit",
+        "RC/RL phase angle visualizer"
+      ],
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "ch11",
+      "part": "part2",
+      "number": 11,
+      "title": "AC Power Analysis",
+      "sadiku_pages": "457–501",
+      "boylestad_chapters": "19",
+      "topics": [
+        "Instantaneous Power",
+        "Average (Real) Power",
+        "Maximum Average Power Transfer",
+        "RMS (Effective) Values",
+        "Apparent Power and Power Factor",
+        "Complex Power",
+        "Conservation of AC Power",
+        "Power Factor Correction",
+        "Applications: Power Measurement, Electricity Cost"
+      ],
+      "key_formulas": [
+        { "name": "Instantaneous power", "formula": "p(t) = v(t)·i(t)", "unit": "W" },
+        { "name": "Average power", "formula": "P = (1/2)V_m·I_m·cos(θ_v - θ_i)", "unit": "W" },
+        { "name": "RMS voltage", "formula": "V_rms = V_m/√2", "unit": "V" },
+        { "name": "RMS current", "formula": "I_rms = I_m/√2", "unit": "A" },
+        { "name": "Apparent power", "formula": "S = V_rms · I_rms", "unit": "VA" },
+        { "name": "Power factor", "formula": "pf = cos(θ_v - θ_i) = P/S", "unit": "—" },
+        { "name": "Complex power", "formula": "S = P + jQ = V·I*", "unit": "VA" },
+        { "name": "Reactive power", "formula": "Q = (1/2)V_m·I_m·sin(θ_v - θ_i)", "unit": "VAR" }
+      ],
+      "simulator_demos": [
+        "Power triangle (P, Q, S) interactive diagram",
+        "Power factor correction with capacitor",
+        "RMS vs peak value animation"
+      ],
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "ch12",
+      "part": "part2",
+      "number": 12,
+      "title": "Three-Phase Circuits",
+      "sadiku_pages": "503–553",
+      "boylestad_chapters": "23",
+      "topics": [
+        "Balanced Three-Phase Voltages",
+        "Balanced Wye-Wye (Y-Y) Connection",
+        "Balanced Wye-Delta (Y-Δ) Connection",
+        "Balanced Delta-Delta (Δ-Δ) Connection",
+        "Balanced Delta-Wye (Δ-Y) Connection",
+        "Power in Balanced Three-Phase Systems",
+        "Unbalanced Three-Phase Systems",
+        "Applications: 3-Phase Power Measurement, Residential Wiring"
+      ],
+      "key_formulas": [
+        { "name": "Phase sequence (abc)", "formula": "V_an, V_bn = V_an∠-120°, V_cn = V_an∠-240°", "unit": "V" },
+        { "name": "Y-Y Line voltage", "formula": "V_L = √3 · V_ph∠30°", "unit": "V" },
+        { "name": "Total power (balanced)", "formula": "P = 3V_ph·I_ph·cosθ = √3·V_L·I_L·cosθ", "unit": "W" },
+        { "name": "Reactive power", "formula": "Q = √3·V_L·I_L·sinθ", "unit": "VAR" },
+        { "name": "Apparent power", "formula": "S = √3·V_L·I_L", "unit": "VA" }
+      ],
+      "simulator_demos": [
+        "Three-phase phasor diagram (rotating)",
+        "Y-Y connection simulator",
+        "Y-Δ load simulator",
+        "Power comparison: single vs three phase"
+      ],
+      "difficulty": "advanced"
+    },
+    {
+      "id": "ch13",
+      "part": "part2",
+      "number": 13,
+      "title": "Magnetically Coupled Circuits",
+      "sadiku_pages": "555–611",
+      "boylestad_chapters": "22",
+      "topics": [
+        "Mutual Inductance",
+        "Energy in Coupled Circuits",
+        "Linear Transformers",
+        "Ideal Transformers",
+        "Turns Ratio",
+        "Ideal Autotransformers",
+        "Three-Phase Transformers",
+        "Applications: Isolation, Impedance Matching, Power Distribution"
+      ],
+      "key_formulas": [
+        { "name": "Mutual inductance voltage", "formula": "v = M · di/dt", "unit": "V" },
+        { "name": "Coupling coefficient", "formula": "k = M/√(L1·L2), 0 ≤ k ≤ 1", "unit": "—" },
+        { "name": "Ideal transformer turns ratio", "formula": "V2/V1 = N2/N1 = n", "unit": "—" },
+        { "name": "Transformer current ratio", "formula": "I1/I2 = N2/N1 = 1/n", "unit": "—" },
+        { "name": "Reflected impedance", "formula": "Z_in = Z_L / n²", "unit": "Ω" },
+        { "name": "Energy in coupled inductors", "formula": "w = (1/2)L1·i1² + M·i1·i2 + (1/2)L2·i2²", "unit": "J" }
+      ],
+      "simulator_demos": [
+        "Transformer turns ratio demo (adjust N1/N2)",
+        "Impedance matching circuit",
+        "Coupled inductor dot convention visualizer"
+      ],
+      "difficulty": "advanced"
+    },
+    {
+      "id": "ch14",
+      "part": "part2",
+      "number": 14,
+      "title": "Frequency Response",
+      "sadiku_pages": "613–673",
+      "boylestad_chapters": "20,21",
+      "topics": [
+        "Transfer Function H(ω)",
+        "The Decibel Scale",
+        "Bode Plots (Magnitude and Phase)",
+        "Series Resonance",
+        "Parallel Resonance",
+        "Passive Filters: LP, HP, BP, BS",
+        "Active Filters",
+        "Scaling (Magnitude and Frequency)",
+        "Applications: Radio Receiver, Touch-Tone Telephone, Crossover Network"
+      ],
+      "key_formulas": [
+        { "name": "Transfer function", "formula": "H(ω) = Y(ω)/X(ω)", "unit": "—" },
+        { "name": "Decibel (power)", "formula": "H_dB = 10·log10(P2/P1)", "unit": "dB" },
+        { "name": "Decibel (voltage)", "formula": "H_dB = 20·log10(V2/V1)", "unit": "dB" },
+        { "name": "Series resonance freq", "formula": "ω_0 = 1/√(LC)", "unit": "rad/s" },
+        { "name": "Quality factor (series)", "formula": "Q = ω_0L/R = 1/(ω_0RC)", "unit": "—" },
+        { "name": "Bandwidth", "formula": "B = ω_0/Q = R/L", "unit": "rad/s" },
+        { "name": "Half-power frequencies", "formula": "ω1,2 = ω_0 ± B/2", "unit": "rad/s" },
+        { "name": "Parallel resonance", "formula": "Q = ω_0RC = R/(ω_0L)", "unit": "—" }
+      ],
+      "simulator_demos": [
+        "Bode plot generator (interactive pole/zero placement)",
+        "Series RLC resonance (frequency sweep)",
+        "Parallel RLC resonance",
+        "Low/High/Band-pass filter response",
+        "Touch-tone frequency decoder demo"
+      ],
+      "difficulty": "advanced"
+    },
+    {
+      "id": "ch15",
+      "part": "part3",
+      "number": 15,
+      "title": "Introduction to the Laplace Transform",
+      "sadiku_pages": "675–713",
+      "boylestad_chapters": null,
+      "topics": [
+        "Definition of Laplace Transform",
+        "Properties: Linearity, Scaling, Time-Shifting, Frequency-Shifting",
+        "Differentiation, Integration Properties",
+        "Inverse Laplace Transform",
+        "Partial Fraction Expansion (Simple, Repeated, Complex Poles)",
+        "Convolution Integral",
+        "Application to Integrodifferential Equations"
+      ],
+      "key_formulas": [
+        { "name": "Laplace Transform", "formula": "F(s) = ∫₀^∞ f(t)e^(-st) dt", "unit": "—" },
+        { "name": "Inverse Laplace", "formula": "f(t) = L⁻¹{F(s)}", "unit": "—" },
+        { "name": "Differentiation", "formula": "L{df/dt} = sF(s) - f(0)", "unit": "—" },
+        { "name": "Integration", "formula": "L{∫f dt} = F(s)/s", "unit": "—" },
+        { "name": "Convolution", "formula": "L{f1(t)*f2(t)} = F1(s)·F2(s)", "unit": "—" },
+        { "name": "Unit step", "formula": "L{u(t)} = 1/s", "unit": "—" },
+        { "name": "Exponential", "formula": "L{e^(-at)} = 1/(s+a)", "unit": "—" }
+      ],
+      "simulator_demos": [
+        "Common Laplace pair lookup table",
+        "Partial fraction decomposition calculator"
+      ],
+      "difficulty": "advanced"
+    },
+    {
+      "id": "ch16",
+      "part": "part3",
+      "number": 16,
+      "title": "Applications of the Laplace Transform",
+      "sadiku_pages": "715–758",
+      "boylestad_chapters": null,
+      "topics": [
+        "Circuit Element Models in s-Domain",
+        "Circuit Analysis in s-Domain",
+        "Transfer Functions",
+        "State Variables",
+        "Applications: Network Stability, Network Synthesis"
+      ],
+      "key_formulas": [
+        { "name": "Resistor in s-domain", "formula": "V(s) = R·I(s)", "unit": "—" },
+        { "name": "Inductor in s-domain", "formula": "V(s) = sL·I(s) - L·i(0)", "unit": "—" },
+        { "name": "Capacitor in s-domain", "formula": "V(s) = I(s)/(sC) + v(0)/s", "unit": "—" },
+        { "name": "Transfer function", "formula": "H(s) = Y(s)/X(s)", "unit": "—" }
+      ],
+      "simulator_demos": [
+        "s-Domain circuit analyzer",
+        "Pole-zero plot and stability",
+        "Step/impulse response from transfer function"
+      ],
+      "difficulty": "advanced"
+    },
+    {
+      "id": "ch17",
+      "part": "part3",
+      "number": 17,
+      "title": "The Fourier Series",
+      "sadiku_pages": "759–811",
+      "boylestad_chapters": "25",
+      "topics": [
+        "Trigonometric Fourier Series",
+        "Even and Odd Symmetry",
+        "Half-Wave Symmetry",
+        "Circuit Applications of Fourier Series",
+        "Average Power and RMS via Fourier",
+        "Exponential Fourier Series",
+        "Discrete and Fast Fourier Transform",
+        "Applications: Spectrum Analyzers, Filters"
+      ],
+      "key_formulas": [
+        { "name": "Fourier Series", "formula": "f(t) = a_0 + Σ(a_n·cos(nω_0t) + b_n·sin(nω_0t))", "unit": "—" },
+        { "name": "DC coefficient", "formula": "a_0 = (1/T)∫f(t)dt", "unit": "—" },
+        { "name": "Cosine coeff", "formula": "a_n = (2/T)∫f(t)cos(nω_0t)dt", "unit": "—" },
+        { "name": "Sine coeff", "formula": "b_n = (2/T)∫f(t)sin(nω_0t)dt", "unit": "—" },
+        { "name": "Exponential form", "formula": "f(t) = Σ c_n·e^(jnω_0t)", "unit": "—" },
+        { "name": "Parseval's Theorem", "formula": "P = a_0² + (1/2)Σ(a_n²+b_n²)", "unit": "W" }
+      ],
+      "simulator_demos": [
+        "Square/triangle/sawtooth wave Fourier reconstruction (add harmonics live)",
+        "Frequency spectrum visualizer",
+        "Gibbs phenomenon demonstration"
+      ],
+      "difficulty": "advanced"
+    },
+    {
+      "id": "ch18",
+      "part": "part3",
+      "number": 18,
+      "title": "Fourier Transform",
+      "sadiku_pages": "813–851",
+      "boylestad_chapters": null,
+      "topics": [
+        "Definition of Fourier Transform",
+        "Properties of Fourier Transform",
+        "Circuit Applications",
+        "Parseval's Theorem",
+        "Comparing Fourier and Laplace Transforms",
+        "Applications: Amplitude Modulation, Sampling"
+      ],
+      "key_formulas": [
+        { "name": "Fourier Transform", "formula": "F(ω) = ∫_{-∞}^{∞} f(t)e^(-jωt) dt", "unit": "—" },
+        { "name": "Inverse Fourier", "formula": "f(t) = (1/2π)∫F(ω)e^(jωt)dω", "unit": "—" },
+        { "name": "Parseval's Theorem", "formula": "∫|f(t)|²dt = (1/2π)∫|F(ω)|²dω", "unit": "—" }
+      ],
+      "simulator_demos": [
+        "Fourier transform of rect/sinc pulses",
+        "AM modulation spectrum demo"
+      ],
+      "difficulty": "advanced"
+    },
+    {
+      "id": "ch19",
+      "part": "part3",
+      "number": 19,
+      "title": "Two-Port Networks",
+      "sadiku_pages": "853–905",
+      "boylestad_chapters": null,
+      "topics": [
+        "Impedance (Z) Parameters",
+        "Admittance (Y) Parameters",
+        "Hybrid (h) Parameters",
+        "Transmission (ABCD) Parameters",
+        "Relationships Between Parameter Sets",
+        "Interconnection of Networks (Series, Parallel, Cascade)",
+        "Applications: Transistor Circuits, Ladder Network Synthesis"
+      ],
+      "key_formulas": [
+        { "name": "Z-parameters", "formula": "[V1;V2] = [Z][I1;I2]", "unit": "Ω" },
+        { "name": "Y-parameters", "formula": "[I1;I2] = [Y][V1;V2]", "unit": "S" },
+        { "name": "h-parameters", "formula": "V1 = h11·I1 + h12·V2; I2 = h21·I1 + h22·V2", "unit": "mixed" },
+        { "name": "T-parameters (ABCD)", "formula": "[V1;I1] = [A B;C D][V2;-I2]", "unit": "mixed" }
+      ],
+      "simulator_demos": [
+        "Two-port parameter calculator",
+        "Cascade two-port network",
+        "Transistor small-signal model"
+      ],
+      "difficulty": "advanced"
+    }
+  ]
+}
