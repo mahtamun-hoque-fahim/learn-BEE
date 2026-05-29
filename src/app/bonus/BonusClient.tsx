@@ -2,16 +2,38 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { getBonusQuestions, type Question } from '@/lib/questions'
+import { getBonusQuestions, type Question, type ExamMode, chaptersForMode } from '@/lib/questions'
+import { RichMath } from '@/components/math/Tex'
 
 type Mode = 'landing' | 'timed' | 'practice' | 'results' | 'certificate'
 
+const EXAM_PRESETS: Array<{
+  mode: ExamMode
+  label: string
+  marks: string
+  count: number
+  durationMin: number
+  desc: string
+}> = [
+  { mode: 'midterm', label: 'Midterm', marks: '20 marks', count: 15, durationMin: 90,
+    desc: 'Ch1 → Ch3 (up through Supernode). Mix of easy/medium with a few hard problems.' },
+  { mode: 'final',   label: 'Final term', marks: '50 marks', count: 25, durationMin: 180,
+    desc: 'Ch4, Ch6, Ch7 (Supernode onward). Heavier on theorems, capacitors, RC transients.' },
+  { mode: 'ct1',     label: 'CT-1',    marks: '10 marks', count: 8,  durationMin: 30,
+    desc: 'Class test on midterm syllabus. Quick coverage of basics, KCL/KVL, simple analysis.' },
+  { mode: 'ct2',     label: 'CT-2',    marks: '10 marks', count: 8,  durationMin: 30,
+    desc: 'Class test on final-term syllabus. Theorems, capacitors, transients.' },
+  { mode: 'full',    label: 'Full mock', marks: '— marks', count: 20, durationMin: 150,
+    desc: 'Random mix across the entire in-scope syllabus. Best for final review.' },
+]
+
 export default function BonusClient() {
   const [mode, setMode] = useState<Mode>('landing')
-  const [questions] = useState<Question[]>(() => getBonusQuestions(20))
+  const [examMode, setExamMode] = useState<ExamMode>('full')
+  const [questions, setQuestions] = useState<Question[]>(() => getBonusQuestions(20, 'full'))
   const [current, setCurrent] = useState(0)
   const [answers, setAnswers] = useState<Record<number, string>>({})
-  const [timeLeft, setTimeLeft] = useState(180 * 60) // 3 hours
+  const [timeLeft, setTimeLeft] = useState(150 * 60)
   const [started, setStarted] = useState(false)
   const [showExp, setShowExp] = useState(false)
 
@@ -26,6 +48,16 @@ export default function BonusClient() {
     const id = setInterval(() => setTimeLeft(t => t - 1), 1000)
     return () => clearInterval(id)
   }, [mode, started, timeLeft, finishExam])
+
+  function startExam(target: Mode, preset: typeof EXAM_PRESETS[number]) {
+    setExamMode(preset.mode)
+    setQuestions(getBonusQuestions(preset.count, preset.mode))
+    setTimeLeft(preset.durationMin * 60)
+    setAnswers({})
+    setCurrent(0)
+    setMode(target)
+    if (target === 'timed') setStarted(true)
+  }
 
   const getScore = () => {
     let correct = 0
@@ -45,43 +77,47 @@ export default function BonusClient() {
   if (mode === 'landing') {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
-        <div className="max-w-lg w-full">
+        <div className="max-w-2xl w-full">
           <Link href="/learn" className="text-[#888] hover:text-white text-sm mb-8 block">← Back to Chapters</Link>
-          
-          <div className="text-center mb-10">
+
+          <div className="text-center mb-8">
             <div className="text-6xl mb-4">🏆</div>
-            <h1 className="font-syne text-4xl font-bold mb-3">Bonus Exam</h1>
-            <p className="text-[#888]">20 comprehensive problems across all 19 chapters. Pass with 60%+ to unlock your certificate.</p>
+            <h1 className="font-syne text-4xl font-bold mb-3">Exam Preparation</h1>
+            <p className="text-[#888]">BGCTUB-aligned: Midterm, Final, CT-1, CT-2. Pick a mode to start a timed or practice session.</p>
           </div>
 
-          <div className="bg-[#111] border border-[#222] rounded-xl p-6 mb-6 space-y-3">
-            {[
-              ['Questions', '20 (mixed difficulty)'],
-              ['Topics', 'All 19 chapters'],
-              ['Pass Mark', '60% (12/20)'],
-              ['Timed Mode', '3 hours'],
-              ['Attempts', 'Unlimited'],
-            ].map(([k, v]) => (
-              <div key={k} className="flex justify-between text-sm">
-                <span className="text-[#888]">{k}</span>
-                <span className="font-medium">{v}</span>
+          <div className="space-y-3 mb-6">
+            {EXAM_PRESETS.map(preset => (
+              <div key={preset.mode} className="bg-[#111] border border-[#222] rounded-xl p-5 hover:border-[#00e676]/40 transition-colors">
+                <div className="flex items-baseline justify-between mb-2">
+                  <div className="flex items-center gap-3">
+                    <h3 className="font-syne font-bold text-lg">{preset.label}</h3>
+                    <span className="text-[#00e676] text-xs font-mono">{preset.marks}</span>
+                  </div>
+                  <span className="text-xs text-[#666] font-mono">{chaptersForMode(preset.mode).join(' · ')}</span>
+                </div>
+                <p className="text-sm text-[#888] mb-3">{preset.desc}</p>
+                <div className="flex items-center justify-between">
+                  <div className="text-xs text-[#666] font-mono">
+                    {preset.count} questions · {preset.durationMin} min timed
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => startExam('practice', preset)}
+                      className="text-xs px-3 py-1.5 border border-[#333] rounded-md hover:border-[#00e676] text-[#ccc]"
+                    >
+                      📚 Practice
+                    </button>
+                    <button
+                      onClick={() => startExam('timed', preset)}
+                      className="text-xs px-3 py-1.5 bg-[#00e676] text-black font-semibold rounded-md hover:bg-[#00b85d]"
+                    >
+                      ⏱ Timed
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={() => { setMode('timed'); setStarted(true) }}
-              className="py-4 bg-[#00e676] text-black font-bold rounded-xl hover:bg-[#00b85d] transition-colors"
-            >
-              ⏱ Timed Mode
-            </button>
-            <button
-              onClick={() => setMode('practice')}
-              className="py-4 border border-[#333] rounded-xl hover:border-[#00e676] transition-colors font-semibold"
-            >
-              📚 Practice Mode
-            </button>
           </div>
         </div>
       </div>
@@ -109,12 +145,12 @@ export default function BonusClient() {
               const correct = String(q.answer) === answers[idx]
               return (
                 <div key={idx} className={`p-3 rounded-lg border text-sm ${correct ? 'border-green-900/50 bg-green-900/10' : 'border-red-900/50 bg-red-900/10'}`}>
-                  <div className="text-[#ccc] mb-1"><span className="font-mono text-[#555]">Q{idx+1}.</span> {q.question.slice(0, 80)}...</div>
+                  <div className="text-[#ccc] mb-1"><span className="font-mono text-[#555]">Q{idx+1}.</span> <RichMath>{q.question.slice(0, 80) + (q.question.length > 80 ? '...' : '')}</RichMath></div>
                   <div className={correct ? 'text-green-400' : 'text-red-400'}>
                     {correct ? '✓' : '✗'} {answers[idx] || 'Not answered'}
-                    {!correct && <span className="text-[#888] ml-2">→ {String(q.answer)}</span>}
+                    {!correct && <span className="text-[#888] ml-2">→ <RichMath>{String(q.answer)}</RichMath></span>}
                   </div>
-                  <div className="text-[#555] text-xs mt-1">{q.explanation}</div>
+                  <div className="text-[#555] text-xs mt-1"><RichMath>{q.explanation}</RichMath></div>
                 </div>
               )
             })}
@@ -202,7 +238,7 @@ export default function BonusClient() {
             <span className="ml-auto">{q.source}</span>
           </div>
 
-          <p className="text-white text-base leading-relaxed mb-5">{q.question}</p>
+          <p className="text-white text-base leading-relaxed mb-5"><RichMath>{q.question}</RichMath></p>
 
           {q.type === 'mcq' && q.options && (
             <div className="space-y-2">
@@ -215,7 +251,7 @@ export default function BonusClient() {
                 } else if (opt === selected) cls += ' selected'
                 return (
                   <button key={opt} className={cls} onClick={() => handleSelect(opt)}>
-                    {opt}
+                    <RichMath>{opt}</RichMath>
                   </button>
                 )
               })}
@@ -249,7 +285,7 @@ export default function BonusClient() {
               ) : (
                 <div className="formula-card">
                   <div className="text-[#00e676] text-xs mb-1">Answer</div>
-                  <div className="font-mono text-white">{String(q.answer)}</div>
+                  <div className="text-white"><RichMath>{String(q.answer)}</RichMath></div>
                 </div>
               )}
             </div>
@@ -263,7 +299,7 @@ export default function BonusClient() {
               </button>
               {showExp && (
                 <div className="mt-2 p-3 bg-[#0a0a0a] rounded-lg text-sm text-[#ccc] border border-[#1a1a1a]">
-                  {q.explanation}
+                  <RichMath>{q.explanation}</RichMath>
                 </div>
               )}
             </div>

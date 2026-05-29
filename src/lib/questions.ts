@@ -239,13 +239,38 @@ export function getRandomQuestions(chapterId: string, count: number = 10): Quest
   return shuffled.slice(0, Math.min(count, pool.length))
 }
 
-export function getBonusQuestions(count: number = 20): Question[] {
-  // Bonus exam pulls only from BGCTUB 2nd-semester in-scope chapters.
-  const IN_SCOPE = new Set(['ch1','ch2','ch3','ch4','ch6','ch7'])
-  const allQ = questionBank.filter(q => IN_SCOPE.has(q.chapter)).sort(() => Math.random() - 0.5)
+/**
+ * BGCTUB BEE exam structure (per instruction.txt):
+ *   - Midterm (20 marks):    syllabus from beginning → supernode analysis (ch1, ch2, ch3)
+ *   - Final term (50 marks): supernode analysis onward (ch4, ch6, ch7)
+ *   - CT-1 (10 marks):       midterm syllabus
+ *   - CT-2 (10 marks):       final-term syllabus
+ *   - Full bonus:            entire in-scope syllabus
+ */
+export type ExamMode = 'midterm' | 'final' | 'ct1' | 'ct2' | 'full'
+
+export const MIDTERM_CHAPTERS = ['ch1', 'ch2', 'ch3'] as const
+export const FINAL_CHAPTERS   = ['ch4', 'ch6', 'ch7'] as const
+export const IN_SCOPE_CHAPTERS = [...MIDTERM_CHAPTERS, ...FINAL_CHAPTERS] as const
+
+export function chaptersForMode(mode: ExamMode): readonly string[] {
+  switch (mode) {
+    case 'midterm':
+    case 'ct1':      return MIDTERM_CHAPTERS
+    case 'final':
+    case 'ct2':      return FINAL_CHAPTERS
+    case 'full':     return IN_SCOPE_CHAPTERS
+  }
+}
+
+export function getBonusQuestions(count: number = 20, mode: ExamMode = 'full'): Question[] {
+  const allowed = new Set(chaptersForMode(mode))
+  const pool = questionBank
+    .filter(q => allowed.has(q.chapter))
+    .sort(() => Math.random() - 0.5)
   // Mix difficulties: aim for ~30% easy, 40% medium, 30% hard
-  const easy = allQ.filter(q => q.difficulty === 'easy').slice(0, Math.floor(count * 0.3))
-  const medium = allQ.filter(q => q.difficulty === 'medium').slice(0, Math.floor(count * 0.4))
-  const hard = allQ.filter(q => q.difficulty === 'hard').slice(0, Math.floor(count * 0.3))
+  const easy = pool.filter(q => q.difficulty === 'easy').slice(0, Math.floor(count * 0.3))
+  const medium = pool.filter(q => q.difficulty === 'medium').slice(0, Math.floor(count * 0.4))
+  const hard = pool.filter(q => q.difficulty === 'hard').slice(0, Math.floor(count * 0.3))
   return [...easy, ...medium, ...hard].sort(() => Math.random() - 0.5).slice(0, count)
 }

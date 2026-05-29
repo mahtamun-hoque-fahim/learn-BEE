@@ -6,6 +6,19 @@
 
 ---
 
+## ✅ Done in iteration #3 (2026-05-29)
+
+- [x] **Cheat-sheet page** at `/cheat-sheet` — all 114 LaTeX-rendered formulas grouped by chapter, with real-time client-side substring search across name/formula/note/chapter (auto-focus input). Hits counter; "study →" link back to each chapter.
+- [x] **Search page** at `/search` — unified search across chapter titles, topics, formulas, and the entire in-scope question bank. Grouped results (Chapters · Topics · Formulas · Questions), each clickable to source. Light substring index built once on module load.
+- [x] **Exam-mode bonus** rewritten per spec — five presets: Midterm (Ch1–Ch3, 20 marks, 15Q/90min), Final (Ch4/6/7, 50 marks, 25Q/3hr), CT-1 (10 marks, 8Q/30min), CT-2 (10 marks, 8Q/30min), Full mock (20Q/2.5hr). `getBonusQuestions(count, mode)` exported; `chaptersForMode` exposes which chapters each mode draws from.
+- [x] **LaTeX in BonusClient** — RichMath wired into active question, options, answer reveal, explanation, and review summary (matches what we did for ChapterClient).
+- [x] **`.env.example`** committed — DATABASE_URL, NEXT_PUBLIC_APP_URL, Clerk keys, optional RESEND_API_KEY.
+- [x] **`question-bank.json` cleanup** — line comments removed; file is now valid JSON (also re-emitted with 2-space indent).
+- [x] **Quick-link nav** added at top of `/learn` — Search, Cheat sheet, Exam prep.
+- [x] `npx next build` clean: 28 pages, including new static `/cheat-sheet` and `/search` routes.
+
+---
+
 ## ✅ Done in iteration #2 (2026-05-29)
 
 - [x] Mark in-scope chapters per `instruction.txt`: ch1–ch4, ch6, ch7 (6 chapters). Out-of-scope (ch5, ch8–ch19) marked `inScope: false`.

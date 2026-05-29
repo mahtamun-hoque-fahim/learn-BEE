@@ -35,6 +35,18 @@ export default function LearnPage() {
           <p className="text-[#555] text-xs mt-2">Sign in to track your progress</p>
         </div>
 
+        <div className="flex flex-wrap gap-2 mb-10">
+          <Link href="/search" className="text-sm px-4 py-2 bg-[#111] border border-[#222] rounded-lg hover:border-[#00e676]/40">
+            🔍 Search the syllabus
+          </Link>
+          <Link href="/cheat-sheet" className="text-sm px-4 py-2 bg-[#111] border border-[#222] rounded-lg hover:border-[#00e676]/40">
+            📋 Cheat sheet — all formulas
+          </Link>
+          <Link href="/bonus" className="text-sm px-4 py-2 bg-[#111] border border-[#222] rounded-lg hover:border-[#00e676]/40">
+            🏆 Exam prep (Midterm / Final / CT)
+          </Link>
+        </div>
+
         {(curriculum.parts ?? []).map(part => {
           // Only show parts that contain at least one in-scope chapter; show only in-scope chapters within them.
           const visibleChapterIds = part.chapters.filter(id => IN_SCOPE_IDS.has(id))

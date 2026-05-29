@@ -2,12 +2,19 @@
   "meta": {
     "description": "BEE Question Bank — sourced from Sadiku 5th Ed, Boylestad, and Tikle's Academy playlist",
     "total_questions": 200,
-    "types": ["mcq", "numerical", "true_false", "fill_blank"],
-    "difficulty_levels": ["easy", "medium", "hard"]
+    "types": [
+      "mcq",
+      "numerical",
+      "true_false",
+      "fill_blank"
+    ],
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ]
   },
   "questions": [
-
-    // ===================== CHAPTER 1: BASIC CONCEPTS =====================
     {
       "id": "q_ch1_001",
       "chapter": "ch1",
@@ -15,7 +22,12 @@
       "type": "mcq",
       "difficulty": "easy",
       "question": "The unit of electric current is:",
-      "options": ["Coulomb", "Ampere", "Volt", "Watt"],
+      "options": [
+        "Coulomb",
+        "Ampere",
+        "Volt",
+        "Watt"
+      ],
       "answer": "Ampere",
       "explanation": "Current (i) is defined as the rate of flow of charge: i = dq/dt. Its SI unit is the Ampere (A), where 1 A = 1 C/s.",
       "source": "Sadiku Ch1"
@@ -27,7 +39,12 @@
       "type": "mcq",
       "difficulty": "easy",
       "question": "How much charge is represented by 4,600 electrons?",
-      "options": ["7.36 × 10⁻¹⁶ C", "4.6 × 10⁻¹⁹ C", "7.36 × 10⁻¹⁹ C", "1.6 × 10⁻¹⁹ C"],
+      "options": [
+        "7.36 × 10⁻¹⁶ C",
+        "4.6 × 10⁻¹⁹ C",
+        "7.36 × 10⁻¹⁹ C",
+        "1.6 × 10⁻¹⁹ C"
+      ],
       "answer": "7.36 × 10⁻¹⁶ C",
       "explanation": "Charge of 1 electron = 1.6 × 10⁻¹⁹ C. So Q = 4600 × 1.6 × 10⁻¹⁹ = 7.36 × 10⁻¹⁶ C.",
       "source": "Sadiku Ch1"
@@ -72,7 +89,12 @@
       "type": "mcq",
       "difficulty": "easy",
       "question": "Which of the following is NOT a passive element?",
-      "options": ["Resistor", "Capacitor", "Voltage Source", "Inductor"],
+      "options": [
+        "Resistor",
+        "Capacitor",
+        "Voltage Source",
+        "Inductor"
+      ],
       "answer": "Voltage Source",
       "explanation": "Voltage and current sources are active elements because they can supply energy to a circuit. Resistors, capacitors, and inductors are passive elements.",
       "source": "Sadiku Ch1"
@@ -84,7 +106,12 @@
       "type": "mcq",
       "difficulty": "easy",
       "question": "The SI unit of charge is:",
-      "options": ["Ampere", "Volt", "Coulomb", "Joule"],
+      "options": [
+        "Ampere",
+        "Volt",
+        "Coulomb",
+        "Joule"
+      ],
       "answer": "Coulomb",
       "explanation": "The SI unit of electric charge is the Coulomb (C). Current is charge per unit time: 1 A = 1 C/s.",
       "source": "Sadiku Ch1"
@@ -122,8 +149,6 @@
       "explanation": "Power is the product of voltage and current: P = v·i (for DC). Unit is Watts (W).",
       "source": "Sadiku Ch1"
     },
-
-    // ===================== CHAPTER 2: BASIC LAWS =====================
     {
       "id": "q_ch2_001",
       "chapter": "ch2",
@@ -131,7 +156,12 @@
       "type": "mcq",
       "difficulty": "easy",
       "question": "A resistor has a voltage of 12 V across it and a current of 3 A through it. What is its resistance?",
-      "options": ["0.25 Ω", "4 Ω", "36 Ω", "15 Ω"],
+      "options": [
+        "0.25 Ω",
+        "4 Ω",
+        "36 Ω",
+        "15 Ω"
+      ],
       "answer": "4 Ω",
       "explanation": "Ohm's Law: R = V/I = 12/3 = 4 Ω",
       "source": "Sadiku Ch2"
@@ -221,7 +251,12 @@
       "type": "mcq",
       "difficulty": "easy",
       "question": "A short circuit has resistance of:",
-      "options": ["Infinity", "Zero", "1 Ω", "Depends on voltage"],
+      "options": [
+        "Infinity",
+        "Zero",
+        "1 Ω",
+        "Depends on voltage"
+      ],
       "answer": "Zero",
       "explanation": "A short circuit is an ideal conductor with R = 0 Ω, so V = I×R = 0 regardless of current.",
       "source": "Sadiku Ch2"
@@ -233,7 +268,12 @@
       "type": "mcq",
       "difficulty": "hard",
       "question": "In a balanced Y-Δ transformation with each Y resistor = R, the equivalent Δ resistors are:",
-      "options": ["R/3", "R", "3R", "R²"],
+      "options": [
+        "R/3",
+        "R",
+        "3R",
+        "R²"
+      ],
       "answer": "3R",
       "explanation": "For balanced Y→Δ: R_Δ = 3 × R_Y. If each Y arm = R, then each Δ arm = 3R.",
       "source": "Sadiku Ch2"
@@ -271,8 +311,6 @@
       "explanation": "1/R_eq = 1/12 + 1/12 + 1/12 = 3/12 = 1/4. So R_eq = 4 Ω.",
       "source": "Boylestad Ch6"
     },
-
-    // ===================== CHAPTER 3: METHODS OF ANALYSIS =====================
     {
       "id": "q_ch3_001",
       "chapter": "ch3",
@@ -280,7 +318,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "In nodal analysis, the reference node is also called:",
-      "options": ["Supernode", "Ground node", "Principal node", "Floating node"],
+      "options": [
+        "Supernode",
+        "Ground node",
+        "Principal node",
+        "Floating node"
+      ],
       "answer": "Ground node",
       "explanation": "The reference node in nodal analysis is assigned V = 0 and is called the ground node or datum node.",
       "source": "Sadiku Ch3"
@@ -309,7 +352,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "Mesh analysis is based on which fundamental law?",
-      "options": ["KCL", "KVL", "Ohm's Law", "Superposition"],
+      "options": [
+        "KCL",
+        "KVL",
+        "Ohm's Law",
+        "Superposition"
+      ],
       "answer": "KVL",
       "explanation": "Mesh analysis applies KVL around each mesh (independent loop) to write equations in terms of mesh currents.",
       "source": "Sadiku Ch3"
@@ -338,13 +386,16 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "When a circuit has more nodes than meshes, which analysis method typically leads to fewer equations?",
-      "options": ["Nodal Analysis", "Mesh Analysis", "Both give same number", "Superposition"],
+      "options": [
+        "Nodal Analysis",
+        "Mesh Analysis",
+        "Both give same number",
+        "Superposition"
+      ],
       "answer": "Mesh Analysis",
       "explanation": "Fewer meshes → fewer mesh equations. Choose the method that gives fewer unknowns: nodal when meshes dominate, mesh when nodes dominate.",
       "source": "Sadiku Ch3"
     },
-
-    // ===================== CHAPTER 4: CIRCUIT THEOREMS =====================
     {
       "id": "q_ch4_001",
       "chapter": "ch4",
@@ -386,7 +437,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "Maximum power is transferred to a load when the load resistance equals:",
-      "options": ["Zero", "Infinity", "R_Th (Thévenin resistance)", "R_Th/2"],
+      "options": [
+        "Zero",
+        "Infinity",
+        "R_Th (Thévenin resistance)",
+        "R_Th/2"
+      ],
       "answer": "R_Th (Thévenin resistance)",
       "explanation": "P_max occurs when R_L = R_Th. Maximum power = V_Th²/(4R_Th).",
       "source": "Sadiku Ch4"
@@ -419,8 +475,6 @@
       "explanation": "P_max = V_Th²/(4R_Th) = 100/(4×5) = 100/20 = 5 W. This occurs when R_L = R_Th = 5 Ω.",
       "source": "Sadiku Ch4"
     },
-
-    // ===================== CHAPTER 5: OP AMPS =====================
     {
       "id": "q_ch5_001",
       "chapter": "ch5",
@@ -450,7 +504,12 @@
       "type": "mcq",
       "difficulty": "easy",
       "question": "In an ideal op amp, the input impedance is:",
-      "options": ["Zero", "Infinite", "10 MΩ", "1 kΩ"],
+      "options": [
+        "Zero",
+        "Infinite",
+        "10 MΩ",
+        "1 kΩ"
+      ],
       "answer": "Infinite",
       "explanation": "An ideal op amp has: infinite input impedance (no current enters inputs), zero output impedance, and infinite open-loop gain.",
       "source": "Sadiku Ch5"
@@ -462,7 +521,12 @@
       "type": "mcq",
       "difficulty": "easy",
       "question": "A voltage follower (unity-gain buffer) has gain of:",
-      "options": ["-1", "0", "1", "Infinite"],
+      "options": [
+        "-1",
+        "0",
+        "1",
+        "Infinite"
+      ],
       "answer": "1",
       "explanation": "A voltage follower connects the output directly to the inverting input, giving v_o = v_i (gain = 1). Used for impedance matching.",
       "source": "Sadiku Ch5"
@@ -478,8 +542,6 @@
       "explanation": "The virtual short principle: with negative feedback and infinite open-loop gain, v+ ≈ v−, so the differential input voltage approaches zero.",
       "source": "Sadiku Ch5"
     },
-
-    // ===================== CHAPTER 6: CAPACITORS AND INDUCTORS =====================
     {
       "id": "q_ch6_001",
       "chapter": "ch6",
@@ -547,8 +609,6 @@
       "explanation": "1/C_eq = 1/4 + 1/12 = 3/12 + 1/12 = 4/12. C_eq = 12/4 = 3 μF",
       "source": "Sadiku Ch6"
     },
-
-    // ===================== CHAPTER 7: FIRST-ORDER CIRCUITS =====================
     {
       "id": "q_ch7_001",
       "chapter": "ch7",
@@ -567,7 +627,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "After one time constant (τ), a capacitor in a source-free RC circuit has discharged to approximately:",
-      "options": ["0%", "36.8%", "63.2%", "100%"],
+      "options": [
+        "0%",
+        "36.8%",
+        "63.2%",
+        "100%"
+      ],
       "answer": "36.8%",
       "explanation": "v(τ) = V_0·e^(-1) ≈ 0.368·V_0. So 36.8% of initial voltage remains after one time constant.",
       "source": "Sadiku Ch7"
@@ -590,7 +655,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "For a step response RC circuit, the voltage is considered to reach steady state after approximately:",
-      "options": ["1τ", "2τ", "5τ", "10τ"],
+      "options": [
+        "1τ",
+        "2τ",
+        "5τ",
+        "10τ"
+      ],
       "answer": "5τ",
       "explanation": "After 5τ, the circuit reaches 99.3% of its final value, which is considered steady state in practice.",
       "source": "Sadiku Ch7"
@@ -608,8 +678,6 @@
       "explanation_corrected": "τ = RC = 5000 × 100×10⁻⁶ = 0.5 s. v(t) = V_0·e^(-t/τ) = 20·e^(-1/0.5) = 20·e^(-2) ≈ 20×0.1353 ≈ 2.71 V",
       "source": "Sadiku Ch7"
     },
-
-    // ===================== CHAPTER 8: SECOND-ORDER CIRCUITS =====================
     {
       "id": "q_ch8_001",
       "chapter": "ch8",
@@ -617,7 +685,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "A series RLC circuit is overdamped when:",
-      "options": ["α < ω_0", "α = ω_0", "α > ω_0", "α = 0"],
+      "options": [
+        "α < ω_0",
+        "α = ω_0",
+        "α > ω_0",
+        "α = 0"
+      ],
       "answer": "α > ω_0",
       "explanation": "For a series RLC: overdamped if α > ω_0 (two distinct real roots); critically damped if α = ω_0; underdamped if α < ω_0 (complex roots, oscillatory).",
       "source": "Sadiku Ch8"
@@ -640,13 +713,16 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "Which response type shows oscillations before reaching steady state?",
-      "options": ["Overdamped", "Critically damped", "Underdamped", "All of the above"],
+      "options": [
+        "Overdamped",
+        "Critically damped",
+        "Underdamped",
+        "All of the above"
+      ],
       "answer": "Underdamped",
       "explanation": "Underdamped response (α < ω_0) oscillates (rings) around the final value with exponentially decaying amplitude: x(t) = e^(-αt)(A1cos(ω_d·t)+A2sin(ω_d·t)).",
       "source": "Sadiku Ch8"
     },
-
-    // ===================== CHAPTER 9: SINUSOIDS AND PHASORS =====================
     {
       "id": "q_ch9_001",
       "chapter": "ch9",
@@ -665,7 +741,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "The impedance of a 10 mH inductor at ω = 1000 rad/s is:",
-      "options": ["10 Ω", "j10 Ω", "-j10 Ω", "10+j0 Ω"],
+      "options": [
+        "10 Ω",
+        "j10 Ω",
+        "-j10 Ω",
+        "10+j0 Ω"
+      ],
       "answer": "j10 Ω",
       "explanation": "Z_L = jωL = j × 1000 × 10×10⁻³ = j10 Ω. Inductors have positive imaginary impedance.",
       "source": "Sadiku Ch9"
@@ -688,7 +769,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "If v(t) = 10cos(ωt + 45°), its phasor representation is:",
-      "options": ["10∠45°", "10∠-45°", "10∠90°", "7.07∠45°"],
+      "options": [
+        "10∠45°",
+        "10∠-45°",
+        "10∠90°",
+        "7.07∠45°"
+      ],
       "answer": "10∠45°",
       "explanation": "The phasor of v(t) = V_m·cos(ωt + φ) is V = V_m∠φ = 10∠45°.",
       "source": "Sadiku Ch9"
@@ -700,13 +786,16 @@
       "type": "mcq",
       "difficulty": "easy",
       "question": "In a purely resistive circuit, the phase relationship between voltage and current is:",
-      "options": ["V leads I by 90°", "I leads V by 90°", "V and I are in phase", "V lags I by 45°"],
+      "options": [
+        "V leads I by 90°",
+        "I leads V by 90°",
+        "V and I are in phase",
+        "V lags I by 45°"
+      ],
       "answer": "V and I are in phase",
       "explanation": "For a resistor, Z_R = R (real, no imaginary part), so V = IR — voltage and current are in phase (0° phase difference).",
       "source": "Sadiku Ch9"
     },
-
-    // ===================== CHAPTER 10: SINUSOIDAL STEADY-STATE =====================
     {
       "id": "q_ch10_001",
       "chapter": "ch10",
@@ -714,7 +803,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "In a purely inductive circuit, voltage leads current by:",
-      "options": ["0°", "45°", "90°", "180°"],
+      "options": [
+        "0°",
+        "45°",
+        "90°",
+        "180°"
+      ],
       "answer": "90°",
       "explanation": "For inductor Z_L = jωL = ωL∠90°. So V = jωL·I means voltage leads current by 90°. Mnemonic: ELI the ICE man (E leads I for L).",
       "source": "Sadiku Ch9-10"
@@ -726,13 +820,16 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "In a purely capacitive circuit, current leads voltage by:",
-      "options": ["0°", "45°", "90°", "180°"],
+      "options": [
+        "0°",
+        "45°",
+        "90°",
+        "180°"
+      ],
       "answer": "90°",
       "explanation": "For capacitor Z_C = 1/(jωC) = (1/ωC)∠-90°. Current I = V/Z_C leads V by 90°. Mnemonic: ICE (I before E for C).",
       "source": "Sadiku Ch9-10"
     },
-
-    // ===================== CHAPTER 11: AC POWER =====================
     {
       "id": "q_ch11_001",
       "chapter": "ch11",
@@ -751,7 +848,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "A load draws 5 kW of real power and 5 kVAR of reactive power. What is the power factor?",
-      "options": ["0.5", "0.707", "1.0", "0.866"],
+      "options": [
+        "0.5",
+        "0.707",
+        "1.0",
+        "0.866"
+      ],
       "answer": "0.707",
       "explanation": "S = √(P²+Q²) = √(25+25)×10³ = √50 kVA ≈ 7.07 kVA. pf = P/S = 5/7.07 ≈ 0.707 = cos(45°).",
       "source": "Sadiku Ch11"
@@ -780,13 +882,16 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "To improve the power factor of an inductive load, you should add:",
-      "options": ["Inductor in parallel", "Capacitor in parallel", "Resistor in series", "Transformer"],
+      "options": [
+        "Inductor in parallel",
+        "Capacitor in parallel",
+        "Resistor in series",
+        "Transformer"
+      ],
       "answer": "Capacitor in parallel",
       "explanation": "Inductive loads have lagging power factor. Adding a capacitor in parallel supplies reactive power locally, reducing the reactive power drawn from the source and improving pf.",
       "source": "Sadiku Ch11"
     },
-
-    // ===================== CHAPTER 12: THREE-PHASE =====================
     {
       "id": "q_ch12_001",
       "chapter": "ch12",
@@ -805,13 +910,16 @@
       "type": "mcq",
       "difficulty": "easy",
       "question": "In a balanced three-phase system, the phase voltages are separated by:",
-      "options": ["60°", "90°", "120°", "180°"],
+      "options": [
+        "60°",
+        "90°",
+        "120°",
+        "180°"
+      ],
       "answer": "120°",
       "explanation": "The three phases are equally spaced in time: V_an, V_bn = V_an∠-120°, V_cn = V_an∠+120° (or -240°).",
       "source": "Sadiku Ch12"
     },
-
-    // ===================== CHAPTER 13: TRANSFORMERS =====================
     {
       "id": "q_ch13_001",
       "chapter": "ch13",
@@ -841,13 +949,16 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "The coupling coefficient k for an ideal transformer is:",
-      "options": ["0", "0.5", "Between 0 and 1", "1"],
+      "options": [
+        "0",
+        "0.5",
+        "Between 0 and 1",
+        "1"
+      ],
       "answer": "1",
       "explanation": "An ideal transformer has perfect coupling: k = M/√(L1L2) = 1. All flux from one coil links the other.",
       "source": "Sadiku Ch13"
     },
-
-    // ===================== CHAPTER 14: FREQUENCY RESPONSE =====================
     {
       "id": "q_ch14_001",
       "chapter": "ch14",
@@ -866,7 +977,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "On a Bode magnitude plot, each decade change in frequency for a single pole introduces a slope of:",
-      "options": ["+20 dB/decade", "-20 dB/decade", "+40 dB/decade", "-40 dB/decade"],
+      "options": [
+        "+20 dB/decade",
+        "-20 dB/decade",
+        "+40 dB/decade",
+        "-40 dB/decade"
+      ],
       "answer": "-20 dB/decade",
       "explanation": "A single real pole at s = -a contributes -20 dB/decade above the corner frequency ω = a. A zero contributes +20 dB/decade.",
       "source": "Sadiku Ch14"
@@ -899,8 +1015,6 @@
       "explanation": "Q = ω_0L/R = 1000×0.1/10 = 100/10 = 10",
       "source": "Sadiku Ch14"
     },
-
-    // ===================== CHAPTER 15: LAPLACE TRANSFORM =====================
     {
       "id": "q_ch15_001",
       "chapter": "ch15",
@@ -908,7 +1022,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "The Laplace transform of a unit step function u(t) is:",
-      "options": ["1/s", "1/s²", "s", "1"],
+      "options": [
+        "1/s",
+        "1/s²",
+        "s",
+        "1"
+      ],
       "answer": "1/s",
       "explanation": "L{u(t)} = ∫₀^∞ e^(-st)dt = 1/s for Re(s) > 0.",
       "source": "Sadiku Ch15"
@@ -920,7 +1039,12 @@
       "type": "mcq",
       "difficulty": "medium",
       "question": "The Laplace transform of e^(-at)u(t) is:",
-      "options": ["1/(s+a)", "1/(s-a)", "a/(s+a)", "s/(s+a)"],
+      "options": [
+        "1/(s+a)",
+        "1/(s-a)",
+        "a/(s+a)",
+        "s/(s+a)"
+      ],
       "answer": "1/(s+a)",
       "explanation": "L{e^(-at)u(t)} = 1/(s+a) for Re(s) > -a. This is one of the most common transform pairs.",
       "source": "Sadiku Ch15"
@@ -936,8 +1060,6 @@
       "explanation": "L{df/dt} = sF(s) - f(0⁻). This property allows differential equations to become algebraic equations.",
       "source": "Sadiku Ch15"
     },
-
-    // ===================== CHAPTER 17: FOURIER SERIES =====================
     {
       "id": "q_ch17_001",
       "chapter": "ch17",
@@ -972,8 +1094,6 @@
       "explanation": "Odd functions have a_0 = 0 and a_n = 0 (no cosine terms). Only b_n (sine coefficients) remain. Conversely, even functions have only cosine terms.",
       "source": "Sadiku Ch17"
     },
-
-    // ===================== BONUS / COMPREHENSIVE PROBLEMS =====================
     {
       "id": "q_bonus_001",
       "chapter": "bonus",
