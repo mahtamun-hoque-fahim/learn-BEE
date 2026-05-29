@@ -35,7 +35,7 @@ export default function LearnPage() {
           <p className="text-[#555] text-xs mt-2">Sign in to track your progress</p>
         </div>
 
-        {curriculum.parts.map(part => (
+        {(curriculum.parts ?? []).map(part => (
           <div key={part.id} className="mb-10">
             <div className="flex items-center gap-3 mb-5">
               <div className="h-px flex-1 bg-[#1a1a1a]" />

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Syne, Onest } from 'next/font/google'
 import './globals.css'
+import 'katex/dist/katex.min.css'
 
 const syne = Syne({
   subsets: ['latin'],

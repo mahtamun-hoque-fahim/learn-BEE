@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { type Chapter } from '@/lib/curriculum'
 import { getRandomQuestions, type Question } from '@/lib/questions'
 import CircuitSimulator from '@/components/simulator/CircuitSimulator'
+import { Tex, RichMath } from '@/components/math/Tex'
 
 interface Props {
   chapter: Chapter
@@ -184,7 +185,7 @@ function TheoryTab({ chapter, onComplete }: { chapter: Chapter; onComplete: () =
                 className="mt-0.5 accent-[#00e676]"
               />
               <span className={`text-sm transition-colors ${readTopics.has(idx) ? 'line-through text-[#555]' : 'text-white'}`}>
-                {topic}
+                {typeof topic === 'string' ? topic : (topic as { title: string }).title}
               </span>
             </label>
           ))}
@@ -203,8 +204,13 @@ function TheoryTab({ chapter, onComplete }: { chapter: Chapter; onComplete: () =
         <div className="grid sm:grid-cols-2 gap-3">
           {chapter.key_formulas.map((f, idx) => (
             <div key={idx} className="formula-card">
-              <div className="text-[#00e676] text-xs mb-1">{f.name}</div>
-              <div className="text-white font-mono text-sm">{f.formula}</div>
+              <div className="text-[#00e676] text-xs mb-2 uppercase tracking-wider">{f.name}</div>
+              <div className="text-white text-base overflow-x-auto" title={f.formula_ascii ?? f.formula}>
+                <Tex block>{f.formula}</Tex>
+              </div>
+              {f.note && (
+                <div className="text-[#888] text-xs mt-1 italic">{f.note}</div>
+              )}
               <div className="text-[#555] text-xs mt-1">[{f.unit}]</div>
             </div>
           ))}
@@ -276,7 +282,7 @@ function SimulatorTab({ chapter, onComplete }: { chapter: Chapter; onComplete: (
         <h3 className="font-syne font-semibold mb-1">Interactive Demos</h3>
         <p className="text-[#888] text-sm mb-4">Available simulations for this chapter:</p>
         <ul className="space-y-2">
-          {chapter.simulator_demos.map((demo, idx) => (
+          {(chapter.simulator_demos ?? []).map((demo, idx) => (
             <li key={idx} className="flex items-start gap-2 text-sm text-[#ccc]">
               <span className="text-[#00e676] mt-0.5">⚡</span>
               {demo}
@@ -374,12 +380,12 @@ function QuizTab({ chapter, onComplete }: { chapter: Chapter; onComplete: (score
             const correct = String(q.answer) === answers[idx]
             return (
               <div key={idx} className={`p-3 rounded-lg border text-sm ${correct ? 'border-green-800 bg-green-900/10' : 'border-red-800 bg-red-900/10'}`}>
-                <div className="font-medium text-[#ccc] mb-1">{idx+1}. {q.question}</div>
+                <div className="font-medium text-[#ccc] mb-1">{idx+1}. <RichMath>{q.question}</RichMath></div>
                 <div className={correct ? 'text-green-400' : 'text-red-400'}>
-                  Your answer: {answers[idx] || 'Not answered'} {correct ? '✓' : '✗'}
+                  Your answer: <RichMath>{answers[idx] || 'Not answered'}</RichMath> {correct ? '✓' : '✗'}
                 </div>
-                {!correct && <div className="text-[#888] text-xs mt-1">Correct: {String(q.answer)}</div>}
-                <div className="text-[#666] text-xs mt-1">{q.explanation}</div>
+                {!correct && <div className="text-[#888] text-xs mt-1">Correct: <RichMath>{String(q.answer)}</RichMath></div>}
+                <div className="text-[#666] text-xs mt-1"><RichMath>{q.explanation}</RichMath></div>
               </div>
             )
           })}
@@ -425,7 +431,7 @@ function QuizTab({ chapter, onComplete }: { chapter: Chapter; onComplete: (score
       {/* Question */}
       <div className="bg-[#111] border border-[#222] rounded-xl p-6">
         <div className="text-xs text-[#555] mb-3 font-mono">{q.topic} · {q.source}</div>
-        <p className="text-white text-base mb-5 leading-relaxed">{q.question}</p>
+        <p className="text-white text-base mb-5 leading-relaxed"><RichMath>{q.question}</RichMath></p>
 
         {/* Options for MCQ */}
         {q.type === 'mcq' && q.options && (
@@ -440,7 +446,7 @@ function QuizTab({ chapter, onComplete }: { chapter: Chapter; onComplete: (score
               }
               return (
                 <button key={opt} className={`${cls} w-full text-left`} onClick={() => handleSelect(opt)}>
-                  {opt}
+                  <RichMath>{opt}</RichMath>
                 </button>
               )
             })}
@@ -479,7 +485,7 @@ function QuizTab({ chapter, onComplete }: { chapter: Chapter; onComplete: (score
             ) : (
               <div className="formula-card">
                 <div className="text-[#00e676] text-xs mb-1">Answer</div>
-                <div className="text-white font-mono">{String(q.answer)}</div>
+                <div className="text-white"><RichMath>{String(q.answer)}</RichMath></div>
               </div>
             )}
           </div>
@@ -496,7 +502,7 @@ function QuizTab({ chapter, onComplete }: { chapter: Chapter; onComplete: (score
             </button>
             {showExplanation && (
               <div className="mt-2 p-3 bg-[#0a0a0a] rounded-lg text-sm text-[#ccc] border border-[#1a1a1a]">
-                {q.explanation}
+                <RichMath>{q.explanation}</RichMath>
               </div>
             )}
           </div>

@@ -127,7 +127,8 @@ export default function StudentDashboard() {
         </div>
         <div style={{ display: 'flex', gap: 20, marginTop: 16, flexWrap: 'wrap' }}>
           {['DC Circuits', 'AC Circuits', 'Advanced'].map((part, pi) => {
-            const chapters = curriculum.filter(c => c.part === pi + 1)
+            const partId = `part${pi + 1}`
+            const chapters = curriculum.chapters.filter(c => c.part === partId)
             const done = chapters.filter(c => progress.find(p => p.chapterId === c.id && p.completed)).length
             return (
               <div key={part} style={{ flex: 1, minWidth: 120 }}>

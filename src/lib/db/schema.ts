@@ -167,3 +167,9 @@ export const adminSettings = pgTable('admin_settings', {
   value: text('value').notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })
+
+
+
+// ─── Backward-compat aliases (pre-existing route imports) ─────────────────
+export const certificates = certRegistrations
+export const adminQuotes = defaultQuotes

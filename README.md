@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# learn-BEE
 
-## Getting Started
+University-level Basic Electrical Engineering platform: theory, interactive circuit simulators, randomised quizzes, and moderator-reviewed certificates. Built for BGCTUB 2nd-semester students; aligned with Sadiku 5th Ed. & Boylestad.
 
-First, run the development server:
+---
+
+## Stack
+
+- Next.js 16 App Router (TypeScript), React 19
+- Tailwind CSS 4
+- Neon (PostgreSQL) + Drizzle ORM
+- Clerk auth
+- KaTeX (server-rendered math)
+- Recharts (charts); jsPDF + html2canvas (certificate render)
+
+---
+
+## Prerequisites
+
+- Node.js 18+
+- npm (or pnpm)
+- Neon account + database
+- Clerk application (publishable + secret keys)
+
+---
+
+## Local Setup
 
 ```bash
+# 1. Clone
+git clone https://github.com/mahtamun-hoque-fahim/learn-BEE.git
+cd learn-BEE
+
+# 2. Install
+npm install
+
+# 3. Env
+cp .env.example .env.local   # (file pending — see Env Vars below)
+# Fill in DATABASE_URL, Clerk keys, etc.
+
+# 4. Push DB schema
+npx drizzle-kit push
+
+# 5. Run
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Env Vars
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+DATABASE_URL=
+NEXT_PUBLIC_APP_URL=
 
-## Learn More
+# Auth (Clerk)
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+```
 
-To learn more about Next.js, take a look at the following resources:
+Full descriptions → `PLANNER.md` → Env Vars section.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Commands
 
-## Deploy on Vercel
+```bash
+npm run dev              # Dev server on localhost:3000
+npm run build            # Production build
+npm start                # Production server
+npm run lint             # ESLint
+npx drizzle-kit push     # Apply Drizzle schema to Neon
+npx drizzle-kit studio   # Drizzle Studio UI
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Folder Structure
+
+```
+knowledge-base/   # JSON sources for curriculum, questions, simulators, cheat-sheet
+src/app/          # Next.js routes — learn, dashboard, admin, mod, api
+src/components/   # math/Tex (KaTeX), simulator/CircuitSimulator
+src/lib/          # curriculum, questions, db schema, auth helpers
+public/           # Static assets
+```
+
+Full architecture → `PLANNER.md`. Design tokens → `DESIGN_GUIDE.md`.
+
+---
+
+## Math Rendering
+
+All formulas — in the key-formula cards, question text, options, and explanations — render via KaTeX. The `<RichMath>` component auto-detects math: explicit `$...$` / `$$...$$` delimiters, plus any string containing unicode math glyphs (Ω, ρ, ×, ², etc.) is converted to LaTeX automatically. See `src/components/math/Tex.tsx`.

@@ -6,13 +6,18 @@
     {
       "id": "sadiku",
       "title": "Fundamentals of Electric Circuits, 5th Edition",
-      "authors": ["Charles K. Alexander", "Matthew N.O. Sadiku"],
+      "authors": [
+        "Charles K. Alexander",
+        "Matthew N.O. Sadiku"
+      ],
       "file": "resources/Sadiku-FundamentalsOfElectricCircuits-5th.pdf"
     },
     {
       "id": "boylestad",
       "title": "Introductory Circuit Analysis",
-      "authors": ["Robert L. Boylestad"],
+      "authors": [
+        "Robert L. Boylestad"
+      ],
       "file": "resources/Boylestad-IntroductoryCircuitAnalysis.pdf"
     },
     {
@@ -26,17 +31,39 @@
     {
       "id": "part1",
       "title": "DC Circuits",
-      "chapters": ["ch1","ch2","ch3","ch4","ch5","ch6","ch7","ch8"]
+      "chapters": [
+        "ch1",
+        "ch2",
+        "ch3",
+        "ch4",
+        "ch5",
+        "ch6",
+        "ch7",
+        "ch8"
+      ]
     },
     {
       "id": "part2",
       "title": "AC Circuits",
-      "chapters": ["ch9","ch10","ch11","ch12","ch13","ch14"]
+      "chapters": [
+        "ch9",
+        "ch10",
+        "ch11",
+        "ch12",
+        "ch13",
+        "ch14"
+      ]
     },
     {
       "id": "part3",
       "title": "Advanced Circuit Analysis",
-      "chapters": ["ch15","ch16","ch17","ch18","ch19"]
+      "chapters": [
+        "ch15",
+        "ch16",
+        "ch17",
+        "ch18",
+        "ch19"
+      ]
     }
   ],
   "chapters": [
@@ -58,11 +85,36 @@
         "Problem Solving Methodology"
       ],
       "key_formulas": [
-        { "name": "Current", "formula": "i = dq/dt", "unit": "Amperes (A)" },
-        { "name": "Voltage", "formula": "v = dw/dq", "unit": "Volts (V)" },
-        { "name": "Power", "formula": "p = dw/dt = v·i", "unit": "Watts (W)" },
-        { "name": "Energy", "formula": "w = ∫p dt", "unit": "Joules (J)" },
-        { "name": "Energy (kWh)", "formula": "W = P × t", "unit": "kWh" }
+        {
+          "name": "Current",
+          "formula": "i = \\dfrac{dq}{dt}",
+          "unit": "Amperes (A)",
+          "formula_ascii": "i = dq/dt"
+        },
+        {
+          "name": "Voltage",
+          "formula": "v = \\dfrac{dw}{dq}",
+          "unit": "Volts (V)",
+          "formula_ascii": "v = dw/dq"
+        },
+        {
+          "name": "Power",
+          "formula": "p = \\dfrac{dw}{dt} = v\\cdot i",
+          "unit": "Watts (W)",
+          "formula_ascii": "p = dw/dt = v·i"
+        },
+        {
+          "name": "Energy",
+          "formula": "w = \\int p\\,dt",
+          "unit": "Joules (J)",
+          "formula_ascii": "w = ∫p dt"
+        },
+        {
+          "name": "Energy (kWh)",
+          "formula": "W = P \\times t",
+          "unit": "kWh",
+          "formula_ascii": "W = P × t"
+        }
       ],
       "simulator_demos": [
         "Simple DC circuit: battery + lamp",
@@ -90,16 +142,66 @@
         "Applications: Lighting Systems, DC Meters"
       ],
       "key_formulas": [
-        { "name": "Ohm's Law", "formula": "v = iR", "unit": "V" },
-        { "name": "Resistance", "formula": "R = ρL/A", "unit": "Ohms (Ω)" },
-        { "name": "KCL", "formula": "Σi_in = Σi_out", "unit": "A" },
-        { "name": "KVL", "formula": "Σv = 0 (around any closed loop)", "unit": "V" },
-        { "name": "Series Resistance", "formula": "R_eq = R1 + R2 + ... + Rn", "unit": "Ω" },
-        { "name": "Parallel Resistance", "formula": "1/R_eq = 1/R1 + 1/R2 + ... + 1/Rn", "unit": "Ω" },
-        { "name": "Voltage Divider", "formula": "v1 = (R1/(R1+R2)) × v", "unit": "V" },
-        { "name": "Current Divider", "formula": "i1 = (R2/(R1+R2)) × i", "unit": "A" },
-        { "name": "Y to Δ", "formula": "Ra = (R1R2+R2R3+R3R1)/R1", "unit": "Ω" },
-        { "name": "Δ to Y", "formula": "R1 = RaRb/(Ra+Rb+Rc)", "unit": "Ω" }
+        {
+          "name": "Ohm's Law",
+          "formula": "v = iR",
+          "unit": "V",
+          "formula_ascii": "v = iR"
+        },
+        {
+          "name": "Resistance",
+          "formula": "R = \\rho L/A",
+          "unit": "Ohms (Ω)",
+          "formula_ascii": "R = ρL/A"
+        },
+        {
+          "name": "KCL",
+          "formula": "\\sum i_{in} = \\sum i_{out}",
+          "unit": "A",
+          "formula_ascii": "Σi_in = Σi_out"
+        },
+        {
+          "name": "KVL",
+          "formula": "\\sum v = 0 (around any closed loop)",
+          "unit": "V",
+          "formula_ascii": "Σv = 0 (around any closed loop)"
+        },
+        {
+          "name": "Series Resistance",
+          "formula": "R_{eq} = R_1 + R_2 + \\cdots + R_n",
+          "unit": "Ω",
+          "formula_ascii": "R_eq = R1 + R2 + ... + Rn"
+        },
+        {
+          "name": "Parallel Resistance",
+          "formula": "\\dfrac{1}{R_{eq}} = \\dfrac{1}{R_1} + \\dfrac{1}{R_2} + \\cdots + \\dfrac{1}{R_n}",
+          "unit": "Ω",
+          "formula_ascii": "1/R_eq = 1/R1 + 1/R2 + ... + 1/Rn"
+        },
+        {
+          "name": "Voltage Divider",
+          "formula": "v_1 = \\dfrac{R_1}{R_1+R_2}\\,v",
+          "unit": "V",
+          "formula_ascii": "v1 = (R1/(R1+R2)) × v"
+        },
+        {
+          "name": "Current Divider",
+          "formula": "i_1 = \\dfrac{R_2}{R_1+R_2}\\,i",
+          "unit": "A",
+          "formula_ascii": "i1 = (R2/(R1+R2)) × i"
+        },
+        {
+          "name": "Y to Δ",
+          "formula": "R_a = \\dfrac{R_1R_2+R_2R_3+R_3R_1}{R_1}",
+          "unit": "Ω",
+          "formula_ascii": "Ra = (R1R2+R2R3+R3R1)/R1"
+        },
+        {
+          "name": "Δ to Y",
+          "formula": "R_1 = \\dfrac{R_aR_b}{R_a+R_b+R_c}",
+          "unit": "Ω",
+          "formula_ascii": "R1 = RaRb/(Ra+Rb+Rc)"
+        }
       ],
       "simulator_demos": [
         "Ohm's Law: vary V and R, observe I",
@@ -128,10 +230,30 @@
         "Applications: DC Transistor Circuits"
       ],
       "key_formulas": [
-        { "name": "Nodal Analysis (KCL at node)", "formula": "Σ(v_n - v_k)/R_nk = I_n", "unit": "A" },
-        { "name": "Mesh equation (KVL)", "formula": "Σ(R_ij × i_j) = Σv_sources", "unit": "V" },
-        { "name": "Conductance matrix", "formula": "GV = I", "unit": "A" },
-        { "name": "Resistance matrix", "formula": "RI = V", "unit": "V" }
+        {
+          "name": "Nodal Analysis (KCL at node)",
+          "formula": "\\sum (v_{n} - v_{k})/R_{nk} = I_{n}",
+          "unit": "A",
+          "formula_ascii": "Σ(v_n - v_k)/R_nk = I_n"
+        },
+        {
+          "name": "Mesh equation (KVL)",
+          "formula": "\\sum (R_{ij} \\times i_{j}) = \\sum v_{sources}",
+          "unit": "V",
+          "formula_ascii": "Σ(R_ij × i_j) = Σv_sources"
+        },
+        {
+          "name": "Conductance matrix",
+          "formula": "GV = I",
+          "unit": "A",
+          "formula_ascii": "GV = I"
+        },
+        {
+          "name": "Resistance matrix",
+          "formula": "RI = V",
+          "unit": "V",
+          "formula_ascii": "RI = V"
+        }
       ],
       "simulator_demos": [
         "2-node nodal analysis walkthrough",
@@ -157,12 +279,43 @@
         "Applications: Source Modeling, Resistance Measurement"
       ],
       "key_formulas": [
-        { "name": "Superposition", "formula": "v = v1 + v2 + ... (one source at a time)", "unit": "V" },
-        { "name": "Thévenin Voltage", "formula": "V_Th = V_oc (open-circuit voltage)", "unit": "V" },
-        { "name": "Thévenin Resistance", "formula": "R_Th = V_oc / I_sc", "unit": "Ω" },
-        { "name": "Norton Current", "formula": "I_N = I_sc (short-circuit current)", "unit": "A" },
-        { "name": "Norton Resistance", "formula": "R_N = R_Th", "unit": "Ω" },
-        { "name": "Max Power Transfer", "formula": "P_max when R_L = R_Th; P_max = V_Th²/(4R_Th)", "unit": "W" }
+        {
+          "name": "Superposition",
+          "formula": "v = v_{1} + v_{2} + \\cdots (one source at a time)",
+          "unit": "V",
+          "formula_ascii": "v = v1 + v2 + ... (one source at a time)"
+        },
+        {
+          "name": "Thévenin Voltage",
+          "formula": "V_{Th} = V_{oc} (open-circuit voltage)",
+          "unit": "V",
+          "formula_ascii": "V_Th = V_oc (open-circuit voltage)"
+        },
+        {
+          "name": "Thévenin Resistance",
+          "formula": "R_{Th} = V_{oc} / I_{sc}",
+          "unit": "Ω",
+          "formula_ascii": "R_Th = V_oc / I_sc"
+        },
+        {
+          "name": "Norton Current",
+          "formula": "I_{N} = I_{sc} (short-circuit current)",
+          "unit": "A",
+          "formula_ascii": "I_N = I_sc (short-circuit current)"
+        },
+        {
+          "name": "Norton Resistance",
+          "formula": "R_{N} = R_{Th}",
+          "unit": "Ω",
+          "formula_ascii": "R_N = R_Th"
+        },
+        {
+          "name": "Max Power Transfer",
+          "formula": "P_{max}=\\dfrac{V_{Th}^{2}}{4R_{Th}}",
+          "unit": "W",
+          "formula_ascii": "P_max when R_L = R_Th; P_max = V_Th²/(4R_Th)",
+          "note": "maximum when R_L = R_{Th}"
+        }
       ],
       "simulator_demos": [
         "Superposition: enable/disable sources",
@@ -191,11 +344,36 @@
         "Applications: DAC, Instrumentation Amplifiers"
       ],
       "key_formulas": [
-        { "name": "Inverting Amp Gain", "formula": "v_o = -(R_f/R_1) × v_i", "unit": "V" },
-        { "name": "Noninverting Amp Gain", "formula": "v_o = (1 + R_f/R_1) × v_i", "unit": "V" },
-        { "name": "Summing Amp", "formula": "v_o = -(R_f/R_1)v_1 - (R_f/R_2)v_2 ...", "unit": "V" },
-        { "name": "Difference Amp", "formula": "v_o = (R_2/R_1)(v_2 - v_1)", "unit": "V" },
-        { "name": "Unity Gain (Buffer)", "formula": "v_o = v_i", "unit": "V" }
+        {
+          "name": "Inverting Amp Gain",
+          "formula": "v_{o} = -(R_{f}/R_{1}) \\times v_{i}",
+          "unit": "V",
+          "formula_ascii": "v_o = -(R_f/R_1) × v_i"
+        },
+        {
+          "name": "Noninverting Amp Gain",
+          "formula": "v_{o} = (1 + R_{f}/R_{1}) \\times v_{i}",
+          "unit": "V",
+          "formula_ascii": "v_o = (1 + R_f/R_1) × v_i"
+        },
+        {
+          "name": "Summing Amp",
+          "formula": "v_{o} = -(R_{f}/R_{1})v_{1} - (R_{f}/R_{2})v_{2} \\cdots",
+          "unit": "V",
+          "formula_ascii": "v_o = -(R_f/R_1)v_1 - (R_f/R_2)v_2 ..."
+        },
+        {
+          "name": "Difference Amp",
+          "formula": "v_{o} = (R_{2}/R_{1})(v_{2} - v_{1})",
+          "unit": "V",
+          "formula_ascii": "v_o = (R_2/R_1)(v_2 - v_1)"
+        },
+        {
+          "name": "Unity Gain (Buffer)",
+          "formula": "v_{o} = v_{i}",
+          "unit": "V",
+          "formula_ascii": "v_o = v_i"
+        }
       ],
       "simulator_demos": [
         "Inverting amplifier with adjustable gain",
@@ -222,16 +400,66 @@
         "Applications: Integrator, Differentiator, Analog Computer"
       ],
       "key_formulas": [
-        { "name": "Capacitor i-v", "formula": "i = C dv/dt", "unit": "A" },
-        { "name": "Capacitor voltage", "formula": "v = (1/C)∫i dt + v(0)", "unit": "V" },
-        { "name": "Capacitor energy", "formula": "w = (1/2)Cv²", "unit": "J" },
-        { "name": "Series capacitors", "formula": "1/C_eq = 1/C1 + 1/C2 + ...", "unit": "F" },
-        { "name": "Parallel capacitors", "formula": "C_eq = C1 + C2 + ...", "unit": "F" },
-        { "name": "Inductor v-i", "formula": "v = L di/dt", "unit": "V" },
-        { "name": "Inductor current", "formula": "i = (1/L)∫v dt + i(0)", "unit": "A" },
-        { "name": "Inductor energy", "formula": "w = (1/2)Li²", "unit": "J" },
-        { "name": "Series inductors", "formula": "L_eq = L1 + L2 + ...", "unit": "H" },
-        { "name": "Parallel inductors", "formula": "1/L_eq = 1/L1 + 1/L2 + ...", "unit": "H" }
+        {
+          "name": "Capacitor i-v",
+          "formula": "i = C\\dfrac{dv}{dt}",
+          "unit": "A",
+          "formula_ascii": "i = C dv/dt"
+        },
+        {
+          "name": "Capacitor voltage",
+          "formula": "v = \\dfrac{1}{C}\\int i\\,dt + v(0)",
+          "unit": "V",
+          "formula_ascii": "v = (1/C)∫i dt + v(0)"
+        },
+        {
+          "name": "Capacitor energy",
+          "formula": "w = \\tfrac{1}{2}Cv^{2}",
+          "unit": "J",
+          "formula_ascii": "w = (1/2)Cv²"
+        },
+        {
+          "name": "Series capacitors",
+          "formula": "1/C_{eq} = 1/C_{1} + 1/C_{2} + \\cdots",
+          "unit": "F",
+          "formula_ascii": "1/C_eq = 1/C1 + 1/C2 + ..."
+        },
+        {
+          "name": "Parallel capacitors",
+          "formula": "C_{eq} = C_{1} + C_{2} + \\cdots",
+          "unit": "F",
+          "formula_ascii": "C_eq = C1 + C2 + ..."
+        },
+        {
+          "name": "Inductor v-i",
+          "formula": "v = L\\dfrac{di}{dt}",
+          "unit": "V",
+          "formula_ascii": "v = L di/dt"
+        },
+        {
+          "name": "Inductor current",
+          "formula": "i = \\dfrac{1}{L}\\int v\\,dt + i(0)",
+          "unit": "A",
+          "formula_ascii": "i = (1/L)∫v dt + i(0)"
+        },
+        {
+          "name": "Inductor energy",
+          "formula": "w = \\tfrac{1}{2}Li^{2}",
+          "unit": "J",
+          "formula_ascii": "w = (1/2)Li²"
+        },
+        {
+          "name": "Series inductors",
+          "formula": "L_{eq} = L_{1} + L_{2} + \\cdots",
+          "unit": "H",
+          "formula_ascii": "L_eq = L1 + L2 + ..."
+        },
+        {
+          "name": "Parallel inductors",
+          "formula": "1/L_{eq} = 1/L_{1} + 1/L_{2} + \\cdots",
+          "unit": "H",
+          "formula_ascii": "1/L_eq = 1/L1 + 1/L2 + ..."
+        }
       ],
       "simulator_demos": [
         "Capacitor charging/discharging animation",
@@ -258,12 +486,42 @@
         "Applications: Delay Circuits, Photoflash, Relay, Automobile Ignition"
       ],
       "key_formulas": [
-        { "name": "RC Time Constant", "formula": "τ = RC", "unit": "s" },
-        { "name": "RL Time Constant", "formula": "τ = L/R", "unit": "s" },
-        { "name": "RC Natural Response", "formula": "v(t) = V_0 · e^(-t/τ)", "unit": "V" },
-        { "name": "RL Natural Response", "formula": "i(t) = I_0 · e^(-t/τ)", "unit": "A" },
-        { "name": "General 1st order", "formula": "x(t) = x(∞) + [x(0) - x(∞)]e^(-t/τ)", "unit": "—" },
-        { "name": "Step Response RC", "formula": "v(t) = V_s(1 - e^(-t/τ)) + V_0·e^(-t/τ)", "unit": "V" }
+        {
+          "name": "RC Time Constant",
+          "formula": "\\tau = RC",
+          "unit": "s",
+          "formula_ascii": "τ = RC"
+        },
+        {
+          "name": "RL Time Constant",
+          "formula": "\\tau = L/R",
+          "unit": "s",
+          "formula_ascii": "τ = L/R"
+        },
+        {
+          "name": "RC Natural Response",
+          "formula": "v(t) = V_{0} \\cdot e^{-t/\\tau }",
+          "unit": "V",
+          "formula_ascii": "v(t) = V_0 · e^(-t/τ)"
+        },
+        {
+          "name": "RL Natural Response",
+          "formula": "i(t) = I_{0} \\cdot e^{-t/\\tau }",
+          "unit": "A",
+          "formula_ascii": "i(t) = I_0 · e^(-t/τ)"
+        },
+        {
+          "name": "General 1st order",
+          "formula": "x(t) = x(\\infty ) + [x(0) - x(\\infty )]e^{-t/\\tau }",
+          "unit": "—",
+          "formula_ascii": "x(t) = x(∞) + [x(0) - x(∞)]e^(-t/τ)"
+        },
+        {
+          "name": "Step Response RC",
+          "formula": "v(t) = V_{s}(1 - e^{-t/\\tau }) + V_{0}\\cdote^{-t/\\tau }",
+          "unit": "V",
+          "formula_ascii": "v(t) = V_s(1 - e^(-t/τ)) + V_0·e^(-t/τ)"
+        }
       ],
       "simulator_demos": [
         "RC charging/discharging with time constant visualization",
@@ -292,13 +550,48 @@
         "Applications: Automobile Ignition, Smoothing Circuits"
       ],
       "key_formulas": [
-        { "name": "Characteristic equation (series RLC)", "formula": "s² + (R/L)s + 1/(LC) = 0", "unit": "—" },
-        { "name": "Damping coeff (series)", "formula": "α = R/(2L)", "unit": "rad/s" },
-        { "name": "Natural frequency", "formula": "ω_0 = 1/√(LC)", "unit": "rad/s" },
-        { "name": "Overdamped (α>ω_0)", "formula": "x(t) = A1·e^(s1·t) + A2·e^(s2·t)", "unit": "—" },
-        { "name": "Critically damped (α=ω_0)", "formula": "x(t) = (A1 + A2·t)e^(-αt)", "unit": "—" },
-        { "name": "Underdamped (α<ω_0)", "formula": "x(t) = e^(-αt)(A1cos(ω_d·t)+A2sin(ω_d·t))", "unit": "—" },
-        { "name": "Damped frequency", "formula": "ω_d = √(ω_0² - α²)", "unit": "rad/s" }
+        {
+          "name": "Characteristic equation (series RLC)",
+          "formula": "s^{2} + (R/L)s + 1/(LC) = 0",
+          "unit": "—",
+          "formula_ascii": "s² + (R/L)s + 1/(LC) = 0"
+        },
+        {
+          "name": "Damping coeff (series)",
+          "formula": "\\alpha = R/(2L)",
+          "unit": "rad/s",
+          "formula_ascii": "α = R/(2L)"
+        },
+        {
+          "name": "Natural frequency",
+          "formula": "\\omega_0 = \\dfrac{1}{\\sqrt{LC}}",
+          "unit": "rad/s",
+          "formula_ascii": "ω_0 = 1/√(LC)"
+        },
+        {
+          "name": "Overdamped (α>ω_0)",
+          "formula": "x(t) = A_{1}\\cdote^{s_{1}\\cdott} + A_{2}\\cdote^{s_{2}\\cdott}",
+          "unit": "—",
+          "formula_ascii": "x(t) = A1·e^(s1·t) + A2·e^(s2·t)"
+        },
+        {
+          "name": "Critically damped (α=ω_0)",
+          "formula": "x(t) = (A_{1} + A_{2}\\cdott)e^{-\\alpha t}",
+          "unit": "—",
+          "formula_ascii": "x(t) = (A1 + A2·t)e^(-αt)"
+        },
+        {
+          "name": "Underdamped (α<ω_0)",
+          "formula": "x(t) = e^{-\\alpha t}(A_{1}cos(\\omega _d\\cdott)+A_{2}sin(\\omega _d\\cdott))",
+          "unit": "—",
+          "formula_ascii": "x(t) = e^(-αt)(A1cos(ω_d·t)+A2sin(ω_d·t))"
+        },
+        {
+          "name": "Damped frequency",
+          "formula": "\\omega _d = \\sqrt{\\omega _0^{2} - \\alpha ^{2}}",
+          "unit": "rad/s",
+          "formula_ascii": "ω_d = √(ω_0² - α²)"
+        }
       ],
       "simulator_demos": [
         "Series RLC with α/ω_0 sliders (overdamped/underdamped/critical)",
@@ -326,13 +619,48 @@
         "Applications: Phase Shifters, AC Bridges"
       ],
       "key_formulas": [
-        { "name": "Sinusoid", "formula": "v(t) = V_m·cos(ωt + φ)", "unit": "V" },
-        { "name": "Angular frequency", "formula": "ω = 2πf = 2π/T", "unit": "rad/s" },
-        { "name": "Phasor", "formula": "V = V_m∠φ", "unit": "V" },
-        { "name": "Resistor impedance", "formula": "Z_R = R", "unit": "Ω" },
-        { "name": "Inductor impedance", "formula": "Z_L = jωL", "unit": "Ω" },
-        { "name": "Capacitor impedance", "formula": "Z_C = 1/(jωC) = -j/(ωC)", "unit": "Ω" },
-        { "name": "Admittance", "formula": "Y = 1/Z = G + jB", "unit": "S (Siemens)" }
+        {
+          "name": "Sinusoid",
+          "formula": "v(t) = V_{m}\\cdotcos(\\omega t + \\phi )",
+          "unit": "V",
+          "formula_ascii": "v(t) = V_m·cos(ωt + φ)"
+        },
+        {
+          "name": "Angular frequency",
+          "formula": "\\omega = 2\\pi f = 2\\pi /T",
+          "unit": "rad/s",
+          "formula_ascii": "ω = 2πf = 2π/T"
+        },
+        {
+          "name": "Phasor",
+          "formula": "V = V_{m}\\angle \\phi",
+          "unit": "V",
+          "formula_ascii": "V = V_m∠φ"
+        },
+        {
+          "name": "Resistor impedance",
+          "formula": "Z_{R} = R",
+          "unit": "Ω",
+          "formula_ascii": "Z_R = R"
+        },
+        {
+          "name": "Inductor impedance",
+          "formula": "Z_{L} = j\\omega L",
+          "unit": "Ω",
+          "formula_ascii": "Z_L = jωL"
+        },
+        {
+          "name": "Capacitor impedance",
+          "formula": "Z_{C} = 1/(j\\omega C) = -j/(\\omega C)",
+          "unit": "Ω",
+          "formula_ascii": "Z_C = 1/(jωC) = -j/(ωC)"
+        },
+        {
+          "name": "Admittance",
+          "formula": "Y = \\dfrac{1}{Z} = G + jB",
+          "unit": "S (Siemens)",
+          "formula_ascii": "Y = 1/Z = G + jB"
+        }
       ],
       "simulator_demos": [
         "Sinusoidal waveform with adjustable Vm, f, φ",
@@ -358,9 +686,24 @@
         "Applications: Capacitance Multiplier, Oscillators"
       ],
       "key_formulas": [
-        { "name": "AC Ohm's Law (phasor)", "formula": "V = ZI", "unit": "V" },
-        { "name": "AC Thevenin", "formula": "Z_Th = V_Th / I_N", "unit": "Ω" },
-        { "name": "Voltage divider (AC)", "formula": "V_2 = Z_2/(Z_1+Z_2) × V_s", "unit": "V" }
+        {
+          "name": "AC Ohm's Law (phasor)",
+          "formula": "V = ZI",
+          "unit": "V",
+          "formula_ascii": "V = ZI"
+        },
+        {
+          "name": "AC Thevenin",
+          "formula": "Z_{Th} = V_{Th} / I_{N}",
+          "unit": "Ω",
+          "formula_ascii": "Z_Th = V_Th / I_N"
+        },
+        {
+          "name": "Voltage divider (AC)",
+          "formula": "V_{2} = Z_{2}/(Z_{1}+Z_{2}) \\times V_{s}",
+          "unit": "V",
+          "formula_ascii": "V_2 = Z_2/(Z_1+Z_2) × V_s"
+        }
       ],
       "simulator_demos": [
         "AC nodal analysis step-by-step",
@@ -388,14 +731,54 @@
         "Applications: Power Measurement, Electricity Cost"
       ],
       "key_formulas": [
-        { "name": "Instantaneous power", "formula": "p(t) = v(t)·i(t)", "unit": "W" },
-        { "name": "Average power", "formula": "P = (1/2)V_m·I_m·cos(θ_v - θ_i)", "unit": "W" },
-        { "name": "RMS voltage", "formula": "V_rms = V_m/√2", "unit": "V" },
-        { "name": "RMS current", "formula": "I_rms = I_m/√2", "unit": "A" },
-        { "name": "Apparent power", "formula": "S = V_rms · I_rms", "unit": "VA" },
-        { "name": "Power factor", "formula": "pf = cos(θ_v - θ_i) = P/S", "unit": "—" },
-        { "name": "Complex power", "formula": "S = P + jQ = V·I*", "unit": "VA" },
-        { "name": "Reactive power", "formula": "Q = (1/2)V_m·I_m·sin(θ_v - θ_i)", "unit": "VAR" }
+        {
+          "name": "Instantaneous power",
+          "formula": "p(t) = v(t)\\cdoti(t)",
+          "unit": "W",
+          "formula_ascii": "p(t) = v(t)·i(t)"
+        },
+        {
+          "name": "Average power",
+          "formula": "P = \\tfrac{1}{2}V_m I_m \\cos(\\theta_v - \\theta_i)",
+          "unit": "W",
+          "formula_ascii": "P = (1/2)V_m·I_m·cos(θ_v - θ_i)"
+        },
+        {
+          "name": "RMS voltage",
+          "formula": "V_{rms} = \\dfrac{V_m}{\\sqrt{2}}",
+          "unit": "V",
+          "formula_ascii": "V_rms = V_m/√2"
+        },
+        {
+          "name": "RMS current",
+          "formula": "I_{rms} = I_{m}/\\sqrt{2}",
+          "unit": "A",
+          "formula_ascii": "I_rms = I_m/√2"
+        },
+        {
+          "name": "Apparent power",
+          "formula": "S = V_{rms} \\cdot I_{rms}",
+          "unit": "VA",
+          "formula_ascii": "S = V_rms · I_rms"
+        },
+        {
+          "name": "Power factor",
+          "formula": "pf = \\cos(\\theta _v - \\theta _i) = P/S",
+          "unit": "—",
+          "formula_ascii": "pf = cos(θ_v - θ_i) = P/S"
+        },
+        {
+          "name": "Complex power",
+          "formula": "S = P + jQ = V\\cdotI*",
+          "unit": "VA",
+          "formula_ascii": "S = P + jQ = V·I*"
+        },
+        {
+          "name": "Reactive power",
+          "formula": "Q = \\tfrac{1}{2}V_{m}\\cdotI_{m}\\cdotsin(\\theta _v - \\theta _i)",
+          "unit": "VAR",
+          "formula_ascii": "Q = (1/2)V_m·I_m·sin(θ_v - θ_i)"
+        }
       ],
       "simulator_demos": [
         "Power triangle (P, Q, S) interactive diagram",
@@ -422,11 +805,36 @@
         "Applications: 3-Phase Power Measurement, Residential Wiring"
       ],
       "key_formulas": [
-        { "name": "Phase sequence (abc)", "formula": "V_an, V_bn = V_an∠-120°, V_cn = V_an∠-240°", "unit": "V" },
-        { "name": "Y-Y Line voltage", "formula": "V_L = √3 · V_ph∠30°", "unit": "V" },
-        { "name": "Total power (balanced)", "formula": "P = 3V_ph·I_ph·cosθ = √3·V_L·I_L·cosθ", "unit": "W" },
-        { "name": "Reactive power", "formula": "Q = √3·V_L·I_L·sinθ", "unit": "VAR" },
-        { "name": "Apparent power", "formula": "S = √3·V_L·I_L", "unit": "VA" }
+        {
+          "name": "Phase sequence (abc)",
+          "formula": "V_{an},\\ V_{bn}=V_{an}\\angle{-120^{\\circ}},\\ V_{cn}=V_{an}\\angle{-240^{\\circ}}",
+          "unit": "V",
+          "formula_ascii": "V_an, V_bn = V_an∠-120°, V_cn = V_an∠-240°"
+        },
+        {
+          "name": "Y-Y Line voltage",
+          "formula": "V_{L} = \\sqrt{3} \\cdot V_{ph}\\angle 30^{\\circ}",
+          "unit": "V",
+          "formula_ascii": "V_L = √3 · V_ph∠30°"
+        },
+        {
+          "name": "Total power (balanced)",
+          "formula": "P = 3V_{ph}\\cdotI_{ph}\\cdotcos\\theta = \\sqrt{3}\\cdotV_{L}\\cdotI_{L}\\cdotcos\\theta",
+          "unit": "W",
+          "formula_ascii": "P = 3V_ph·I_ph·cosθ = √3·V_L·I_L·cosθ"
+        },
+        {
+          "name": "Reactive power",
+          "formula": "Q = \\sqrt{3}\\cdotV_{L}\\cdotI_{L}\\cdotsin\\theta",
+          "unit": "VAR",
+          "formula_ascii": "Q = √3·V_L·I_L·sinθ"
+        },
+        {
+          "name": "Apparent power",
+          "formula": "S = \\sqrt{3}\\,V_L I_L",
+          "unit": "VA",
+          "formula_ascii": "S = √3·V_L·I_L"
+        }
       ],
       "simulator_demos": [
         "Three-phase phasor diagram (rotating)",
@@ -454,12 +862,42 @@
         "Applications: Isolation, Impedance Matching, Power Distribution"
       ],
       "key_formulas": [
-        { "name": "Mutual inductance voltage", "formula": "v = M · di/dt", "unit": "V" },
-        { "name": "Coupling coefficient", "formula": "k = M/√(L1·L2), 0 ≤ k ≤ 1", "unit": "—" },
-        { "name": "Ideal transformer turns ratio", "formula": "V2/V1 = N2/N1 = n", "unit": "—" },
-        { "name": "Transformer current ratio", "formula": "I1/I2 = N2/N1 = 1/n", "unit": "—" },
-        { "name": "Reflected impedance", "formula": "Z_in = Z_L / n²", "unit": "Ω" },
-        { "name": "Energy in coupled inductors", "formula": "w = (1/2)L1·i1² + M·i1·i2 + (1/2)L2·i2²", "unit": "J" }
+        {
+          "name": "Mutual inductance voltage",
+          "formula": "v = M \\cdot \\dfrac{di}{dt}",
+          "unit": "V",
+          "formula_ascii": "v = M · di/dt"
+        },
+        {
+          "name": "Coupling coefficient",
+          "formula": "k = \\dfrac{M}{\\sqrt{L_1 L_2}},\\quad 0 \\le k \\le 1",
+          "unit": "—",
+          "formula_ascii": "k = M/√(L1·L2), 0 ≤ k ≤ 1"
+        },
+        {
+          "name": "Ideal transformer turns ratio",
+          "formula": "V_{2}/V_{1} = N_{2}/N_{1} = n",
+          "unit": "—",
+          "formula_ascii": "V2/V1 = N2/N1 = n"
+        },
+        {
+          "name": "Transformer current ratio",
+          "formula": "I_{1}/I_{2} = N_{2}/N_{1} = \\dfrac{1}{n}",
+          "unit": "—",
+          "formula_ascii": "I1/I2 = N2/N1 = 1/n"
+        },
+        {
+          "name": "Reflected impedance",
+          "formula": "Z_{in} = Z_{L} / n^{2}",
+          "unit": "Ω",
+          "formula_ascii": "Z_in = Z_L / n²"
+        },
+        {
+          "name": "Energy in coupled inductors",
+          "formula": "w = \\tfrac{1}{2}L_{1}\\cdoti_{1}^{2} + M\\cdoti_{1}\\cdoti_{2} + \\tfrac{1}{2}L_{2}\\cdoti_{2}^{2}",
+          "unit": "J",
+          "formula_ascii": "w = (1/2)L1·i1² + M·i1·i2 + (1/2)L2·i2²"
+        }
       ],
       "simulator_demos": [
         "Transformer turns ratio demo (adjust N1/N2)",
@@ -487,14 +925,54 @@
         "Applications: Radio Receiver, Touch-Tone Telephone, Crossover Network"
       ],
       "key_formulas": [
-        { "name": "Transfer function", "formula": "H(ω) = Y(ω)/X(ω)", "unit": "—" },
-        { "name": "Decibel (power)", "formula": "H_dB = 10·log10(P2/P1)", "unit": "dB" },
-        { "name": "Decibel (voltage)", "formula": "H_dB = 20·log10(V2/V1)", "unit": "dB" },
-        { "name": "Series resonance freq", "formula": "ω_0 = 1/√(LC)", "unit": "rad/s" },
-        { "name": "Quality factor (series)", "formula": "Q = ω_0L/R = 1/(ω_0RC)", "unit": "—" },
-        { "name": "Bandwidth", "formula": "B = ω_0/Q = R/L", "unit": "rad/s" },
-        { "name": "Half-power frequencies", "formula": "ω1,2 = ω_0 ± B/2", "unit": "rad/s" },
-        { "name": "Parallel resonance", "formula": "Q = ω_0RC = R/(ω_0L)", "unit": "—" }
+        {
+          "name": "Transfer function",
+          "formula": "H(\\omega ) = Y(\\omega )/X(\\omega )",
+          "unit": "—",
+          "formula_ascii": "H(ω) = Y(ω)/X(ω)"
+        },
+        {
+          "name": "Decibel (power)",
+          "formula": "H_{dB} = 10\\cdotlog_{10}(P_{2}/P_{1})",
+          "unit": "dB",
+          "formula_ascii": "H_dB = 10·log10(P2/P1)"
+        },
+        {
+          "name": "Decibel (voltage)",
+          "formula": "H_{dB} = 20\\cdotlog_{10}(V_{2}/V_{1})",
+          "unit": "dB",
+          "formula_ascii": "H_dB = 20·log10(V2/V1)"
+        },
+        {
+          "name": "Series resonance freq",
+          "formula": "\\omega _0 = 1/\\sqrt{LC}",
+          "unit": "rad/s",
+          "formula_ascii": "ω_0 = 1/√(LC)"
+        },
+        {
+          "name": "Quality factor (series)",
+          "formula": "Q = \\omega _0L/R = 1/(\\omega _0RC)",
+          "unit": "—",
+          "formula_ascii": "Q = ω_0L/R = 1/(ω_0RC)"
+        },
+        {
+          "name": "Bandwidth",
+          "formula": "B = \\omega _0/Q = R/L",
+          "unit": "rad/s",
+          "formula_ascii": "B = ω_0/Q = R/L"
+        },
+        {
+          "name": "Half-power frequencies",
+          "formula": "\\omega 1,2 = \\omega _0 \\pm B/2",
+          "unit": "rad/s",
+          "formula_ascii": "ω1,2 = ω_0 ± B/2"
+        },
+        {
+          "name": "Parallel resonance",
+          "formula": "Q = \\omega_0 RC = \\dfrac{R}{\\omega_0 L}",
+          "unit": "—",
+          "formula_ascii": "Q = ω_0RC = R/(ω_0L)"
+        }
       ],
       "simulator_demos": [
         "Bode plot generator (interactive pole/zero placement)",
@@ -522,13 +1000,48 @@
         "Application to Integrodifferential Equations"
       ],
       "key_formulas": [
-        { "name": "Laplace Transform", "formula": "F(s) = ∫₀^∞ f(t)e^(-st) dt", "unit": "—" },
-        { "name": "Inverse Laplace", "formula": "f(t) = L⁻¹{F(s)}", "unit": "—" },
-        { "name": "Differentiation", "formula": "L{df/dt} = sF(s) - f(0)", "unit": "—" },
-        { "name": "Integration", "formula": "L{∫f dt} = F(s)/s", "unit": "—" },
-        { "name": "Convolution", "formula": "L{f1(t)*f2(t)} = F1(s)·F2(s)", "unit": "—" },
-        { "name": "Unit step", "formula": "L{u(t)} = 1/s", "unit": "—" },
-        { "name": "Exponential", "formula": "L{e^(-at)} = 1/(s+a)", "unit": "—" }
+        {
+          "name": "Laplace Transform",
+          "formula": "F(s) = \\int ₀^\\infty f(t)e^{-st} dt",
+          "unit": "—",
+          "formula_ascii": "F(s) = ∫₀^∞ f(t)e^(-st) dt"
+        },
+        {
+          "name": "Inverse Laplace",
+          "formula": "f(t) = L^{-1}{F(s)}",
+          "unit": "—",
+          "formula_ascii": "f(t) = L⁻¹{F(s)}"
+        },
+        {
+          "name": "Differentiation",
+          "formula": "L{\\dfrac{df}{dt}} = sF(s) - f(0)",
+          "unit": "—",
+          "formula_ascii": "L{df/dt} = sF(s) - f(0)"
+        },
+        {
+          "name": "Integration",
+          "formula": "\\mathcal{L}\\!\\left\\{\\int f\\,dt\\right\\} = \\dfrac{F(s)}{s}",
+          "unit": "—",
+          "formula_ascii": "L{∫f dt} = F(s)/s"
+        },
+        {
+          "name": "Convolution",
+          "formula": "L{f_{1}(t)*f_{2}(t)} = F_{1}(s)\\cdotF_{2}(s)",
+          "unit": "—",
+          "formula_ascii": "L{f1(t)*f2(t)} = F1(s)·F2(s)"
+        },
+        {
+          "name": "Unit step",
+          "formula": "L{u(t)} = \\dfrac{1}{s}",
+          "unit": "—",
+          "formula_ascii": "L{u(t)} = 1/s"
+        },
+        {
+          "name": "Exponential",
+          "formula": "\\mathcal{L}\\{e^{-at}\\} = \\dfrac{1}{s+a}",
+          "unit": "—",
+          "formula_ascii": "L{e^(-at)} = 1/(s+a)"
+        }
       ],
       "simulator_demos": [
         "Common Laplace pair lookup table",
@@ -551,10 +1064,30 @@
         "Applications: Network Stability, Network Synthesis"
       ],
       "key_formulas": [
-        { "name": "Resistor in s-domain", "formula": "V(s) = R·I(s)", "unit": "—" },
-        { "name": "Inductor in s-domain", "formula": "V(s) = sL·I(s) - L·i(0)", "unit": "—" },
-        { "name": "Capacitor in s-domain", "formula": "V(s) = I(s)/(sC) + v(0)/s", "unit": "—" },
-        { "name": "Transfer function", "formula": "H(s) = Y(s)/X(s)", "unit": "—" }
+        {
+          "name": "Resistor in s-domain",
+          "formula": "V(s) = R\\cdotI(s)",
+          "unit": "—",
+          "formula_ascii": "V(s) = R·I(s)"
+        },
+        {
+          "name": "Inductor in s-domain",
+          "formula": "V(s) = sL\\cdotI(s) - L\\cdoti(0)",
+          "unit": "—",
+          "formula_ascii": "V(s) = sL·I(s) - L·i(0)"
+        },
+        {
+          "name": "Capacitor in s-domain",
+          "formula": "V(s) = I\\dfrac{s}{sC} + v(0)/s",
+          "unit": "—",
+          "formula_ascii": "V(s) = I(s)/(sC) + v(0)/s"
+        },
+        {
+          "name": "Transfer function",
+          "formula": "H(s) = Y(s)/X(s)",
+          "unit": "—",
+          "formula_ascii": "H(s) = Y(s)/X(s)"
+        }
       ],
       "simulator_demos": [
         "s-Domain circuit analyzer",
@@ -581,12 +1114,42 @@
         "Applications: Spectrum Analyzers, Filters"
       ],
       "key_formulas": [
-        { "name": "Fourier Series", "formula": "f(t) = a_0 + Σ(a_n·cos(nω_0t) + b_n·sin(nω_0t))", "unit": "—" },
-        { "name": "DC coefficient", "formula": "a_0 = (1/T)∫f(t)dt", "unit": "—" },
-        { "name": "Cosine coeff", "formula": "a_n = (2/T)∫f(t)cos(nω_0t)dt", "unit": "—" },
-        { "name": "Sine coeff", "formula": "b_n = (2/T)∫f(t)sin(nω_0t)dt", "unit": "—" },
-        { "name": "Exponential form", "formula": "f(t) = Σ c_n·e^(jnω_0t)", "unit": "—" },
-        { "name": "Parseval's Theorem", "formula": "P = a_0² + (1/2)Σ(a_n²+b_n²)", "unit": "W" }
+        {
+          "name": "Fourier Series",
+          "formula": "f(t) = a_0 + \\sum_{n=1}^{\\infty}\\bigl(a_n\\cos(n\\omega_0 t) + b_n\\sin(n\\omega_0 t)\\bigr)",
+          "unit": "—",
+          "formula_ascii": "f(t) = a_0 + Σ(a_n·cos(nω_0t) + b_n·sin(nω_0t))"
+        },
+        {
+          "name": "DC coefficient",
+          "formula": "a_{0} = (\\dfrac{1}{T})\\int f(t)dt",
+          "unit": "—",
+          "formula_ascii": "a_0 = (1/T)∫f(t)dt"
+        },
+        {
+          "name": "Cosine coeff",
+          "formula": "a_{n} = (2/T)\\int f(t)\\cos(n\\omega _0t)dt",
+          "unit": "—",
+          "formula_ascii": "a_n = (2/T)∫f(t)cos(nω_0t)dt"
+        },
+        {
+          "name": "Sine coeff",
+          "formula": "b_{n} = (2/T)\\int f(t)\\sin(n\\omega _0t)dt",
+          "unit": "—",
+          "formula_ascii": "b_n = (2/T)∫f(t)sin(nω_0t)dt"
+        },
+        {
+          "name": "Exponential form",
+          "formula": "f(t) = \\sum_{n=-\\infty}^{\\infty} c_n\\,e^{j n\\omega_0 t}",
+          "unit": "—",
+          "formula_ascii": "f(t) = Σ c_n·e^(jnω_0t)"
+        },
+        {
+          "name": "Parseval's Theorem",
+          "formula": "P = a_{0}^{2} + \\tfrac{1}{2}\\sum (a_{n}^{2}+b_{n}^{2})",
+          "unit": "W",
+          "formula_ascii": "P = a_0² + (1/2)Σ(a_n²+b_n²)"
+        }
       ],
       "simulator_demos": [
         "Square/triangle/sawtooth wave Fourier reconstruction (add harmonics live)",
@@ -611,9 +1174,24 @@
         "Applications: Amplitude Modulation, Sampling"
       ],
       "key_formulas": [
-        { "name": "Fourier Transform", "formula": "F(ω) = ∫_{-∞}^{∞} f(t)e^(-jωt) dt", "unit": "—" },
-        { "name": "Inverse Fourier", "formula": "f(t) = (1/2π)∫F(ω)e^(jωt)dω", "unit": "—" },
-        { "name": "Parseval's Theorem", "formula": "∫|f(t)|²dt = (1/2π)∫|F(ω)|²dω", "unit": "—" }
+        {
+          "name": "Fourier Transform",
+          "formula": "F(\\omega) = \\int_{-\\infty}^{\\infty} f(t)\\,e^{-j\\omega t}\\,dt",
+          "unit": "—",
+          "formula_ascii": "F(ω) = ∫_{-∞}^{∞} f(t)e^(-jωt) dt"
+        },
+        {
+          "name": "Inverse Fourier",
+          "formula": "f(t) = \\dfrac{1}{2\\pi}\\int_{-\\infty}^{\\infty} F(\\omega)\\,e^{j\\omega t}\\,d\\omega",
+          "unit": "—",
+          "formula_ascii": "f(t) = (1/2π)∫F(ω)e^(jωt)dω"
+        },
+        {
+          "name": "Parseval's Theorem",
+          "formula": "\\int |f(t)|^{2}dt = \\dfrac{1}{2\\pi}\\int |F(\\omega )|^{2}d\\omega",
+          "unit": "—",
+          "formula_ascii": "∫|f(t)|²dt = (1/2π)∫|F(ω)|²dω"
+        }
       ],
       "simulator_demos": [
         "Fourier transform of rect/sinc pulses",
@@ -638,10 +1216,30 @@
         "Applications: Transistor Circuits, Ladder Network Synthesis"
       ],
       "key_formulas": [
-        { "name": "Z-parameters", "formula": "[V1;V2] = [Z][I1;I2]", "unit": "Ω" },
-        { "name": "Y-parameters", "formula": "[I1;I2] = [Y][V1;V2]", "unit": "S" },
-        { "name": "h-parameters", "formula": "V1 = h11·I1 + h12·V2; I2 = h21·I1 + h22·V2", "unit": "mixed" },
-        { "name": "T-parameters (ABCD)", "formula": "[V1;I1] = [A B;C D][V2;-I2]", "unit": "mixed" }
+        {
+          "name": "Z-parameters",
+          "formula": "\\begin{bmatrix}V_1\\\\V_2\\end{bmatrix}=\\begin{bmatrix}z_{11}&z_{12}\\\\z_{21}&z_{22}\\end{bmatrix}\\begin{bmatrix}I_1\\\\I_2\\end{bmatrix}",
+          "unit": "Ω",
+          "formula_ascii": "[V1;V2] = [Z][I1;I2]"
+        },
+        {
+          "name": "Y-parameters",
+          "formula": "[I_{1};I_{2}] = [Y][V_{1};V_{2}]",
+          "unit": "S",
+          "formula_ascii": "[I1;I2] = [Y][V1;V2]"
+        },
+        {
+          "name": "h-parameters",
+          "formula": "V_{1} = h_{11}\\cdotI_{1} + h_{12}\\cdotV_{2}; I_{2} = h_{21}\\cdotI_{1} + h_{22}\\cdotV_{2}",
+          "unit": "mixed",
+          "formula_ascii": "V1 = h11·I1 + h12·V2; I2 = h21·I1 + h22·V2"
+        },
+        {
+          "name": "T-parameters (ABCD)",
+          "formula": "\\begin{bmatrix}V_1\\\\I_1\\end{bmatrix}=\\begin{bmatrix}A&B\\\\C&D\\end{bmatrix}\\begin{bmatrix}V_2\\\\-I_2\\end{bmatrix}",
+          "unit": "mixed",
+          "formula_ascii": "[V1;I1] = [A B;C D][V2;-I2]"
+        }
       ],
       "simulator_demos": [
         "Two-port parameter calculator",

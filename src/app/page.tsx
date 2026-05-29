@@ -73,7 +73,7 @@ export default function HomePage() {
         <h2 className="font-syne text-3xl font-bold mb-2">Course Curriculum</h2>
         <p className="text-[#888] mb-8">3 Parts · 19 Chapters · DC → AC → Advanced</p>
         
-        {curriculum.parts.map(part => (
+        {(curriculum.parts ?? []).map(part => (
           <div key={part.id} className="mb-10">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px flex-1 bg-[#222]" />
