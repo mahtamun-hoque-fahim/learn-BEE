@@ -25,6 +25,8 @@ export interface Chapter {
   key_formulas: Formula[]
   simulator_demos?: string[]
   difficulty?: 'beginner' | 'intermediate' | 'advanced'
+  /** True if the chapter is part of the BGCTUB 2nd-semester syllabus (per instruction.txt). */
+  inScope?: boolean
 }
 
 export interface Part {
@@ -59,6 +61,11 @@ export const curriculum: Curriculum = {
 
 export const chapterMap = new Map(curriculum.chapters.map(ch => [ch.id, ch]))
 
+/** All chapters that belong to the BGCTUB 2nd-semester syllabus. */
+export const inScopeChapters: Chapter[] = curriculum.chapters.filter(c => c.inScope !== false)
+/** Set of in-scope chapter IDs for fast lookup. */
+export const IN_SCOPE_IDS = new Set(inScopeChapters.map(c => c.id))
+
 export function getChapter(id: string): Chapter | undefined {
   return chapterMap.get(id)
 }
@@ -69,4 +76,5 @@ export function getPartChapters(partId: string): Chapter[] {
   return part.chapters.map(id => chapterMap.get(id)).filter((c): c is Chapter => Boolean(c))
 }
 
-export const TOTAL_CHAPTERS = curriculum.chapters.length
+/** Count of in-scope chapters — used for syllabus completion / certificate eligibility. */
+export const TOTAL_CHAPTERS = inScopeChapters.length

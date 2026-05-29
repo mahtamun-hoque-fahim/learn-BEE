@@ -1,7 +1,7 @@
 {
   "course": "Basic Electrical Engineering (BEE)",
   "level": "University — First Year",
-  "description": "A comprehensive university-level Basic Electrical Engineering course covering DC circuits, AC circuits, and advanced analysis techniques. Based on Alexander & Sadiku (5th ed.) and Boylestad Introductory Circuit Analysis.",
+  "description": "A BGCTUB 2nd-semester BEE (Basic Electrical Engineering) course. In-scope chapters (per syllabus): ch1–ch4, ch6 (capacitors), ch7 (RC transients). Other chapters present in this file are out-of-scope reference material kept for completeness.",
   "sources": [
     {
       "id": "sadiku",
@@ -121,7 +121,8 @@
         "Current direction convention (conventional vs electron flow)",
         "Active vs passive element identification"
       ],
-      "difficulty": "beginner"
+      "difficulty": "beginner",
+      "inScope": true
     },
     {
       "id": "ch2",
@@ -211,7 +212,8 @@
         "Voltage and current divider circuits",
         "Wye-Delta circuit transformation"
       ],
-      "difficulty": "beginner"
+      "difficulty": "beginner",
+      "inScope": true
     },
     {
       "id": "ch3",
@@ -261,7 +263,8 @@
         "Supernode demonstration",
         "Supermesh demonstration"
       ],
-      "difficulty": "intermediate"
+      "difficulty": "intermediate",
+      "inScope": true
     },
     {
       "id": "ch4",
@@ -324,7 +327,8 @@
         "Norton equivalent finder",
         "Maximum power transfer curve (RL sweep)"
       ],
-      "difficulty": "intermediate"
+      "difficulty": "intermediate",
+      "inScope": true
     },
     {
       "id": "ch5",
@@ -381,7 +385,8 @@
         "Summing amplifier (audio mixer concept)",
         "Difference amplifier"
       ],
-      "difficulty": "intermediate"
+      "difficulty": "intermediate",
+      "inScope": false
     },
     {
       "id": "ch6",
@@ -467,7 +472,8 @@
         "RC integrator circuit",
         "RL differentiator circuit"
       ],
-      "difficulty": "intermediate"
+      "difficulty": "intermediate",
+      "inScope": true
     },
     {
       "id": "ch7",
@@ -529,7 +535,8 @@
         "Step response with variable τ slider",
         "Photoflash unit simulation"
       ],
-      "difficulty": "intermediate"
+      "difficulty": "intermediate",
+      "inScope": true
     },
     {
       "id": "ch8",
@@ -598,7 +605,8 @@
         "Parallel RLC step response",
         "Response waveform comparison across damping modes"
       ],
-      "difficulty": "advanced"
+      "difficulty": "advanced",
+      "inScope": false
     },
     {
       "id": "ch9",
@@ -667,7 +675,8 @@
         "Phasor diagram animator",
         "Phase shift between V and I for R, L, C"
       ],
-      "difficulty": "intermediate"
+      "difficulty": "intermediate",
+      "inScope": false
     },
     {
       "id": "ch10",
@@ -710,7 +719,8 @@
         "AC Thévenin equivalent circuit",
         "RC/RL phase angle visualizer"
       ],
-      "difficulty": "intermediate"
+      "difficulty": "intermediate",
+      "inScope": false
     },
     {
       "id": "ch11",
@@ -785,7 +795,8 @@
         "Power factor correction with capacitor",
         "RMS vs peak value animation"
       ],
-      "difficulty": "intermediate"
+      "difficulty": "intermediate",
+      "inScope": false
     },
     {
       "id": "ch12",
@@ -842,7 +853,8 @@
         "Y-Δ load simulator",
         "Power comparison: single vs three phase"
       ],
-      "difficulty": "advanced"
+      "difficulty": "advanced",
+      "inScope": false
     },
     {
       "id": "ch13",
@@ -904,7 +916,8 @@
         "Impedance matching circuit",
         "Coupled inductor dot convention visualizer"
       ],
-      "difficulty": "advanced"
+      "difficulty": "advanced",
+      "inScope": false
     },
     {
       "id": "ch14",
@@ -981,7 +994,8 @@
         "Low/High/Band-pass filter response",
         "Touch-tone frequency decoder demo"
       ],
-      "difficulty": "advanced"
+      "difficulty": "advanced",
+      "inScope": false
     },
     {
       "id": "ch15",
@@ -1047,7 +1061,8 @@
         "Common Laplace pair lookup table",
         "Partial fraction decomposition calculator"
       ],
-      "difficulty": "advanced"
+      "difficulty": "advanced",
+      "inScope": false
     },
     {
       "id": "ch16",
@@ -1094,7 +1109,8 @@
         "Pole-zero plot and stability",
         "Step/impulse response from transfer function"
       ],
-      "difficulty": "advanced"
+      "difficulty": "advanced",
+      "inScope": false
     },
     {
       "id": "ch17",
@@ -1156,7 +1172,8 @@
         "Frequency spectrum visualizer",
         "Gibbs phenomenon demonstration"
       ],
-      "difficulty": "advanced"
+      "difficulty": "advanced",
+      "inScope": false
     },
     {
       "id": "ch18",
@@ -1197,7 +1214,8 @@
         "Fourier transform of rect/sinc pulses",
         "AM modulation spectrum demo"
       ],
-      "difficulty": "advanced"
+      "difficulty": "advanced",
+      "inScope": false
     },
     {
       "id": "ch19",
@@ -1246,7 +1264,8 @@
         "Cascade two-port network",
         "Transistor small-signal model"
       ],
-      "difficulty": "advanced"
+      "difficulty": "advanced",
+      "inScope": false
     }
   ]
 }

@@ -6,6 +6,28 @@
 
 ---
 
+## ✅ Done in iteration #2 (2026-05-29)
+
+- [x] Mark in-scope chapters per `instruction.txt`: ch1–ch4, ch6, ch7 (6 chapters). Out-of-scope (ch5, ch8–ch19) marked `inScope: false`.
+- [x] Scope-filter chapter listings (`/learn`, `/`), hide out-of-scope chapters; pre-render only in-scope chapter pages via `generateStaticParams`; out-of-scope IDs → `notFound()`.
+- [x] Bonus exam pool restricted to in-scope chapters.
+- [x] **Question bank expanded**: +90 verified questions across the 6 in-scope chapters (Ch1: 13→27, Ch2: 12→27, Ch3: 6→21, Ch4: 7→21, Ch6: 7→22, Ch7: 7→21). Mix of MCQ / numerical / true_false / fill_blank, easy/medium/hard.
+- [x] Hand-verified a tricky math item (q_ch3_020 — KCL solver answer corrected from 4.8 V to 6 V before merge).
+- [x] **Animated circuit simulators** built per in-scope chapter:
+  - Ch1 — battery + lamp with brightness pulsing with P = vi
+  - Ch2 — voltage divider with KVL bar gauges
+  - Ch3 — nodal analysis (two sources → common node → ground)
+  - Ch4 — Thévenin equivalent + max-power transfer with P_L vs R_L curve
+  - Ch6 — series/parallel capacitor combiner with energy split
+  - Ch7 — RC charging/discharging with **real-time current flow animation**, capacitor plate fill bound to v_C(t)/V_s, scrubbable t, dual v(t) / i(t) plots
+- [x] Animation primitives module (`primitives.tsx`): `AnimatedWire` (stroke-dashoffset flow), `Capacitor` with charge fill, `Resistor`, `Battery`, `Lamp` with halo, `CurrentArrow`, `Slider`, `Readout`. CSS keyframes `bee-flow`, `bee-glow`, `bee-pulse`.
+- [x] Pre-existing carry-over bugs fixed (cleared blockers for production build):
+  - `api/certificate/route.ts` — rewritten against actual schema (uses `finalQuote`, `chaptersCompleted`, `additionalNote`; pre-picks `autoQuote` from `defaultQuotes` pool).
+  - `api/mod/submissions/[id]/route.ts` — `params` upgraded to `Promise<{id}>` for Next 16 App Router.
+- [x] **Full `npx next build` passes** end-to-end. 26 pages generated. 6 chapter pages pre-rendered.
+
+---
+
 ## ✅ Done this iteration (2026-05-29)
 
 - [x] Audit existing repo (Next.js 16 + Clerk + Neon + Drizzle, 19-chapter curriculum, 81-question bank).
@@ -24,6 +46,7 @@
 - [x] Write `PLANNER.md`, `DESIGN_GUIDE.md`, lean `README.md`, this `TODO.md` per `repo-maintainer` skill.
 
 ---
+
 
 ## ⚠️ Blockers (need Fahim input before push)
 

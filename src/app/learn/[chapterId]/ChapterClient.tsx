@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { type Chapter } from '@/lib/curriculum'
 import { getRandomQuestions, type Question } from '@/lib/questions'
 import CircuitSimulator from '@/components/simulator/CircuitSimulator'
+import AnimatedSim from '@/components/simulator/animated/AnimatedSim'
 import { Tex, RichMath } from '@/components/math/Tex'
 
 interface Props {
@@ -293,7 +294,7 @@ function SimulatorTab({ chapter, onComplete }: { chapter: Chapter; onComplete: (
 
       {/* Embedded simulator */}
       <div onClick={() => setInteracted(true)}>
-        <CircuitSimulator chapterId={chapter.id} />
+        <AnimatedSim chapterId={chapter.id} />
       </div>
 
       <div className="flex justify-end">

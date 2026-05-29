@@ -7,16 +7,17 @@ import { eq, and } from 'drizzle-orm'
 // GET /api/mod/submissions/[id]  — full detail view for a single submission
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await requireMod()
     const db = getDb()
+    const { id } = await params
 
     const [reg] = await db
       .select()
       .from(certRegistrations)
-      .where(eq(certRegistrations.id, params.id))
+      .where(eq(certRegistrations.id, id))
       .limit(1)
 
     if (!reg) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -51,7 +52,7 @@ export async function GET(
       await db
         .update(certRegistrations)
         .set({ status: 'reviewing', reviewedBy: userId, reviewedAt: new Date() })
-        .where(eq(certRegistrations.id, params.id))
+        .where(eq(certRegistrations.id, id))
     }
 
     return NextResponse.json({
@@ -84,18 +85,19 @@ export async function GET(
 // PATCH /api/mod/submissions/[id]  — moderator saves a custom quote draft
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await requireMod()
     const db = getDb()
+    const { id } = await params
 
     const { adminCustomQuote } = await req.json()
 
     await db
       .update(certRegistrations)
       .set({ adminCustomQuote: adminCustomQuote ?? null })
-      .where(eq(certRegistrations.id, params.id))
+      .where(eq(certRegistrations.id, id))
 
     return NextResponse.json({ success: true })
   } catch (e) {

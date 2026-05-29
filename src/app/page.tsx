@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import { curriculum } from '@/lib/curriculum'
+import { curriculum, inScopeChapters, IN_SCOPE_IDS, TOTAL_CHAPTERS } from '@/lib/curriculum'
 
 export default function HomePage() {
-  const totalChapters = curriculum.chapters.length
+  const totalChapters = TOTAL_CHAPTERS
 
   return (
     <main className="min-h-screen circuit-bg">
@@ -56,7 +56,7 @@ export default function HomePage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: 'Chapters', value: totalChapters },
-            { label: 'Topics', value: curriculum.chapters.reduce((s,c) => s + c.topics.length, 0) },
+            { label: 'Topics', value: inScopeChapters.reduce((s,c) => s + (c.topics as unknown[]).length, 0) },
             { label: 'Quiz Questions', value: '200+' },
             { label: 'Simulators', value: '12+' },
           ].map(stat => (
@@ -71,9 +71,12 @@ export default function HomePage() {
       {/* CHAPTERS PREVIEW */}
       <section className="max-w-6xl mx-auto px-6 pb-24" id="chapters">
         <h2 className="font-syne text-3xl font-bold mb-2">Course Curriculum</h2>
-        <p className="text-[#888] mb-8">3 Parts · 19 Chapters · DC → AC → Advanced</p>
-        
-        {(curriculum.parts ?? []).map(part => (
+        <p className="text-[#888] mb-8">{TOTAL_CHAPTERS} chapters · BGCTUB 2nd-semester BEE syllabus</p>
+
+        {(curriculum.parts ?? []).map(part => {
+          const visibleChapterIds = part.chapters.filter(id => IN_SCOPE_IDS.has(id))
+          if (visibleChapterIds.length === 0) return null
+          return (
           <div key={part.id} className="mb-10">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px flex-1 bg-[#222]" />
@@ -83,7 +86,7 @@ export default function HomePage() {
               <div className="h-px flex-1 bg-[#222]" />
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {part.chapters.map(chId => {
+              {visibleChapterIds.map(chId => {
                 const ch = curriculum.chapters.find(c => c.id === chId)!
                 return (
                   <Link key={chId} href={`/learn/${chId}`}
@@ -105,7 +108,8 @@ export default function HomePage() {
               })}
             </div>
           </div>
-        ))}
+          )
+        })}
       </section>
 
       {/* FEATURES */}

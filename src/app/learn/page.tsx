@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { curriculum } from '@/lib/curriculum'
+import { curriculum, IN_SCOPE_IDS, TOTAL_CHAPTERS } from '@/lib/curriculum'
 
 export default function LearnPage() {
   return (
@@ -20,14 +20,14 @@ export default function LearnPage() {
           <h1 className="font-syne text-4xl font-bold mb-3">
             Basic Electrical Engineering
           </h1>
-          <p className="text-[#888]">19 chapters · Start from Ch 1 and unlock each chapter sequentially</p>
+          <p className="text-[#888]">{TOTAL_CHAPTERS} chapters · BGCTUB 2nd-semester syllabus · Start from Ch 1 and unlock each chapter sequentially</p>
         </div>
 
         {/* Progress overview - client will handle state */}
         <div className="bg-[#111] border border-[#222] rounded-xl p-6 mb-10">
           <div className="flex items-center justify-between mb-3">
             <span className="font-syne font-semibold">Your Progress</span>
-            <span className="text-[#00e676] text-sm font-mono">0 / 19 chapters</span>
+            <span className="text-[#00e676] text-sm font-mono">0 / {TOTAL_CHAPTERS} chapters</span>
           </div>
           <div className="progress-bar">
             <div className="progress-fill" style={{ width: '0%' }} />
@@ -35,7 +35,11 @@ export default function LearnPage() {
           <p className="text-[#555] text-xs mt-2">Sign in to track your progress</p>
         </div>
 
-        {(curriculum.parts ?? []).map(part => (
+        {(curriculum.parts ?? []).map(part => {
+          // Only show parts that contain at least one in-scope chapter; show only in-scope chapters within them.
+          const visibleChapterIds = part.chapters.filter(id => IN_SCOPE_IDS.has(id))
+          if (visibleChapterIds.length === 0) return null
+          return (
           <div key={part.id} className="mb-10">
             <div className="flex items-center gap-3 mb-5">
               <div className="h-px flex-1 bg-[#1a1a1a]" />
@@ -46,7 +50,7 @@ export default function LearnPage() {
             </div>
 
             <div className="space-y-3">
-              {part.chapters.map((chId, idx) => {
+              {visibleChapterIds.map((chId, idx) => {
                 const ch = curriculum.chapters.find(c => c.id === chId)!
                 const locked = idx > 0 // first chapter always open; rest sequentially unlock
                 return (
@@ -79,7 +83,10 @@ export default function LearnPage() {
                         }`}>{ch.difficulty}</span>
                       </div>
                       <div className="text-[#555] text-sm truncate">
-                        {ch.topics.slice(0, 3).join(' · ')}{ch.topics.length > 3 ? ` +${ch.topics.length - 3} more` : ''}
+                        {(() => {
+                          const titles = (ch.topics as Array<string | { title: string }>).map(t => typeof t === 'string' ? t : t.title)
+                          return titles.slice(0, 3).join(' · ') + (titles.length > 3 ? ` +${titles.length - 3} more` : '')
+                        })()}
                       </div>
                     </div>
 
@@ -105,13 +112,14 @@ export default function LearnPage() {
               })}
             </div>
           </div>
-        ))}
+          )
+        })}
 
         {/* Bonus section */}
         <div className="mt-12 border border-dashed border-[#333] rounded-xl p-8 text-center">
           <div className="text-4xl mb-3">🎓</div>
           <h3 className="font-syne text-xl font-bold mb-2">Bonus Problems + Certificate</h3>
-          <p className="text-[#888] text-sm mb-4">Unlocks after completing all 19 chapters. 20 comprehensive problems from all topics.</p>
+          <p className="text-[#888] text-sm mb-4">Unlocks after completing all {TOTAL_CHAPTERS} chapters. 20 comprehensive problems from all topics.</p>
           <div className="inline-flex items-center gap-2 text-[#555] text-sm border border-[#222] rounded-lg px-4 py-2">
             🔒 Complete all chapters to unlock
           </div>
