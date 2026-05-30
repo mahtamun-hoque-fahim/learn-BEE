@@ -14,6 +14,21 @@ export interface Formula {
   unit: string
 }
 
+export interface TopicExample {
+  q: string
+  steps: string[]
+  answer: string
+}
+
+export interface TopicBody {
+  id?: string
+  title: string
+  body?: string
+  examples?: TopicExample[]
+  pitfalls?: string[]
+  refs?: string[]
+}
+
 export interface Chapter {
   id: string
   part?: string
@@ -21,7 +36,8 @@ export interface Chapter {
   title: string
   sadiku_pages?: string | null
   boylestad_chapters?: string | null
-  topics: string[] | Array<{ title: string; [k: string]: unknown }>
+  /** Topics may be plain strings (legacy / out-of-scope) or rich objects (in-scope, fully authored). */
+  topics: Array<string | TopicBody>
   key_formulas: Formula[]
   simulator_demos?: string[]
   difficulty?: 'beginner' | 'intermediate' | 'advanced'
@@ -43,19 +59,15 @@ export interface Curriculum {
   chapters: Chapter[]
 }
 
-// Normalise topic list: JSON may store strings or objects. Expose strings to existing consumers.
-function normaliseTopicList(t: Chapter['topics']): string[] {
-  return (t as Array<string | { title: string }>).map(x => typeof x === 'string' ? x : x.title)
-}
-
 // Coerce JSON into our Chapter shape, normalising chapter `number` from id like 'ch7'.
+// Topics pass through unchanged — they may be plain strings (out-of-scope) or rich
+// TopicBody objects (in-scope, authored). Consumers handle both shapes via typeof checks.
 const raw = curriculumJson as unknown as Curriculum
 export const curriculum: Curriculum = {
   ...raw,
   chapters: raw.chapters.map((c, i) => ({
     ...c,
     number: c.number ?? (parseInt(c.id.replace(/[^\d]/g, ''), 10) || i + 1),
-    topics: normaliseTopicList(c.topics),
   })),
 }
 

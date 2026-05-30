@@ -1,0 +1,1360 @@
+"""
+Authors topic bodies for all 6 in-scope chapters of learn-BEE.
+
+For each topic we produce an object:
+    { id, title, body, examples?, pitfalls? }
+
+- `body` is markdown-flavored prose with inline math via `$...$` and block math
+  via `$$...$$`. The frontend `<RichMath>` component handles both.
+- `examples` is a list of `{ q, steps: [str], answer }`.
+- `pitfalls` is a list of short strings — common mistakes to watch for.
+
+The output replaces the `topics` array in each in-scope chapter of
+`curriculum.json`. Out-of-scope chapters are untouched.
+
+Sources are Alexander & Sadiku 5th Ed. and Boylestad, plus the BGCTUB
+2nd-semester syllabus laid out in `instruction.txt`.
+"""
+
+import json
+from pathlib import Path
+
+# ════════════════════════════════════════════════════════════════════════════
+# CH1 — Basic Concepts
+# ════════════════════════════════════════════════════════════════════════════
+CH1 = [
+    {
+        "id": "intro",
+        "title": "Introduction to Electric Circuits",
+        "body": (
+            "An **electric circuit** is an interconnection of electrical elements through which "
+            "current can flow. Every circuit contains at least one source (battery, generator, signal "
+            "generator) and at least one element that uses or stores energy (resistor, capacitor, "
+            "inductor, lamp, motor).\n\n"
+            "Circuit analysis lets us predict how a given network will behave — what currents will "
+            "flow, what voltages will appear, how much power will be dissipated — before we build it. "
+            "The mathematical tools we use throughout this course rest on three foundations:\n\n"
+            "- **Ohm's law** — relates voltage, current, and resistance in a passive element.\n"
+            "- **Kirchhoff's laws (KCL, KVL)** — express the conservation of charge and energy at "
+            "every node and around every loop.\n"
+            "- **The element i-v relationships** — describe what each component does (linear for R, "
+            "L, C; nonlinear for diodes, transistors, etc.)."
+        ),
+        "pitfalls": [
+            "Confusing electrical engineering's 'circuit' (a graph of elements) with a physical PCB layout.",
+            "Treating wires in idealised schematics as having resistance — assume zero unless stated."
+        ],
+    },
+    {
+        "id": "units",
+        "title": "Systems of Units (SI)",
+        "body": (
+            "Engineering uses the **International System of Units (SI)**. The six base units that show "
+            "up everywhere in electrical engineering are:\n\n"
+            "| Quantity | Unit | Symbol |\n"
+            "|---|---|---|\n"
+            "| Length | metre | m |\n"
+            "| Mass | kilogram | kg |\n"
+            "| Time | second | s |\n"
+            "| Current | ampere | A |\n"
+            "| Temperature | kelvin | K |\n"
+            "| Luminous intensity | candela | cd |\n\n"
+            "Every other electrical quantity is **derived** from these. Voltage, charge, energy, and "
+            "power are all combinations of the base units.\n\n"
+            "Decimal multiples appear constantly. Memorise these prefixes — questions and component "
+            "values will assume you read them fluently:\n\n"
+            "| Prefix | Symbol | Multiplier |\n"
+            "|---|---|---|\n"
+            "| giga | G | $10^{9}$ |\n"
+            "| mega | M | $10^{6}$ |\n"
+            "| kilo | k | $10^{3}$ |\n"
+            "| milli | m | $10^{-3}$ |\n"
+            "| micro | µ | $10^{-6}$ |\n"
+            "| nano | n | $10^{-9}$ |\n"
+            "| pico | p | $10^{-12}$ |"
+        ),
+        "examples": [
+            {
+                "q": "Convert 4700 µF to farads.",
+                "steps": [
+                    "$1 \\text{ µF} = 10^{-6}$ F",
+                    "$4700 \\times 10^{-6} = 4.7 \\times 10^{-3}$ F"
+                ],
+                "answer": "4.7 mF (or $4.7 \\times 10^{-3}$ F)"
+            }
+        ],
+        "pitfalls": [
+            "Mixing up M (mega, $10^6$) with m (milli, $10^{-3}$) — they differ by a factor of $10^9$.",
+            "Writing 'mA' when you meant 'µA' on small-current questions. Always sanity-check magnitudes."
+        ],
+    },
+    {
+        "id": "charge-current",
+        "title": "Charge and Current",
+        "body": (
+            "**Charge** is the basic electrical quantity. The SI unit is the coulomb (C). One electron "
+            "carries $e = 1.602 \\times 10^{-19}$ C, so it takes about $6.24 \\times 10^{18}$ electrons "
+            "to make 1 C.\n\n"
+            "**Current** is the rate of flow of charge past a point:\n\n"
+            "$$i = \\dfrac{dq}{dt}$$\n\n"
+            "The SI unit is the ampere (A) where $1 \\text{ A} = 1 \\text{ C/s}$. When current is "
+            "constant in time (DC) the integral form is simpler:\n\n"
+            "$$Q = i \\cdot t$$\n\n"
+            "**Conventional current** points in the direction positive charge would move — opposite to "
+            "the actual flow of electrons in a metal wire. Every formula in this course uses "
+            "conventional current. Just remember: the labelled arrow on a schematic shows where positive "
+            "charge moves, electrons go the other way."
+        ),
+        "examples": [
+            {
+                "q": "A current of 2 A flows through a wire for 5 minutes. How much charge passes through?",
+                "steps": [
+                    "Time in seconds: $t = 5 \\times 60 = 300$ s",
+                    "$Q = i \\cdot t = 2 \\times 300$"
+                ],
+                "answer": "$Q = 600$ C"
+            },
+            {
+                "q": "How many electrons constitute 1 C of charge?",
+                "steps": [
+                    "Number $n = Q/e = 1 / (1.602 \\times 10^{-19})$"
+                ],
+                "answer": "$n \\approx 6.24 \\times 10^{18}$ electrons"
+            }
+        ],
+        "pitfalls": [
+            "Forgetting that conventional current is *opposite* to electron flow in metals.",
+            "Mixing up coulombs (Q) with amperes (i). 'Coulombs per second' is the ampere — not the other way around."
+        ],
+    },
+    {
+        "id": "voltage",
+        "title": "Voltage",
+        "body": (
+            "**Voltage** (also called **potential difference** or **electromotive force, EMF**) is the "
+            "energy required to move a unit of positive charge from one point to another:\n\n"
+            "$$v = \\dfrac{dw}{dq}$$\n\n"
+            "Unit: volt (V), where $1 \\text{ V} = 1 \\text{ J/C}$. A 12-V battery does 12 J of work "
+            "for every coulomb of charge it pushes through the circuit.\n\n"
+            "Voltage is *always* a difference between two points. When we say 'the voltage at node A is "
+            "5 V' we implicitly mean *with respect to the reference node (ground)*. A single point "
+            "cannot have an absolute voltage; voltage is between two points.\n\n"
+            "**Polarity** is shown on a schematic by + and − marks at the element's terminals. The "
+            "voltage $v_{AB}$ means the voltage at A minus the voltage at B. Reversing the subscripts "
+            "flips the sign: $v_{BA} = -v_{AB}$.\n\n"
+            "**EMF** (electromotive force) is the same thing as voltage measured at the terminals of a "
+            "source. The name is historical — there is no actual force involved."
+        ),
+        "examples": [
+            {
+                "q": "If 30 J of energy is used to move 6 C of charge through a component, what is the voltage across it?",
+                "steps": [
+                    "$v = w/q$",
+                    "$v = 30/6$"
+                ],
+                "answer": "$v = 5$ V"
+            }
+        ],
+        "pitfalls": [
+            "Stating 'the voltage at point X' without specifying the reference. Always say 'with respect to ground' or 'between X and Y'.",
+            "Forgetting polarity. $v_{AB} = -v_{BA}$ — sign matters when applying KVL."
+        ],
+    },
+    {
+        "id": "power-energy",
+        "title": "Power and Energy",
+        "body": (
+            "**Power** is the rate of energy transfer:\n\n"
+            "$$p = \\dfrac{dw}{dt} = v \\cdot i$$\n\n"
+            "Unit: watt (W) = 1 J/s. Power can also be written in three equivalent forms when Ohm's "
+            "law applies:\n\n"
+            "$$P = vi = i^{2}R = \\dfrac{v^{2}}{R}$$\n\n"
+            "**Energy** is the integral of power over time:\n\n"
+            "$$w = \\int_{t_0}^{t_1} p \\, dt$$\n\n"
+            "For constant power, $w = P \\cdot t$. Electricity bills measure energy in kilowatt-hours "
+            "(kWh): 1 kWh = $3.6 \\times 10^{6}$ J.\n\n"
+            "**Passive sign convention** — when current enters the *positive* terminal of an element, "
+            "$P = v \\cdot i$ is the power **absorbed** by that element. If the same product comes out "
+            "negative, the element is actually **delivering** power. Sources (batteries) typically "
+            "deliver power; resistors always absorb it."
+        ),
+        "examples": [
+            {
+                "q": "A 60-W light bulb is operated for 4 hours. At 8 BDT per kWh, what is the energy cost?",
+                "steps": [
+                    "Energy: $W = P \\cdot t = 60 \\text{ W} \\times 4 \\text{ h} = 240$ Wh = 0.24 kWh",
+                    "Cost: $0.24 \\times 8$"
+                ],
+                "answer": "1.92 BDT"
+            },
+            {
+                "q": "Find the power dissipated by a 220-Ω resistor carrying 0.5 A.",
+                "steps": [
+                    "$P = i^{2}R = (0.5)^{2} \\times 220 = 0.25 \\times 220$"
+                ],
+                "answer": "$P = 55$ W"
+            }
+        ],
+        "pitfalls": [
+            "Confusing power (W) with energy (J or Wh). 'A 100 W bulb consumes 100 W per hour' is wrong — it consumes 100 W (continuously) and 100 Wh per hour.",
+            "Sign confusion in passive sign convention. Stick to the convention: arrow into +, then $P > 0$ means absorbing."
+        ],
+    },
+    {
+        "id": "elements",
+        "title": "Circuit Elements (Active vs Passive)",
+        "body": (
+            "Every element in a circuit is either **active** or **passive**.\n\n"
+            "**Active elements** generate electrical energy. The four basic types are:\n\n"
+            "- **Independent voltage source** — maintains a specified voltage regardless of current. "
+            "Schematic: a circle with + and −, or a battery symbol.\n"
+            "- **Independent current source** — maintains a specified current regardless of voltage. "
+            "Schematic: a circle with an arrow.\n"
+            "- **Dependent (controlled) sources** — voltage or current is set by a *controlling variable* "
+            "elsewhere in the circuit. Four flavours: VCVS, VCCS, CCVS, CCCS. Schematic: diamond-shaped.\n\n"
+            "**Passive elements** absorb or store energy but cannot generate it on their own. The three "
+            "fundamental passive elements you'll meet this term are:\n\n"
+            "- **Resistor (R)** — dissipates electrical energy as heat. $v = iR$.\n"
+            "- **Capacitor (C)** — stores energy in an electric field. $i = C\\,dv/dt$.\n"
+            "- **Inductor (L)** — stores energy in a magnetic field. $v = L\\,di/dt$.\n\n"
+            "Real components are never perfectly ideal. A real resistor has tiny parasitic inductance "
+            "and capacitance; a real battery has internal resistance that limits short-circuit current. "
+            "For introductory circuit analysis we use the ideal models."
+        ),
+        "pitfalls": [
+            "Treating a real battery as an ideal voltage source in all cases. For short-circuit and high-current questions, model it as $V_s$ in series with $R_\\text{int}$.",
+            "Mistaking a dependent source's controlling variable. Always identify what variable it depends on before writing equations."
+        ],
+    },
+    {
+        "id": "applications",
+        "title": "Applications: Power Bills, Devices",
+        "body": (
+            "**Electricity bills** are computed from energy consumption in kilowatt-hours. The bill = "
+            "$\\sum (\\text{appliance power in kW}) \\times (\\text{hours used}) \\times (\\text{rate per kWh})$.\n\n"
+            "**Typical appliance power ratings** (approximate):\n\n"
+            "| Appliance | Power |\n"
+            "|---|---|\n"
+            "| LED bulb | 7–12 W |\n"
+            "| Ceiling fan | 60–80 W |\n"
+            "| TV (LED, 40\") | 60–100 W |\n"
+            "| Laptop | 30–65 W |\n"
+            "| Refrigerator (running) | 100–200 W |\n"
+            "| Microwave | 800–1200 W |\n"
+            "| Electric kettle | 1500–2200 W |\n"
+            "| Air conditioner (1 ton) | 1000–1500 W |\n\n"
+            "**Why this matters in BEE**: every real-world circuit ultimately comes down to managing "
+            "voltage, current, and power. Knowing typical magnitudes lets you sanity-check your "
+            "calculations — if you compute 50 W for an LED bulb, you almost certainly have an error."
+        ),
+        "examples": [
+            {
+                "q": "A household runs four 80-W fans for 8 hours and ten 10-W bulbs for 5 hours daily. Monthly cost at 8 BDT/kWh (30 days)?",
+                "steps": [
+                    "Fan energy/day = $4 \\times 80 \\times 8 = 2560$ Wh = 2.56 kWh",
+                    "Bulb energy/day = $10 \\times 10 \\times 5 = 500$ Wh = 0.5 kWh",
+                    "Total per day = 3.06 kWh, per month = $3.06 \\times 30 = 91.8$ kWh",
+                    "Cost = $91.8 \\times 8$"
+                ],
+                "answer": "≈ 734 BDT/month"
+            }
+        ],
+    },
+    {
+        "id": "methodology",
+        "title": "Problem Solving Methodology",
+        "body": (
+            "Sadiku's six-step approach scales from this course all the way through circuit design:\n\n"
+            "1. **Carefully define the problem.** Read the question twice. Identify what's given and "
+            "what's asked. Sketch the circuit if it isn't given.\n"
+            "2. **Present everything you know.** Mark known values on the schematic. Choose a reference "
+            "node. Label every node and branch.\n"
+            "3. **Establish a set of alternative solutions.** Could you solve this by mesh, nodal, "
+            "Thévenin, superposition, source transformation? Pick the one with fewest unknowns.\n"
+            "4. **Attempt a solution.** Write the equations. Solve them — by hand or matrix. Carry units "
+            "through every step.\n"
+            "5. **Evaluate the solution.** Does the magnitude make sense? Did current go in the direction "
+            "you expected? Check power balance: power supplied should equal power absorbed.\n"
+            "6. **Has the problem been solved satisfactorily?** If not, return to step 3 with a different "
+            "method.\n\n"
+            "**The single most useful habit**: always check your answer with a *different* technique. "
+            "If mesh analysis gives $i_1 = 3$ A, plug back into the original circuit and verify with KCL "
+            "at a node you didn't use."
+        ),
+        "pitfalls": [
+            "Skipping the sanity check. A wrong-by-a-factor-of-1000 answer is almost always a units mistake.",
+            "Solving without labelling nodes. You will lose track of polarity halfway through."
+        ],
+    },
+]
+
+# ════════════════════════════════════════════════════════════════════════════
+# CH2 — Basic Laws
+# ════════════════════════════════════════════════════════════════════════════
+CH2 = [
+    {
+        "id": "ohms-law",
+        "title": "Ohm's Law",
+        "body": (
+            "**Ohm's law** states that the voltage across a resistive element is directly proportional "
+            "to the current through it:\n\n"
+            "$$v = i \\cdot R$$\n\n"
+            "where $R$ is the **resistance** in ohms (Ω). One ohm is 1 V/A.\n\n"
+            "Resistance of a uniform conductor depends on geometry and material:\n\n"
+            "$$R = \\dfrac{\\rho \\, L}{A}$$\n\n"
+            "$\\rho$ is the **resistivity** of the material (Ω·m), $L$ is length, $A$ is "
+            "cross-sectional area. Copper: $\\rho \\approx 1.72 \\times 10^{-8}$ Ω·m; aluminium: "
+            "$2.82 \\times 10^{-8}$; nichrome (heating element): $1.10 \\times 10^{-6}$.\n\n"
+            "**Conductance** $G = 1/R$ has units of siemens (S). High conductance = low resistance.\n\n"
+            "**Limitations.** Ohm's law applies only to **ohmic** (linear) materials within their "
+            "rated range. It fails for:\n\n"
+            "- Diodes (exponential $i$-$v$ curve)\n"
+            "- Transistors (depend on gate voltage)\n"
+            "- Resistors at very high temperature (resistance rises with $T$)\n"
+            "- Discharge tubes, neon lamps (nonlinear conduction)"
+        ),
+        "examples": [
+            {
+                "q": "A 220-Ω resistor has 11 V across it. Find the current.",
+                "steps": [
+                    "$i = v/R = 11/220$"
+                ],
+                "answer": "$i = 50$ mA"
+            }
+        ],
+        "pitfalls": [
+            "Applying Ohm's law to a non-linear element (diode, transistor) — won't give correct results.",
+            "Forgetting to convert units. R in kΩ and i in mA gives v in volts — but only if you're consistent."
+        ],
+    },
+    {
+        "id": "nodes-branches",
+        "title": "Nodes, Branches, and Loops",
+        "body": (
+            "These are the three structural pieces of any circuit. Every analysis method (KVL, KCL, "
+            "mesh, nodal) starts by identifying them.\n\n"
+            "- **Branch** — a single two-terminal element (one resistor, one capacitor, one source, one wire segment).\n"
+            "- **Node** — a junction where *two or more* branches meet. Wires connecting nodes without an "
+            "intervening element are part of the same node.\n"
+            "- **Loop** — any closed path through the circuit. An **independent loop** is one that "
+            "contains at least one branch not in any other loop. **Mesh** is the term for a loop with no "
+            "loops inside it (think 'window pane').\n\n"
+            "**Counting rule** — for a connected circuit with $b$ branches, $n$ nodes, and $\\ell$ "
+            "independent loops:\n\n"
+            "$$\\ell = b - n + 1$$\n\n"
+            "This tells you exactly how many independent KVL equations you need to write. KCL gives you "
+            "$n - 1$ independent equations (one node is redundant since charge in = charge out globally)."
+        ),
+        "examples": [
+            {
+                "q": "A circuit has 8 branches and 5 nodes. How many independent loops does it have?",
+                "steps": [
+                    "$\\ell = b - n + 1 = 8 - 5 + 1$"
+                ],
+                "answer": "4 independent loops"
+            }
+        ],
+        "pitfalls": [
+            "Counting nodes as 'every wire bend' — only true junctions count, plus the points where elements terminate.",
+            "Confusing mesh (smallest loop) with loop (any closed path). Mesh analysis uses meshes; KVL uses any loop."
+        ],
+    },
+    {
+        "id": "kcl",
+        "title": "Kirchhoff's Current Law (KCL)",
+        "body": (
+            "**Kirchhoff's Current Law** is the statement of conservation of charge at every node:\n\n"
+            "$$\\sum_{n=1}^{N} i_n = 0$$\n\n"
+            "The algebraic sum of all currents entering a node is zero. Equivalently: the sum of "
+            "currents *in* equals the sum of currents *out*.\n\n"
+            "**Sign convention**: pick one direction (in or out) and call it positive. Currents flowing "
+            "that direction are +; currents flowing the other way are −. Be consistent within each node "
+            "equation.\n\n"
+            "**Why it works**: a node has no capacity to store charge. Whatever flows in must flow out, "
+            "instant by instant. (Real wires can have tiny capacitance, but in ideal circuit analysis we "
+            "ignore it.)\n\n"
+            "**KCL applies at every node** — but only $n-1$ of the $n$ node equations are independent. "
+            "Skipping one (usually the ground/reference) gives you a non-redundant system."
+        ),
+        "examples": [
+            {
+                "q": "At a node, $i_1 = 3$ A and $i_2 = 4$ A flow in; $i_3 = 2$ A flows out. Find the fourth branch current $i_4$ (define + as out of node).",
+                "steps": [
+                    "KCL: in = out → $3 + 4 = 2 + i_4$",
+                    "$i_4 = 7 - 2$"
+                ],
+                "answer": "$i_4 = 5$ A (flowing out)"
+            }
+        ],
+        "pitfalls": [
+            "Mixing 'in' and 'out' signs within the same equation. Pick one convention per node and stick to it.",
+            "Forgetting that a current source forces a specific current — you don't compute it, you just use its value."
+        ],
+    },
+    {
+        "id": "kvl",
+        "title": "Kirchhoff's Voltage Law (KVL)",
+        "body": (
+            "**Kirchhoff's Voltage Law** is the statement of conservation of energy around every closed "
+            "loop:\n\n"
+            "$$\\sum_{n=1}^{N} v_n = 0$$\n\n"
+            "The algebraic sum of all voltages around any closed path is zero — energy gained equals "
+            "energy spent.\n\n"
+            "**Sign convention**: walk around the loop in a chosen direction (clockwise or "
+            "counter-clockwise). When you enter an element at its + terminal, write *+v*; when you enter "
+            "at the − terminal, write *−v*. Sources work the same way: + to − across a source means an "
+            "EMF rise.\n\n"
+            "**Why it works**: a charge taken once around any closed path returns to its starting "
+            "potential. The net energy gained = net energy spent.\n\n"
+            "KVL with $\\ell$ independent loops gives $\\ell$ equations. Combined with $n-1$ KCL "
+            "equations and $b$ Ohm's law element equations, you have enough to solve for every branch "
+            "current and node voltage in any resistive network."
+        ),
+        "examples": [
+            {
+                "q": "A loop has a 24-V source, then voltage drops of 9 V across $R_1$, then $V_2$ across $R_2$, then 4 V across $R_3$, back to the source. Find $V_2$.",
+                "steps": [
+                    "KVL: source rise = sum of drops",
+                    "$24 = 9 + V_2 + 4$",
+                    "$V_2 = 24 - 13$"
+                ],
+                "answer": "$V_2 = 11$ V"
+            }
+        ],
+        "pitfalls": [
+            "Reversing the sign of a source when traversing it from − to +. Track polarity carefully — most KVL errors come from this.",
+            "Writing KVL for a path that isn't closed. A loop must end where it started."
+        ],
+    },
+    {
+        "id": "series-vdr",
+        "title": "Series Resistors and Voltage Division",
+        "body": (
+            "Two or more resistors are in **series** when they share a single connection and the same "
+            "current flows through all of them. The equivalent resistance is the sum:\n\n"
+            "$$R_{eq} = R_1 + R_2 + \\cdots + R_n$$\n\n"
+            "**Voltage Divider Rule (VDR).** When $n$ resistors in series share a source voltage $v$, "
+            "each resistor takes a fraction of $v$ proportional to its own value:\n\n"
+            "$$v_k = \\dfrac{R_k}{R_1 + R_2 + \\cdots + R_n} \\cdot v$$\n\n"
+            "For two resistors specifically:\n\n"
+            "$$v_1 = \\dfrac{R_1}{R_1 + R_2} \\cdot v, \\quad v_2 = \\dfrac{R_2}{R_1 + R_2} \\cdot v$$\n\n"
+            "**Use VDR when**: you need a voltage across one resistor in a series chain and don't want "
+            "to compute the current first."
+        ),
+        "examples": [
+            {
+                "q": "A 12-V source feeds $R_1 = 4$ kΩ and $R_2 = 8$ kΩ in series. Find the voltage across $R_2$.",
+                "steps": [
+                    "$v_2 = \\dfrac{R_2}{R_1+R_2} \\cdot V = \\dfrac{8}{12} \\times 12$"
+                ],
+                "answer": "$v_2 = 8$ V"
+            }
+        ],
+        "pitfalls": [
+            "Applying VDR when current is being drawn through a third path. VDR assumes only the series chain — if a load is connected across one of the resistors, you need a Thévenin analysis instead.",
+            "Forgetting that the largest resistor in a series chain drops the most voltage."
+        ],
+    },
+    {
+        "id": "parallel-cdr",
+        "title": "Parallel Resistors and Current Division",
+        "body": (
+            "Two or more resistors are in **parallel** when their terminals share both nodes and the same "
+            "voltage appears across all of them. Equivalent resistance:\n\n"
+            "$$\\dfrac{1}{R_{eq}} = \\dfrac{1}{R_1} + \\dfrac{1}{R_2} + \\cdots + \\dfrac{1}{R_n}$$\n\n"
+            "For exactly two resistors, the *product-over-sum* form is faster:\n\n"
+            "$$R_{eq} = \\dfrac{R_1 \\, R_2}{R_1 + R_2}$$\n\n"
+            "Notice $R_{eq}$ is always *smaller* than the smallest of the parallel resistors.\n\n"
+            "**Current Divider Rule (CDR).** For two resistors in parallel sharing a total current $i$, "
+            "the current through one of them is given by the *other's* resistance divided by the sum:\n\n"
+            "$$i_1 = \\dfrac{R_2}{R_1 + R_2} \\cdot i, \\quad i_2 = \\dfrac{R_1}{R_1 + R_2} \\cdot i$$\n\n"
+            "Current divides **inversely** with resistance — the smaller resistor takes more current."
+        ),
+        "examples": [
+            {
+                "q": "$R_1 = 6$ Ω and $R_2 = 12$ Ω are in parallel. Find $R_{eq}$, and the current through $R_1$ if the total current is 9 A.",
+                "steps": [
+                    "$R_{eq} = (6 \\times 12)/(6 + 12) = 72/18 = 4$ Ω",
+                    "$i_1 = \\dfrac{R_2}{R_1+R_2} \\cdot i = \\dfrac{12}{18} \\times 9$"
+                ],
+                "answer": "$R_{eq} = 4$ Ω; $i_1 = 6$ A"
+            }
+        ],
+        "pitfalls": [
+            "Confusing the CDR sign — for the current through $R_1$, the numerator is $R_2$ (the OTHER resistor), not $R_1$.",
+            "Applying the product/sum form to three or more resistors. That shortcut only works for exactly two."
+        ],
+    },
+    {
+        "id": "wye-delta",
+        "title": "Wye-Delta (Y-Δ) Transformations",
+        "body": (
+            "Some networks aren't pure series/parallel — three resistors arranged in a triangle (Δ) or "
+            "in a star (Y, also written T) can't be simplified directly. The **wye-delta transformation** "
+            "converts between the two forms so the rest of the circuit can be reduced.\n\n"
+            "Label the three Δ resistors $R_a, R_b, R_c$ between three nodes 1, 2, 3 and the three Y "
+            "resistors $R_1, R_2, R_3$ from the same three nodes meeting at a common centre node.\n\n"
+            "**Δ → Y** (use when the network has a triangle you want to simplify):\n\n"
+            "$$R_1 = \\dfrac{R_b R_c}{R_a + R_b + R_c}, \\quad R_2 = \\dfrac{R_a R_c}{R_a + R_b + R_c}, \\quad R_3 = \\dfrac{R_a R_b}{R_a + R_b + R_c}$$\n\n"
+            "**Y → Δ** (use when the network has a Y/T you want to make into a Δ):\n\n"
+            "$$R_a = \\dfrac{R_1 R_2 + R_2 R_3 + R_3 R_1}{R_1}$$\n\n"
+            "and similarly for $R_b$ (denominator $R_2$) and $R_c$ (denominator $R_3$).\n\n"
+            "**Symmetric special case**: when all three resistors are equal,\n\n"
+            "$$R_Y = \\dfrac{R_\\Delta}{3}, \\quad R_\\Delta = 3R_Y$$"
+        ),
+        "examples": [
+            {
+                "q": "Convert a balanced Δ with each arm = 30 Ω to its Y equivalent.",
+                "steps": [
+                    "Symmetric case: $R_Y = R_\\Delta / 3 = 30/3$"
+                ],
+                "answer": "Each Y arm = 10 Ω"
+            }
+        ],
+        "pitfalls": [
+            "Mixing up which Y resistor corresponds to which Δ pair. Each Y arm is opposite the Δ arm with the matching subscript — $R_1$ is opposite $R_a$.",
+            "Forgetting that the centre node of the Y didn't exist in the Δ — it's a virtual node introduced by the transformation."
+        ],
+    },
+    {
+        "id": "applications-ch2",
+        "title": "Applications: Lighting, DC Meters",
+        "body": (
+            "**Lighting circuits.** Series Christmas-tree lights: if one bulb fails open, the whole "
+            "string goes dark (no current path). Parallel household lighting: each bulb has its own "
+            "path; one failing leaves the others lit. Trade-off: series uses less wire but is fragile; "
+            "parallel costs more wire but is reliable.\n\n"
+            "**DC ammeter** measures current. It must be inserted **in series** with the branch you "
+            "want to measure (so all the current flows through it). The ammeter's internal resistance "
+            "must be very low so it doesn't disturb the circuit. A typical multimeter ammeter has "
+            "$R_\\text{shunt} \\approx 0.1$ Ω.\n\n"
+            "**DC voltmeter** measures voltage. It must be connected **in parallel** with the element "
+            "you want to measure (so it sees the same voltage). Its internal resistance must be very "
+            "high so almost no current flows through it. A digital multimeter voltmeter has "
+            "$R_\\text{in} \\approx 10$ MΩ.\n\n"
+            "**The cardinal sin**: connecting an ammeter directly across a voltage source. The "
+            "ammeter's near-zero resistance becomes a short circuit and either blows a fuse or destroys "
+            "the meter."
+        ),
+        "pitfalls": [
+            "Inserting a voltmeter in series (you'll read tiny current and break the circuit) or an ammeter in parallel (instant short).",
+            "Ignoring the meter's internal resistance in precision measurements. A 1-MΩ resistor measured by a 10-MΩ voltmeter is 10% off."
+        ],
+    },
+]
+
+# ════════════════════════════════════════════════════════════════════════════
+# CH3 — Methods of Analysis
+# ════════════════════════════════════════════════════════════════════════════
+CH3 = [
+    {
+        "id": "nodal",
+        "title": "Nodal Analysis (Node Voltage Method)",
+        "body": (
+            "**Nodal analysis** solves a circuit by finding the **voltage at every non-reference node** "
+            "(with respect to ground). Once you know node voltages, every branch current follows from "
+            "Ohm's law.\n\n"
+            "**Procedure**:\n\n"
+            "1. Choose a reference node (ground) — typically the one with the most branches. Label its "
+            "voltage 0.\n"
+            "2. Assign a voltage variable $V_1, V_2, \\ldots$ to each remaining node.\n"
+            "3. Apply **KCL at each non-reference node**. For a branch from node $i$ to node $j$ through "
+            "resistance $R$, the current leaving node $i$ is $(V_i - V_j)/R$.\n"
+            "4. Solve the resulting linear system for $V_1, V_2, \\ldots$.\n\n"
+            "**By inspection** — for a circuit with only resistors and independent current sources, the "
+            "nodal equations can be written directly as $\\mathbf{G}\\mathbf{V} = \\mathbf{I}_s$, where:\n\n"
+            "- $G_{kk}$ = sum of conductances connected to node $k$\n"
+            "- $G_{kj}$ = negative of conductance between nodes $k$ and $j$\n"
+            "- $I_{s,k}$ = total current source flowing **into** node $k$\n\n"
+            "Nodal is generally easier when **there are few nodes** relative to branches, or when most "
+            "sources are **current sources**."
+        ),
+        "examples": [
+            {
+                "q": "A single node $V_A$ is fed by 10 V through 2 Ω and 6 V through 2 Ω; it drains through 4 Ω to ground. Find $V_A$.",
+                "steps": [
+                    "KCL at A (sum of currents into A = 0):",
+                    "$\\dfrac{10 - V_A}{2} + \\dfrac{6 - V_A}{2} - \\dfrac{V_A}{4} = 0$",
+                    "Multiply by 4: $2(10 - V_A) + 2(6 - V_A) - V_A = 0$",
+                    "$20 - 2V_A + 12 - 2V_A - V_A = 0$",
+                    "$32 = 5V_A$"
+                ],
+                "answer": "$V_A = 6.4$ V"
+            }
+        ],
+        "pitfalls": [
+            "Forgetting to label the reference. Without ground at 0 V, your node voltages have no meaning.",
+            "Mixing 'into the node' and 'out of the node' signs. Pick one convention per node."
+        ],
+    },
+    {
+        "id": "supernode",
+        "title": "Nodal Analysis with Voltage Sources (Supernodes)",
+        "body": (
+            "When an **ideal voltage source** sits directly between two non-reference nodes, you can't "
+            "write a standard KCL at either end — the source forces a relationship, not a passive current.\n\n"
+            "**The supernode technique**: treat the two nodes plus the voltage source between them as "
+            "one big 'supernode'. KCL still applies to the boundary — currents into the supernode sum "
+            "to zero — but you need a **constraint equation** for the voltage source:\n\n"
+            "$$V_i - V_j = V_s$$\n\n"
+            "where $V_s$ is the source voltage (sign per the source's polarity).\n\n"
+            "**Procedure**:\n\n"
+            "1. Identify supernodes (any pair of non-reference nodes joined by an ideal voltage source).\n"
+            "2. Write KCL for each supernode treating the two nodes as one.\n"
+            "3. Add the constraint equation $V_i - V_j = V_s$ for each supernode.\n"
+            "4. Write KCL normally at all other nodes.\n\n"
+            "If the voltage source is between a non-reference node and **ground**, it's even simpler — "
+            "that node's voltage is *known* directly ($V_k = V_s$), so it doesn't need a KCL equation."
+        ),
+        "pitfalls": [
+            "Forgetting to write the constraint $V_i - V_j = V_s$. Without it the system is under-determined.",
+            "Getting the constraint sign backward — check which node is at the + terminal of the source."
+        ],
+    },
+    {
+        "id": "mesh",
+        "title": "Mesh Analysis (Mesh Current Method)",
+        "body": (
+            "**Mesh analysis** solves a circuit by assigning a current variable to each mesh (the "
+            "smallest closed loops, like window panes in a planar circuit) and applying KVL around each.\n\n"
+            "**Procedure**:\n\n"
+            "1. Identify the meshes. A planar circuit with $b$ branches and $n$ nodes has $\\ell = b - n + 1$ "
+            "meshes.\n"
+            "2. Assign a mesh current $i_1, i_2, \\ldots, i_\\ell$ to each, all in the same direction "
+            "(clockwise by convention).\n"
+            "3. Write **KVL around each mesh**. For a resistor shared between two meshes, the actual "
+            "current is the *difference* of the two mesh currents — be careful with signs.\n"
+            "4. Solve the linear system for $i_1, i_2, \\ldots, i_\\ell$.\n\n"
+            "**Branch current** through a shared element: if mesh 1 and mesh 2 both flow clockwise and "
+            "share resistor $R$, then the branch current through $R$ from mesh 1's side is $i_1 - i_2$.\n\n"
+            "**By inspection** — for circuits with only resistors and independent voltage sources, "
+            "$\\mathbf{R}\\mathbf{I} = \\mathbf{V}_s$ where:\n\n"
+            "- $R_{kk}$ = sum of resistances in mesh $k$\n"
+            "- $R_{kj}$ = negative of resistance shared between meshes $k$ and $j$\n"
+            "- $V_{s,k}$ = sum of voltage sources driving mesh $k$ in the assumed direction\n\n"
+            "Mesh is generally easier when **there are few meshes** relative to nodes, or when most "
+            "sources are **voltage sources**."
+        ),
+        "examples": [
+            {
+                "q": "A two-mesh circuit: Mesh 1 has 20 V source, 4 Ω, and the shared 6 Ω. Mesh 2 has the shared 6 Ω and 8 Ω. Both clockwise. Write the mesh equations.",
+                "steps": [
+                    "Mesh 1 KVL: $20 = (4+6)i_1 - 6 i_2 = 10 i_1 - 6 i_2$",
+                    "Mesh 2 KVL: $0 = -6 i_1 + (6+8) i_2 = -6 i_1 + 14 i_2$"
+                ],
+                "answer": "System: $\\begin{cases} 10 i_1 - 6 i_2 = 20 \\\\ -6 i_1 + 14 i_2 = 0 \\end{cases}$"
+            }
+        ],
+        "pitfalls": [
+            "Inconsistent mesh-current direction. Pick clockwise for all meshes and stick with it.",
+            "Forgetting that shared-resistor terms get the negative sign in by-inspection matrix form."
+        ],
+    },
+    {
+        "id": "supermesh",
+        "title": "Mesh Analysis with Current Sources (Supermesh)",
+        "body": (
+            "When a **current source** is shared between two adjacent meshes, you can't write a "
+            "standard KVL through it — the voltage across the source isn't known up front.\n\n"
+            "**The supermesh technique**: treat the two meshes plus the current source between them as "
+            "one big 'supermesh', drawn around the outside *excluding* the shared current source. Write "
+            "KVL around this supermesh boundary. Then add a constraint equation from the current source:\n\n"
+            "$$i_i - i_j = I_s$$\n\n"
+            "(sign per the source's arrow direction).\n\n"
+            "**Procedure**:\n\n"
+            "1. Identify any current source shared between two meshes.\n"
+            "2. For each such source, form a supermesh around the two meshes, excluding the source.\n"
+            "3. Write KVL for the supermesh.\n"
+            "4. Add the constraint equation $i_i - i_j = I_s$.\n"
+            "5. Write KVL normally for all non-supermesh meshes.\n\n"
+            "If the current source is between a mesh and the **outside** (so only one mesh touches it), "
+            "that mesh's current is **directly known** ($i_k = I_s$) — no supermesh needed."
+        ),
+        "pitfalls": [
+            "Including the current source's voltage in the supermesh KVL. The whole point of the supermesh is to step *around* the source.",
+            "Forgetting the constraint equation $i_i - i_j = I_s$. Without it, supermesh underdetermines the system by one equation."
+        ],
+    },
+    {
+        "id": "nodal-vs-mesh",
+        "title": "Nodal vs Mesh Analysis Comparison",
+        "body": (
+            "Both methods solve the same circuit and give the same answer. Which is faster depends on "
+            "the network's geometry and source mix.\n\n"
+            "**Prefer nodal when**:\n\n"
+            "- The circuit has fewer nodes than meshes.\n"
+            "- Most sources are *current sources*.\n"
+            "- You need a *voltage* answer directly (saves the conversion).\n"
+            "- The circuit is non-planar (mesh analysis only works on planar circuits anyway).\n\n"
+            "**Prefer mesh when**:\n\n"
+            "- The circuit has fewer meshes than nodes.\n"
+            "- Most sources are *voltage sources*.\n"
+            "- You need a *current* answer directly.\n\n"
+            "**Equation count comparison** for a circuit with $b$ branches, $n$ nodes, $\\ell = b - n + 1$ meshes:\n\n"
+            "- Nodal: $n - 1$ equations\n"
+            "- Mesh: $\\ell = b - n + 1$ equations\n\n"
+            "So if $n - 1 < b - n + 1$, i.e. $b > 2n - 2$, mesh is bigger and nodal wins.\n\n"
+            "**Practical advice**: count both quickly before starting. Don't half-finish mesh because "
+            "you forgot to check that nodal would have been three equations smaller."
+        ),
+    },
+    {
+        "id": "inspection",
+        "title": "Circuit Analysis by Inspection",
+        "body": (
+            "For circuits restricted to **resistors + independent sources**, both nodal and mesh "
+            "equations can be written down by inspection without going through the full KCL/KVL setup. "
+            "This is much faster on exams.\n\n"
+            "**Nodal by inspection** — for $n - 1$ non-reference nodes:\n\n"
+            "$$\\mathbf{G}\\mathbf{V} = \\mathbf{I}_s$$\n\n"
+            "- $G_{kk}$ = sum of all conductances ($1/R$) connected to node $k$.\n"
+            "- $G_{kj}$ = negative of conductance directly connecting nodes $k$ and $j$ (0 if not connected).\n"
+            "- $I_{s,k}$ = sum of independent current sources flowing **into** node $k$.\n\n"
+            "**Mesh by inspection** — for $\\ell$ meshes (all currents assigned clockwise):\n\n"
+            "$$\\mathbf{R}\\mathbf{I} = \\mathbf{V}_s$$\n\n"
+            "- $R_{kk}$ = sum of all resistances in mesh $k$.\n"
+            "- $R_{kj}$ = negative of resistance shared between meshes $k$ and $j$.\n"
+            "- $V_{s,k}$ = algebraic sum of voltage sources around mesh $k$ in the assumed direction.\n\n"
+            "Both matrices are **symmetric** ($G_{kj} = G_{jk}$, $R_{kj} = R_{jk}$) — a useful sanity "
+            "check.\n\n"
+            "**Limitation**: by-inspection rules **don't apply** to circuits with dependent sources or "
+            "ideal voltage/current sources that violate the by-inspection assumptions (use supernodes / "
+            "supermeshes for those)."
+        ),
+    },
+    {
+        "id": "applications-ch3",
+        "title": "Applications: DC Transistor Circuits",
+        "body": (
+            "Bipolar junction transistors (BJTs) in DC bias analysis are a natural application of nodal "
+            "and mesh techniques. The BJT itself is nonlinear, but in DC analysis we use a **piecewise "
+            "linear model**:\n\n"
+            "- Base-emitter: a fixed voltage drop $V_{BE} \\approx 0.7$ V (silicon) when on.\n"
+            "- Collector current: $I_C = \\beta I_B$ where $\\beta$ (or $h_{FE}$) is the current gain "
+            "(typically 50–300).\n"
+            "- Emitter current: $I_E = I_B + I_C = (\\beta + 1) I_B$.\n\n"
+            "Once you replace the transistor with these constraints, the surrounding network is purely "
+            "linear and ordinary KVL/KCL analysis gives you the bias point ($V_C, V_B, V_E, I_C, I_B$).\n\n"
+            "**Why this matters**: every amplifier, every logic gate, every analog stage starts from a "
+            "bias-point calculation. Mastering KCL/KVL with one or two transistors in the loop is the "
+            "first real engineering application of the methods of analysis."
+        ),
+    },
+]
+
+# ════════════════════════════════════════════════════════════════════════════
+# CH4 — Circuit Theorems
+# ════════════════════════════════════════════════════════════════════════════
+CH4 = [
+    {
+        "id": "linearity-superposition",
+        "title": "Linearity Property and Superposition",
+        "body": (
+            "A circuit is **linear** if it contains only linear elements (resistors, ideal sources, "
+            "linear dependent sources, ideal capacitors and inductors). Linear means two things:\n\n"
+            "- **Homogeneity**: if you scale every independent source by a factor $k$, every voltage "
+            "and current in the circuit scales by the same $k$.\n"
+            "- **Additivity**: the response to several sources acting together equals the sum of the "
+            "responses to each source acting alone.\n\n"
+            "The **superposition theorem** is the additivity property made into a calculation method. "
+            "For a linear circuit with multiple independent sources, **the voltage across (or current "
+            "through) any element is the algebraic sum of contributions from each independent source "
+            "considered separately, with all other independent sources deactivated**.\n\n"
+            "**Deactivating a source**:\n\n"
+            "- Independent **voltage** source → replace with a **short circuit** (0 V).\n"
+            "- Independent **current** source → replace with an **open circuit** (0 A).\n"
+            "- **Dependent** sources are *never* deactivated — they stay as-is throughout.\n\n"
+            "**When to use it**: when several independent sources of different types or frequencies "
+            "drive a linear network, especially when one source is much easier to analyse alone."
+        ),
+        "examples": [
+            {
+                "q": "A load voltage is 4 V when only source $V_1$ acts, and 3 V when only $V_2$ acts (both polarities the same). What is the load voltage when both sources act together?",
+                "steps": [
+                    "By superposition: $v_\\text{total} = v_1 + v_2 = 4 + 3$"
+                ],
+                "answer": "$v_\\text{total} = 7$ V"
+            }
+        ],
+        "pitfalls": [
+            "Deactivating dependent sources. Never do this — only independent sources are turned off.",
+            "Using superposition for *power* directly. Power is nonlinear in current and voltage; you must compute the full current/voltage first, then square it. $P \\neq P_1 + P_2$ in general."
+        ],
+    },
+    {
+        "id": "source-transform",
+        "title": "Source Transformation",
+        "body": (
+            "Any practical voltage source (an ideal source $V_s$ in **series** with $R_s$) is "
+            "equivalent — at its external terminals — to a practical current source (ideal source $I_s$ "
+            "in **parallel** with the same $R_s$). The transformation is:\n\n"
+            "$$I_s = \\dfrac{V_s}{R_s}, \\qquad R_s \\text{ unchanged}$$\n\n"
+            "and the reverse:\n\n"
+            "$$V_s = I_s \\cdot R_s$$\n\n"
+            "Polarity matters: the current source's arrow points **toward the + terminal** of the "
+            "voltage source it replaces.\n\n"
+            "**Why it's useful**: by repeatedly transforming sources, you can often collapse a complex "
+            "network of resistors and sources into a single source plus a single resistance — the same "
+            "endpoint as Thévenin / Norton, but reached step by step.\n\n"
+            "**Limitations**:\n\n"
+            "- Doesn't apply to an **ideal** source (no internal resistance). You need a finite $R_s$.\n"
+            "- The transformed sources are equivalent **only at the external terminals** — internal "
+            "currents and powers are different. So the power dissipated in $R_s$ is different in the "
+            "two forms, even though everything outside is identical."
+        ),
+        "examples": [
+            {
+                "q": "Convert a 12 V source in series with 4 Ω to its current-source equivalent.",
+                "steps": [
+                    "$I_s = V_s / R_s = 12 / 4 = 3$ A",
+                    "$R_s$ stays the same and moves into parallel."
+                ],
+                "answer": "3 A current source in parallel with 4 Ω"
+            }
+        ],
+        "pitfalls": [
+            "Forgetting that polarity matters. The current source arrow points toward what was the + terminal of the voltage source.",
+            "Treating internal power as the same in both forms. The external behaviour is identical, but the resistor's internal power is not."
+        ],
+    },
+    {
+        "id": "thevenin",
+        "title": "Thévenin's Theorem",
+        "body": (
+            "**Thévenin's theorem** states that any two-terminal linear network — no matter how many "
+            "sources and resistors — can be replaced **at those two terminals** by:\n\n"
+            "- A single voltage source $V_{Th}$ (the **Thévenin voltage**)\n"
+            "- in series with a single resistance $R_{Th}$ (the **Thévenin resistance**).\n\n"
+            "**Finding $V_{Th}$**: remove the load and measure (or compute) the **open-circuit voltage** "
+            "at the terminals: $V_{Th} = V_{oc}$.\n\n"
+            "**Finding $R_{Th}$** (three methods, pick whichever fits):\n\n"
+            "1. **No dependent sources** — deactivate all independent sources (voltage → short, current "
+            "→ open) and compute the equivalent resistance at the terminals using series/parallel "
+            "reduction.\n"
+            "2. **Has dependent sources** — apply a test source $V_T$ at the terminals (with all "
+            "independent sources still deactivated), compute the resulting test current $I_T$, then "
+            "$R_{Th} = V_T / I_T$.\n"
+            "3. **Open-short method** — $R_{Th} = V_{oc} / I_{sc}$ where $I_{sc}$ is the short-circuit "
+            "current at the terminals. Works whether or not dependent sources are present.\n\n"
+            "**Why it's useful**: once you have $(V_{Th}, R_{Th})$, you can hook up any load $R_L$ and "
+            "instantly find load current and voltage:\n\n"
+            "$$I_L = \\dfrac{V_{Th}}{R_{Th} + R_L}, \\qquad V_L = \\dfrac{R_L}{R_{Th} + R_L} \\cdot V_{Th}$$\n\n"
+            "No need to re-solve the whole network for every new load value."
+        ),
+        "examples": [
+            {
+                "q": "A network has $V_{oc} = 18$ V at its terminals and $I_{sc} = 3$ A. Find $R_{Th}$.",
+                "steps": [
+                    "$R_{Th} = V_{oc} / I_{sc} = 18 / 3$"
+                ],
+                "answer": "$R_{Th} = 6$ Ω"
+            }
+        ],
+        "pitfalls": [
+            "Deactivating dependent sources when finding $R_{Th}$. Use the test-source method instead.",
+            "Forgetting that Thévenin is equivalent **only at the chosen terminals**. Internal node voltages and branch currents inside the original network are not preserved."
+        ],
+    },
+    {
+        "id": "norton",
+        "title": "Norton's Theorem",
+        "body": (
+            "**Norton's theorem** is the dual of Thévenin. Any two-terminal linear network is equivalent "
+            "to:\n\n"
+            "- A single current source $I_N$ (the **Norton current**)\n"
+            "- in parallel with a single resistance $R_N$.\n\n"
+            "**Finding $I_N$**: short the terminals and measure the **short-circuit current**: "
+            "$I_N = I_{sc}$.\n\n"
+            "**Finding $R_N$**: same as $R_{Th}$ — by Thévenin / Norton equivalence, $R_N = R_{Th}$ "
+            "always.\n\n"
+            "**Conversion between Thévenin and Norton** (it's just a source transformation):\n\n"
+            "$$V_{Th} = I_N \\cdot R_N, \\qquad I_N = \\dfrac{V_{Th}}{R_{Th}}, \\qquad R_{Th} = R_N$$\n\n"
+            "Use **Thévenin** when the rest of the circuit attached to the terminals is dominated by "
+            "voltage-source thinking (series loops). Use **Norton** when current-source thinking "
+            "(parallel branches) is more natural. They contain identical information; pick whichever "
+            "simplifies the next step."
+        ),
+        "examples": [
+            {
+                "q": "A network has $V_{Th} = 36$ V and $R_{Th} = 12$ Ω. Find its Norton equivalent.",
+                "steps": [
+                    "$I_N = V_{Th} / R_{Th} = 36 / 12$",
+                    "$R_N = R_{Th}$"
+                ],
+                "answer": "$I_N = 3$ A in parallel with $R_N = 12$ Ω"
+            }
+        ],
+        "pitfalls": [
+            "Stating $R_N \\neq R_{Th}$. They're always equal — the same network's equivalent resistance.",
+            "Using $V_{Th}$ in a Norton diagram (or vice versa). Match the source type to the diagram type."
+        ],
+    },
+    {
+        "id": "max-power",
+        "title": "Maximum Power Transfer",
+        "body": (
+            "Given a fixed Thévenin source $(V_{Th}, R_{Th})$ driving a variable load $R_L$, how do you "
+            "choose $R_L$ to extract the maximum power?\n\n"
+            "Power delivered to $R_L$:\n\n"
+            "$$P_L = i^{2} R_L = \\left(\\dfrac{V_{Th}}{R_{Th} + R_L}\\right)^{2} R_L$$\n\n"
+            "Differentiate with respect to $R_L$, set $dP_L/dR_L = 0$, and you get the **Maximum Power "
+            "Transfer Theorem**:\n\n"
+            "$$\\boxed{R_L = R_{Th}}$$\n\n"
+            "At this load:\n\n"
+            "$$P_\\text{max} = \\dfrac{V_{Th}^{\\,2}}{4 R_{Th}}$$\n\n"
+            "**Efficiency at maximum power transfer is only 50%** — half the source power goes into "
+            "$R_L$, the other half is dissipated in $R_{Th}$. This is fine for signal-transfer "
+            "applications (audio, RF), where what matters is the signal *amplitude* delivered. It's "
+            "**not** what you want for power-delivery applications (electric grid), where efficiency "
+            "matters more than raw power — there you want $R_L \\gg R_{Th}$, giving low loss in the "
+            "source but also low absolute power.\n\n"
+            "**Procedure to apply it**:\n\n"
+            "1. Find $V_{Th}$ and $R_{Th}$ at the load's terminals.\n"
+            "2. Set $R_L = R_{Th}$.\n"
+            "3. $P_\\text{max} = V_{Th}^2 / (4 R_{Th})$."
+        ),
+        "examples": [
+            {
+                "q": "A Thévenin source has $V_{Th} = 20$ V and $R_{Th} = 10$ Ω. What load gives maximum power, and what is that power?",
+                "steps": [
+                    "$R_L = R_{Th} = 10$ Ω",
+                    "$P_\\text{max} = V_{Th}^2 / (4 R_{Th}) = 400 / 40$"
+                ],
+                "answer": "$R_L = 10$ Ω; $P_\\text{max} = 10$ W"
+            }
+        ],
+        "pitfalls": [
+            "Confusing maximum-power transfer with maximum efficiency. They're different goals.",
+            "Forgetting that $R_{Th}$ here is the equivalent resistance of *everything except the load*. Compute it correctly first."
+        ],
+    },
+    {
+        "id": "applications-ch4",
+        "title": "Applications: Source Modelling, Resistance Measurement",
+        "body": (
+            "**Source modelling**. Real batteries, generators, and amplifier outputs are not ideal "
+            "sources. A 9 V battery doesn't deliver 9 V at every load — drop a serious current and the "
+            "terminal voltage sags. Modelling a real source as a Thévenin (or Norton) equivalent lets "
+            "you predict that sag:\n\n"
+            "$$V_\\text{terminal} = V_{Th} - I \\cdot R_{Th}$$\n\n"
+            "A typical AA battery: $V_{Th} \\approx 1.5$ V, $R_{Th} \\approx 0.15$ Ω. At 10 A "
+            "short-circuit current... actually it can't deliver 10 A; the terminal voltage would collapse "
+            "first.\n\n"
+            "**Resistance measurement by Wheatstone bridge**. Four resistors in a diamond — when the "
+            "bridge is balanced, the galvanometer (between the two midpoints) reads zero current, and "
+            "$R_1/R_2 = R_3/R_4$. Unknown resistance can be solved if the other three are known. The "
+            "circuit is a classic textbook example of Thévenin analysis: to find the galvanometer "
+            "current when the bridge is *not* balanced, find the Thévenin equivalent at the two "
+            "midpoints and connect the galvanometer as a load.\n\n"
+            "**Multimeter ohmmeter mode**: passes a small known current through the unknown resistor, "
+            "measures the voltage across it, computes $R = V/I$. Internally a current-source + voltmeter "
+            "implementation of Ohm's law."
+        ),
+    },
+]
+
+# ════════════════════════════════════════════════════════════════════════════
+# CH6 — Capacitors (Inductor topics dropped per instruction.txt)
+# ════════════════════════════════════════════════════════════════════════════
+CH6 = [
+    {
+        "id": "capacitor-iv",
+        "title": "Capacitor: Structure & v-i Relationship",
+        "body": (
+            "A **capacitor** is two conducting plates separated by a non-conducting dielectric. When "
+            "voltage is applied, positive charge accumulates on one plate and equal negative charge on "
+            "the other, storing energy in the electric field between them.\n\n"
+            "**Capacitance** is the ratio of stored charge to applied voltage:\n\n"
+            "$$C = \\dfrac{Q}{V}$$\n\n"
+            "Unit: farad (F), where $1 \\text{ F} = 1 \\text{ C/V}$. One farad is huge — practical "
+            "values are in µF (microfarad, $10^{-6}$), nF ($10^{-9}$), and pF ($10^{-12}$).\n\n"
+            "**Parallel-plate formula**:\n\n"
+            "$$C = \\varepsilon \\dfrac{A}{d} = \\varepsilon_0 \\varepsilon_r \\dfrac{A}{d}$$\n\n"
+            "where $A$ is the plate area, $d$ is the plate separation, $\\varepsilon_0 = 8.854 \\times "
+            "10^{-12}$ F/m is the permittivity of free space, and $\\varepsilon_r$ is the relative "
+            "permittivity of the dielectric (1 for air; ~2.5 for polyester film; ~7 for mica; ~10 000 "
+            "for some ceramics).\n\n"
+            "**The fundamental v-i relationship**:\n\n"
+            "$$i = C \\dfrac{dv}{dt}$$\n\n"
+            "Current flows only while voltage is *changing*. Three immediate consequences:\n\n"
+            "1. **DC steady state**: $dv/dt = 0$, so $i = 0$. A capacitor behaves as an **open circuit** "
+            "to DC.\n"
+            "2. **Voltage cannot change instantaneously**: a step change in $v$ would require infinite "
+            "current. So $v_C(0^+) = v_C(0^-)$ across any switching event.\n"
+            "3. **AC reactance**: in a sinusoidal AC circuit, the higher the frequency, the more "
+            "current flows for the same voltage — capacitors *pass* high frequencies and *block* DC.\n\n"
+            "**Integrating** the v-i relationship gives the voltage in terms of past current:\n\n"
+            "$$v(t) = \\dfrac{1}{C} \\int_{-\\infty}^{t} i(\\tau) \\, d\\tau = v(0) + \\dfrac{1}{C} \\int_{0}^{t} i(\\tau) \\, d\\tau$$\n\n"
+            "The capacitor 'remembers' all the charge that's ever flowed into it (until it leaks away)."
+        ),
+        "examples": [
+            {
+                "q": "The voltage across a 50 µF capacitor varies as $v(t) = 20\\cos(1000 t)$ V. Find $i(t)$.",
+                "steps": [
+                    "$i = C \\, dv/dt$",
+                    "$dv/dt = -20 \\times 1000 \\sin(1000 t) = -20000 \\sin(1000 t)$ V/s",
+                    "$i = 50 \\times 10^{-6} \\times (-20000 \\sin(1000 t))$"
+                ],
+                "answer": "$i(t) = -1 \\sin(1000 t)$ A = $-\\sin(1000 t)$ A"
+            }
+        ],
+        "pitfalls": [
+            "Trying to apply Ohm's law $v = iR$ to a capacitor. Capacitors don't have resistance in this sense — their v-i is *differential*.",
+            "Forgetting capacitor voltage is continuous across a switching instant. The current can jump; the voltage cannot."
+        ],
+    },
+    {
+        "id": "capacitor-energy",
+        "title": "Energy Stored in a Capacitor",
+        "body": (
+            "The instantaneous power delivered to a capacitor is $p = v \\cdot i = v \\cdot C \\, dv/dt$. "
+            "Integrating from zero voltage to some final $V$ gives the energy stored in the electric "
+            "field:\n\n"
+            "$$W = \\dfrac{1}{2} C V^{2}$$\n\n"
+            "Equivalent forms:\n\n"
+            "$$W = \\dfrac{Q^{2}}{2C} = \\dfrac{1}{2} Q V$$\n\n"
+            "Energy is in joules. Notable facts:\n\n"
+            "- A capacitor **stores** energy when charging (energy goes from source into the field) and "
+            "**returns** it when discharging — unlike a resistor, which dissipates it as heat.\n"
+            "- Energy scales as $V^{2}$. Doubling the voltage *quadruples* the stored energy. This is "
+            "why high-voltage capacitor banks (defibrillators, photoflash, industrial pulsed power) can "
+            "be dangerous even at moderate capacitance.\n"
+            "- A 1 F supercapacitor charged to 5 V stores 12.5 J — comparable to a small battery, "
+            "deliverable in milliseconds.\n\n"
+            "**Always treat any large or unknown capacitor as charged** until you've shorted it through "
+            "a resistor. Even 'discharged' capacitors can self-recharge from dielectric absorption."
+        ),
+        "examples": [
+            {
+                "q": "Energy stored in a 470 µF capacitor charged to 25 V.",
+                "steps": [
+                    "$W = \\frac{1}{2} C V^{2}$",
+                    "$W = 0.5 \\times 470 \\times 10^{-6} \\times 25^{2}$",
+                    "$W = 0.5 \\times 470 \\times 10^{-6} \\times 625$"
+                ],
+                "answer": "$W \\approx 0.147$ J = 147 mJ"
+            }
+        ],
+        "pitfalls": [
+            "Using $W = \\frac{1}{2}CV$ (missing the square). The energy is quadratic in voltage.",
+            "Forgetting that large capacitors can deliver dangerous current bursts even if their voltage doesn't look high."
+        ],
+    },
+    {
+        "id": "series-parallel-caps",
+        "title": "Series and Parallel Capacitors",
+        "body": (
+            "**Parallel capacitors**. When connected in parallel, capacitors share the same voltage but "
+            "store separate charges. Equivalent capacitance:\n\n"
+            "$$C_\\text{eq} = C_1 + C_2 + \\cdots + C_n$$\n\n"
+            "Plate areas effectively add — bigger total area for the same plate separation gives a "
+            "bigger capacitor.\n\n"
+            "**Series capacitors**. When in series, the same charge $Q$ accumulates on each (charge has "
+            "nowhere else to go), but the voltage splits inversely with capacitance. Equivalent:\n\n"
+            "$$\\dfrac{1}{C_\\text{eq}} = \\dfrac{1}{C_1} + \\dfrac{1}{C_2} + \\cdots + \\dfrac{1}{C_n}$$\n\n"
+            "For exactly two:\n\n"
+            "$$C_\\text{eq} = \\dfrac{C_1 C_2}{C_1 + C_2}$$\n\n"
+            "Series equivalent is *smaller* than any individual capacitor — opposite to resistors.\n\n"
+            "**Energy split in series**: same $Q$ on all → smaller $C$ stores *more* energy "
+            "($W = Q^2/2C$).\n\n"
+            "**Energy split in parallel**: same $V$ across all → larger $C$ stores *more* energy "
+            "($W = \\frac{1}{2}CV^2$).\n\n"
+            "**Why use series of capacitors?** Two 200 V capacitors in series can handle 400 V across "
+            "the pair (with a balancing resistor network in practice). This is how high-voltage "
+            "capacitor banks are assembled from lower-rated units."
+        ),
+        "examples": [
+            {
+                "q": "$C_1 = 6$ µF and $C_2 = 3$ µF in series. Find $C_\\text{eq}$.",
+                "steps": [
+                    "$\\dfrac{1}{C_\\text{eq}} = \\dfrac{1}{6} + \\dfrac{1}{3} = \\dfrac{1}{6} + \\dfrac{2}{6} = \\dfrac{3}{6}$",
+                    "$C_\\text{eq} = \\dfrac{6}{3} = 2$ µF"
+                ],
+                "answer": "$C_\\text{eq} = 2$ µF"
+            }
+        ],
+        "pitfalls": [
+            "Adding series capacitors directly. Series of capacitors uses the *reciprocal* formula, like parallel resistors.",
+            "Forgetting that the smaller capacitor in a series pair takes the larger voltage. Critical for voltage-rating choices."
+        ],
+    },
+    {
+        "id": "capacitor-types",
+        "title": "Capacitor Classification, Labelling, and Standard Values",
+        "body": (
+            "**Major types by dielectric**:\n\n"
+            "| Type | Dielectric | Range | Voltage | Typical use |\n"
+            "|---|---|---|---|---|\n"
+            "| Ceramic (MLCC, disc) | Class 1 NP0 / Class 2 X7R | 1 pF – 100 µF | 6.3 V – 1 kV | Decoupling, RF, timing |\n"
+            "| Aluminum electrolytic | $\\text{Al}_2\\text{O}_3$ (polarised) | 0.1 µF – 1 F | 6.3 – 450 V | Bulk smoothing |\n"
+            "| Tantalum | $\\text{Ta}_2\\text{O}_5$ (polarised) | 0.1 – 1000 µF | 2 – 50 V | Compact filtering |\n"
+            "| Film (polyester / polypropylene / PTFE) | Plastic film | 1 nF – 100 µF | 50 V – 2 kV | Audio, snubbers, precision |\n"
+            "| Mica | Natural/silvered mica | 1 pF – 10 nF | 100 V – kV | HF, high-precision |\n"
+            "| Supercapacitor | Electric double layer | 0.1 – 3000 F | 2.5 – 5 V | Energy buffering |\n\n"
+            "**Polarised** types (electrolytic, tantalum) must be connected with correct polarity — "
+            "reverse voltage destroys the dielectric and the capacitor can rupture.\n\n"
+            "**Labelling** — three-digit codes used on small ceramics and films give the value in "
+            "**picofarads**: first two digits are significant figures, third is the power of ten "
+            "multiplier.\n\n"
+            "| Code | Value |\n"
+            "|---|---|\n"
+            "| 104 | $10 \\times 10^4$ pF = 100,000 pF = 100 nF = 0.1 µF |\n"
+            "| 473 | $47 \\times 10^3$ pF = 47 nF |\n"
+            "| 220 | $22 \\times 10^0$ pF = 22 pF |\n"
+            "| 2A104K | 100 V, 0.1 µF, ±10% |\n\n"
+            "**Tolerance letter** (often follows the code): J = ±5%, K = ±10%, M = ±20%, F = ±1%, "
+            "D = ±0.5 pF.\n\n"
+            "**Standard E-series values** — capacitors come in geometrically-spaced 'preferred values' "
+            "so the tolerance bands tile the range. **E12** base values per decade: 10, 12, 15, 18, 22, "
+            "27, 33, 39, 47, 56, 68, 82. Common stock values you'll actually see in a parts drawer: "
+            "0.1, 0.22, 0.47, 1, 2.2, 4.7, 10, 22, 47, 100, 220, 470 µF, and similar across nF and pF."
+        ),
+        "pitfalls": [
+            "Connecting a polarised capacitor backwards. The negative leg is marked with a stripe (electrolytic) or a bar (tantalum). Reverse voltage = damage.",
+            "Treating the printed value as exact. A '100 µF' ±20% electrolytic may actually be anywhere from 80 to 120 µF."
+        ],
+    },
+    {
+        "id": "rc-charging",
+        "title": "Charging Phase of a Capacitor (RC Circuit)",
+        "body": (
+            "Connect an uncharged capacitor $C$ through a resistor $R$ to a DC source $V_s$ by closing "
+            "a switch at $t = 0$. The capacitor starts at 0 V (it can't change voltage instantly), so "
+            "the entire $V_s$ momentarily appears across $R$, giving an initial current $V_s/R$. As "
+            "charge accumulates on the capacitor, its voltage rises, the voltage across $R$ falls, and "
+            "current decreases — until eventually $v_C = V_s$ and current stops.\n\n"
+            "**Governing differential equation** (from KVL):\n\n"
+            "$$RC \\dfrac{dv}{dt} + v = V_s$$\n\n"
+            "**Solution** for the charging response:\n\n"
+            "$$v_C(t) = V_s \\left(1 - e^{-t/RC}\\right)$$\n\n"
+            "$$i(t) = \\dfrac{V_s}{R} \\, e^{-t/RC}$$\n\n"
+            "The **time constant** $\\tau = RC$ is the natural timescale of the circuit. R in ohms, C "
+            "in farads, $\\tau$ in seconds.\n\n"
+            "**Behavioural milestones**:\n\n"
+            "| Time | $v_C$ | $i$ |\n"
+            "|---|---|---|\n"
+            "| $0^+$ | 0 | $V_s/R$ (peak) |\n"
+            "| 1τ | 63.2% of $V_s$ | 36.8% of peak |\n"
+            "| 2τ | 86.5% | 13.5% |\n"
+            "| 3τ | 95.0% | 5.0% |\n"
+            "| 5τ | 99.3% (≈ 'fully charged') | 0.7% |\n\n"
+            "Practical rule: capacitor is considered **fully charged after 5τ**."
+        ),
+        "examples": [
+            {
+                "q": "A 100 µF capacitor charges through a 10 kΩ resistor from a 12 V source. Find τ and the voltage at $t = 1$ s.",
+                "steps": [
+                    "$\\tau = RC = 10\\,000 \\times 100 \\times 10^{-6} = 1$ s",
+                    "$v_C(1) = 12 (1 - e^{-1}) = 12 \\times 0.632$"
+                ],
+                "answer": "$\\tau = 1$ s; $v_C(1) \\approx 7.59$ V"
+            }
+        ],
+        "pitfalls": [
+            "Treating the initial current as something other than $V_s/R$. At $t = 0^+$, the capacitor is a short circuit (zero voltage), so the full source drives R alone.",
+            "Forgetting that 5τ is a rule of thumb. In high-precision settings (oscillator timing) you may need 10τ or more."
+        ],
+    },
+    {
+        "id": "rc-discharging",
+        "title": "Discharging Phase of a Capacitor",
+        "body": (
+            "Take a capacitor previously charged to $V_0$ and remove the source — close a switch that "
+            "connects only $R$ and $C$ in a loop. The stored charge on the capacitor now drives "
+            "current *backward* through the resistor, gradually returning the capacitor to zero.\n\n"
+            "**Governing differential equation**:\n\n"
+            "$$RC \\dfrac{dv}{dt} + v = 0$$\n\n"
+            "**Solution**:\n\n"
+            "$$v_C(t) = V_0 \\, e^{-t/RC}$$\n\n"
+            "$$i(t) = -\\dfrac{V_0}{R} \\, e^{-t/RC}$$\n\n"
+            "The negative sign on $i$ shows the **current reverses direction** relative to charging — "
+            "it now flows *out* of the capacitor's positive plate.\n\n"
+            "**Milestones**:\n\n"
+            "| Time | $v_C$ (% of $V_0$) |\n"
+            "|---|---|\n"
+            "| 1τ | 36.8% |\n"
+            "| 2τ | 13.5% |\n"
+            "| 3τ | 5.0% |\n"
+            "| 4τ | 1.8% |\n"
+            "| 5τ | 0.7% (≈ 'fully discharged') |\n\n"
+            "**Energy bookkeeping during discharge**: every joule of stored capacitor energy ends up "
+            "dissipated as heat in the resistor. The total heat = $\\frac{1}{2}CV_0^2$, regardless of "
+            "$R$. (Smaller $R$ = faster discharge but same total heat.)"
+        ),
+        "examples": [
+            {
+                "q": "A 100 µF capacitor charged to 12 V discharges through 10 kΩ. Find the current at $t = 0^+$ and the voltage at $t = 2$ s.",
+                "steps": [
+                    "Initial current $i(0^+) = -V_0/R = -12/10\\,000 = -1.2$ mA",
+                    "τ = $RC = 1$ s, so $t = 2$ s = 2τ",
+                    "$v_C(2) = 12 \\times e^{-2} = 12 \\times 0.1353$"
+                ],
+                "answer": "$i(0^+) = -1.2$ mA; $v_C(2) \\approx 1.62$ V"
+            }
+        ],
+        "pitfalls": [
+            "Reversing the sign of the discharge current. By convention, current during discharge is *opposite* to the charging direction.",
+            "Computing total energy dissipated using $i^2 R \\cdot t$. The current decays exponentially — you'd have to integrate. Use $\\frac{1}{2}CV_0^2$ for the total directly."
+        ],
+    },
+]
+
+# ════════════════════════════════════════════════════════════════════════════
+# CH7 — First-Order Circuits (RL & op-amp topics dropped per instruction.txt)
+# ════════════════════════════════════════════════════════════════════════════
+CH7 = [
+    {
+        "id": "source-free-rc",
+        "title": "Source-Free RC Circuit (Natural Response)",
+        "body": (
+            "A **source-free** circuit has no independent source acting on it — only stored energy in a "
+            "capacitor (or inductor) and a path for it to dissipate. The resulting response is called "
+            "the **natural response**: how the circuit relaxes back to zero on its own.\n\n"
+            "For a source-free RC circuit with the capacitor initially charged to $V_0$:\n\n"
+            "$$v_C(t) = V_0 \\, e^{-t/\\tau}, \\qquad \\tau = RC$$\n\n"
+            "$$i(t) = -\\dfrac{V_0}{R} \\, e^{-t/\\tau}$$\n\n"
+            "**Why exponential?** The defining equation $RC \\, dv/dt + v = 0$ has the form 'rate of "
+            "change of $v$ is proportional to $v$'. The only function whose derivative is proportional "
+            "to itself is the exponential.\n\n"
+            "**Properties of the natural response**:\n\n"
+            "- Falls to zero asymptotically — never quite reaches it.\n"
+            "- Independent of how the capacitor was charged. All that matters for $t > 0$ is the "
+            "initial value $V_0$.\n"
+            "- The shape (exponential) is identical for every source-free first-order circuit. Only "
+            "the time constant $\\tau$ changes.\n\n"
+            "This is the 'dying away' part of any switching transient."
+        ),
+        "examples": [
+            {
+                "q": "A 200 µF capacitor charged to 24 V is allowed to discharge through 50 kΩ at $t = 0$. When does $v_C$ fall to 5 V?",
+                "steps": [
+                    "$\\tau = RC = 50\\,000 \\times 200 \\times 10^{-6} = 10$ s",
+                    "$v_C(t) = 24 e^{-t/10} = 5$",
+                    "$e^{-t/10} = 5/24$",
+                    "$t = -10 \\ln(5/24) = 10 \\ln(24/5)$"
+                ],
+                "answer": "$t \\approx 15.7$ s"
+            }
+        ],
+        "pitfalls": [
+            "Forgetting that the natural response has no source term. It's purely the relaxation of stored energy.",
+            "Mixing units. R in kΩ and C in µF gives $\\tau$ in ms (the $10^3$ and $10^{-6}$ multiply to $10^{-3}$)."
+        ],
+    },
+    {
+        "id": "singularity",
+        "title": "Singularity Functions (Step, Impulse, Ramp)",
+        "body": (
+            "Switching events in real circuits are idealised as **singularity functions** — mathematical "
+            "shapes that capture sudden changes cleanly.\n\n"
+            "**Unit step function** $u(t)$:\n\n"
+            "$$u(t) = \\begin{cases} 0, & t < 0 \\\\ 1, & t > 0 \\end{cases}$$\n\n"
+            "Models 'turning on' a source at $t = 0$. A source $V_s \\cdot u(t)$ delivers 0 V before "
+            "$t = 0$ and $V_s$ afterwards. Shifted version $u(t - t_0)$ turns on at $t = t_0$.\n\n"
+            "**Unit impulse (delta) function** $\\delta(t)$:\n\n"
+            "$$\\delta(t) = \\dfrac{du(t)}{dt}, \\qquad \\int_{-\\infty}^{\\infty} \\delta(t) \\, dt = 1$$\n\n"
+            "An infinitely tall, infinitesimally narrow spike of unit area. Models an instantaneous "
+            "charge injection or a hammer-blow.\n\n"
+            "**Unit ramp function** $r(t)$:\n\n"
+            "$$r(t) = \\int_{-\\infty}^{t} u(\\tau) \\, d\\tau = t \\, u(t)$$\n\n"
+            "Linearly rising signal starting at $t = 0$. Models a linearly increasing voltage or "
+            "current.\n\n"
+            "**Relationships**:\n\n"
+            "$$\\dfrac{dr}{dt} = u, \\qquad \\dfrac{du}{dt} = \\delta$$\n\n"
+            "Each one is the derivative of the next. They're the building blocks of more complex "
+            "transient inputs."
+        ),
+    },
+    {
+        "id": "step-response-rc",
+        "title": "Step Response of an RC Circuit",
+        "body": (
+            "The **step response** is what happens when you apply a step input to a circuit that was "
+            "previously at some initial state. For an RC circuit driven by a step source $V_s \\cdot u(t)$, "
+            "the capacitor's voltage transitions from its initial value $V_0$ to its final steady-state "
+            "value $V_s$:\n\n"
+            "$$\\boxed{v_C(t) = V_f + (V_0 - V_f) \\, e^{-t/\\tau}}$$\n\n"
+            "for $t \\ge 0$, where $V_f = V_s$ is the final value and $V_0$ is the initial value.\n\n"
+            "**Three special cases**:\n\n"
+            "- $V_0 = 0, V_f = V_s$ → pure charging from zero: $v_C(t) = V_s(1 - e^{-t/\\tau})$.\n"
+            "- $V_0 = V_s, V_f = 0$ → pure discharging: $v_C(t) = V_s \\, e^{-t/\\tau}$.\n"
+            "- $V_0 \\ne 0, V_f \\ne 0$ → general transition between two non-zero levels.\n\n"
+            "**Decomposition into natural + forced response**:\n\n"
+            "The step response is the sum of the **natural response** (the circuit's tendency to "
+            "decay) and the **forced response** (steady-state value driven by the source):\n\n"
+            "$$v_C(t) = \\underbrace{V_f}_{\\text{forced}} + \\underbrace{(V_0 - V_f) e^{-t/\\tau}}_{\\text{natural}}$$\n\n"
+            "**Three steps to solve any step-response problem**:\n\n"
+            "1. Find the **initial value** $V_0 = v_C(0^-) = v_C(0^+)$ — capacitor voltage just before "
+            "(and so just after) switching.\n"
+            "2. Find the **final value** $V_f$ — capacitor voltage as $t \\to \\infty$ in the new "
+            "configuration (capacitor acts as open circuit at DC steady state).\n"
+            "3. Find the **time constant** $\\tau = RC$, using the Thévenin resistance seen from the "
+            "capacitor's terminals."
+        ),
+        "examples": [
+            {
+                "q": "A 1 µF capacitor is initially charged to 4 V. At $t = 0$ it is connected through 50 kΩ to a 10 V source. Find $v_C(t)$.",
+                "steps": [
+                    "Initial value: $V_0 = 4$ V (continuous across switching).",
+                    "Final value: $V_f = 10$ V (no current flows in steady state, all source voltage on C).",
+                    "Time constant: $\\tau = RC = 50\\,000 \\times 1 \\times 10^{-6} = 50$ ms = 0.05 s.",
+                    "$v_C(t) = V_f + (V_0 - V_f) e^{-t/\\tau}$",
+                    "$v_C(t) = 10 + (4 - 10) e^{-t/0.05}$"
+                ],
+                "answer": "$v_C(t) = 10 - 6 e^{-t/0.05}$ V, for $t \\ge 0$"
+            }
+        ],
+        "pitfalls": [
+            "Mixing up initial and final values. $V_0$ is just before switching (preserved by capacitor continuity); $V_f$ is the new steady state after switching.",
+            "Computing τ using the wrong resistance. After switching, find the Thévenin equivalent at the capacitor's terminals — that's the R for τ."
+        ],
+    },
+    {
+        "id": "applications-ch7",
+        "title": "Applications: Delay Circuits, Photoflash, Relays",
+        "body": (
+            "First-order RC behaviour shows up everywhere a known *delay* or *energy buildup* is "
+            "needed.\n\n"
+            "**Delay circuits**. A simple RC timer fires when the capacitor reaches a threshold "
+            "voltage. The delay time is determined by $\\tau = RC$. For example, a 555-timer in "
+            "monostable mode produces a pulse of duration $T \\approx 1.1 \\, RC$ — one pin samples the "
+            "rising capacitor voltage, fires when it hits 2/3 of supply, and resets.\n\n"
+            "**Camera photoflash**. A photoflash unit stores energy in a large capacitor (e.g. 250 µF "
+            "at 300 V → $W = \\frac{1}{2}CV^2 = 11.25$ J) and dumps that energy through a xenon flash "
+            "tube in roughly 1 ms. Peak power is enormous (~10 kW) even though the average power from "
+            "the small battery is modest. The capacitor stores slowly (over seconds) and releases "
+            "fast — energy-density transformation by time scaling.\n\n"
+            "**Relay drive circuits**. A capacitor in parallel with a relay coil provides a brief "
+            "current boost to ensure clean closure, then the steady-state current from the source "
+            "keeps the relay held. The capacitor also reduces contact bounce-induced switching noise.\n\n"
+            "**Automobile ignition**. The classical Kettering ignition system uses a capacitor "
+            "(condenser) to absorb the back-EMF from the ignition coil when the breaker points open, "
+            "preventing the points from arcing. The capacitor sees a sharp $dV/dt$ event each time the "
+            "coil's stored magnetic energy collapses — a classic transient.\n\n"
+            "**Why first-order analysis matters**: every one of these is solved with $v(t) = V_f + "
+            "(V_0 - V_f) e^{-t/\\tau}$. Master that single formula and a huge family of practical "
+            "circuits opens up."
+        ),
+    },
+]
+
+# Update the registry now that all 6 chapters are filled in.
+CHAPTERS_DATA = {
+    "ch1": CH1,
+    "ch2": CH2,
+    "ch3": CH3,
+    "ch4": CH4,
+    "ch6": CH6,
+    "ch7": CH7,
+}
+
+if __name__ == "__main__":
+    p = Path("knowledge-base/curriculum.json")
+    d = json.loads(p.read_text())
+    for c in d["chapters"]:
+        if c["id"] in CHAPTERS_DATA:
+            c["topics"] = CHAPTERS_DATA[c["id"]]
+    p.write_text(json.dumps(d, ensure_ascii=False, indent=2))
+    print(f"Updated {len(CHAPTERS_DATA)} chapters' topic bodies.")
+    for cid, topics in CHAPTERS_DATA.items():
+        print(f"  {cid}: {len(topics)} topics, total body chars = {sum(len(t['body']) for t in topics)}")

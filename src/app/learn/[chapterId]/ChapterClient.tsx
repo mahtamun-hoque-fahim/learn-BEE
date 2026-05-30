@@ -7,6 +7,7 @@ import { getRandomQuestions, type Question } from '@/lib/questions'
 import CircuitSimulator from '@/components/simulator/CircuitSimulator'
 import AnimatedSim from '@/components/simulator/animated/AnimatedSim'
 import { Tex, RichMath } from '@/components/math/Tex'
+import { Markdown } from '@/components/math/Markdown'
 
 interface Props {
   chapter: Chapter
@@ -160,6 +161,16 @@ export default function ChapterClient({ chapter, prev, next }: Props) {
 // ===== THEORY TAB =====
 function TheoryTab({ chapter, onComplete }: { chapter: Chapter; onComplete: () => void }) {
   const [readTopics, setReadTopics] = useState<Set<number>>(new Set())
+  const [expandedTopics, setExpandedTopics] = useState<Set<number>>(new Set())
+
+  function toggleExpanded(idx: number) {
+    setExpandedTopics(prev => {
+      const next = new Set(prev)
+      if (next.has(idx)) next.delete(idx)
+      else next.add(idx)
+      return next
+    })
+  }
 
   const toggleTopic = (idx: number) => {
     setReadTopics(prev => {
@@ -174,22 +185,89 @@ function TheoryTab({ chapter, onComplete }: { chapter: Chapter; onComplete: () =
   return (
     <div className="space-y-6">
       {/* Topics */}
-      <div className="bg-[#111] border border-[#222] rounded-xl p-6">
+      <div className="bg-[#111] border border-[#222] rounded-xl p-5 sm:p-6">
         <h3 className="font-syne font-semibold mb-4 text-[#888] text-sm uppercase tracking-wider">Topics Covered</h3>
         <div className="space-y-2">
-          {chapter.topics.map((topic, idx) => (
-            <label key={idx} className="flex items-start gap-3 p-3 rounded-lg hover:bg-[#1a1a1a] cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={readTopics.has(idx)}
-                onChange={() => toggleTopic(idx)}
-                className="mt-0.5 accent-[#00e676]"
-              />
-              <span className={`text-sm transition-colors ${readTopics.has(idx) ? 'line-through text-[#555]' : 'text-white'}`}>
-                {typeof topic === 'string' ? topic : (topic as { title: string }).title}
-              </span>
-            </label>
-          ))}
+          {chapter.topics.map((topic, idx) => {
+            const isString = typeof topic === 'string'
+            const t = isString ? null : (topic as { title: string; body?: string; examples?: Array<{ q: string; steps: string[]; answer: string }>; pitfalls?: string[] })
+            const title = isString ? (topic as string) : t!.title
+            const hasBody = !isString && (t!.body || (t!.examples?.length ?? 0) > 0 || (t!.pitfalls?.length ?? 0) > 0)
+            const isExpanded = expandedTopics.has(idx)
+            const isRead = readTopics.has(idx)
+
+            return (
+              <div key={idx} className="bg-[#0d0d0d] border border-[#1a1a1a] rounded-lg overflow-hidden">
+                {/* Header row — checkbox + title + chevron */}
+                <div className="flex items-center gap-3 p-3 group">
+                  <input
+                    type="checkbox"
+                    checked={isRead}
+                    onChange={() => toggleTopic(idx)}
+                    onClick={(e) => e.stopPropagation()}
+                    className="accent-[#00e676] flex-shrink-0"
+                    aria-label={`Mark ${title} as read`}
+                  />
+                  <button
+                    onClick={() => hasBody && toggleExpanded(idx)}
+                    className={`flex-1 text-left flex items-center gap-2 ${hasBody ? 'cursor-pointer' : 'cursor-default'}`}
+                    disabled={!hasBody}
+                  >
+                    <span className={`text-sm transition-colors ${isRead ? 'line-through text-[#555]' : 'text-white'}`}>
+                      {title}
+                    </span>
+                    {hasBody && (
+                      <span className={`ml-auto text-[#666] text-xs font-mono transition-transform ${isExpanded ? 'rotate-90' : ''}`}>
+                        ▶
+                      </span>
+                    )}
+                  </button>
+                </div>
+
+                {/* Expanded body */}
+                {hasBody && isExpanded && (
+                  <div className="px-4 pb-4 pt-1 border-t border-[#1a1a1a] bg-[#0a0a0a]">
+                    {t!.body && (
+                      <div className="pt-3">
+                        <Markdown source={t!.body} />
+                      </div>
+                    )}
+
+                    {(t!.examples?.length ?? 0) > 0 && (
+                      <div className="mt-4 space-y-3">
+                        <div className="text-xs font-mono uppercase tracking-wider text-[#00e676]">Solved Examples</div>
+                        {t!.examples!.map((ex, ei) => (
+                          <div key={ei} className="bg-[#0d0d0d] border border-[#222] rounded-lg p-3 text-sm">
+                            <div className="text-white mb-2 font-medium"><RichMath>{ex.q}</RichMath></div>
+                            <ol className="space-y-1 mb-2 list-decimal list-outside pl-5 marker:text-[#00e676] marker:font-mono">
+                              {ex.steps.map((s, si) => (
+                                <li key={si} className="text-[#ccc] pl-1"><RichMath>{s}</RichMath></li>
+                              ))}
+                            </ol>
+                            <div className="mt-2 pt-2 border-t border-[#1a1a1a] text-[#00e676] font-mono text-sm">
+                              <span className="text-[#666] mr-2 text-xs uppercase">Answer:</span>
+                              <RichMath>{ex.answer}</RichMath>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {(t!.pitfalls?.length ?? 0) > 0 && (
+                      <div className="mt-4">
+                        <div className="text-xs font-mono uppercase tracking-wider text-[#ffaa00] mb-2">Common Pitfalls</div>
+                        <ul className="space-y-1.5 list-disc list-outside pl-5 marker:text-[#ffaa00]">
+                          {t!.pitfalls!.map((p, pi) => (
+                            <li key={pi} className="text-[#ccc] text-sm"><RichMath>{p}</RichMath></li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
         <div className="mt-4 h-1 bg-[#1a1a1a] rounded">
           <div

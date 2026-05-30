@@ -1,3 +1,17 @@
+## ✅ Done in iteration #4 (2026-05-29)
+
+- [x] **Topic bodies authored** for all 6 in-scope chapters — ~40,000 chars of textbook-style prose, sourced from Sadiku & Boylestad.
+  - ch1: 8 topics  ·  ch2: 8 topics  ·  ch3: 7 topics  ·  ch4: 6 topics  ·  ch6: 6 topics  ·  ch7: 4 topics  →  **39 fully-bodied topics**
+  - Each topic carries `{title, body (markdown+LaTeX), examples[], pitfalls[]}`. Out-of-scope inductor/RL/op-amp topics dropped per `instruction.txt`.
+- [x] **Markdown renderer** (`src/components/math/Markdown.tsx`) — custom 130-line component with paragraphs / **bold** / bullets / numbered lists / tables and full LaTeX via `<RichMath>`. Replaces the need for `react-markdown` + plugins (would have added ~25 KB to the bundle).
+- [x] **Expandable topic accordion** in `ChapterClient`'s Theory tab — checkbox marks-as-read, chevron expands body/examples/pitfalls. Solved examples have green numbered steps; pitfalls have amber bulleted warnings.
+- [x] **Curriculum types** extended: `TopicBody`, `TopicExample` added to `lib/curriculum.ts`; `topics` is now `Array<string | TopicBody>` (back-compat preserved).
+- [x] **Authoring script** committed at `scripts/author_topics.py` — regenerates topic bodies from Python data. Future content edits happen there, not in the JSON.
+- [x] **472 / 472 math expressions** in topic bodies, examples, and pitfalls validated through KaTeX (0 failures, 0 warnings after cleaning `µF` inside `\text{}`).
+- [x] `npx next build` clean: 28 pages, no TypeScript errors.
+
+---
+
 # TODO — learn-BEE
 
 > Flat checklist of remaining work. `PLANNER.md` has the full context behind each item.
