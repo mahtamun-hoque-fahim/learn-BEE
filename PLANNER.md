@@ -1,7 +1,7 @@
 # PLANNER.md — learn-BEE
 
-> Living technical document. Updated whenever `update repo` is triggered.
-> Last updated: 2026-05-29
+> Living technical document. Refreshed on every `update repo`.
+> Last updated: 2026-05-29 (after iteration #3)
 
 ---
 
@@ -10,122 +10,200 @@
 | Field | Value |
 |---|---|
 | Project | learn-BEE |
-| Purpose | University-level Basic Electrical Engineering platform — theory, interactive simulators, quizzes, and certified completion for BGCTUB 2nd-semester students |
-| Target User | BGCTUB CSE/EEE undergraduates (2nd-semester BEE course); secondary: any university BEE student following Sadiku / Boylestad |
-| Key Value | Single source covering 19 chapters of BEE with LaTeX-typeset formulas, hands-on circuit simulators, randomised quizzes, mod-reviewed certificates with personalised quotes |
-| Status | 🔄 In Progress — LaTeX rollout complete; question bank expansion + chapters 15–19 content pending |
+| Purpose | University-level Basic Electrical Engineering platform for BGCTUB 2nd-semester students — animated theory, KaTeX-typeset formulas, per-chapter interactive simulators, randomised quizzes, exam-mode prep, and moderator-reviewed completion certificates |
+| Target User | BGCTUB CSE/EEE 2nd-semester undergrads; secondary: any BEE student following Sadiku 5th Ed. / Boylestad |
+| Key Value | Six in-scope chapters fully built with animated SVG simulators (current literally flows along the wires), 142 verified questions, instant cheat-sheet, exam-mode bonus prep matching the real BGCTUB exam structure |
+| Status | 🟢 Production-ready feature-complete for in-scope syllabus; deploy + remaining auxiliary features pending |
 | Repo | `https://github.com/mahtamun-hoque-fahim/learn-BEE` |
 | Live URL | _not yet deployed_ |
+| Build | `npx next build` passes clean (28 routes, 6 chapter pages SSG, full TypeScript) |
+
+---
+
+## Scope
+
+In-scope chapters (per `instruction.txt`, BGCTUB 2nd-semester syllabus):
+
+| ID | Title | Topics | Formulas | Questions |
+|---|---|---:|---:|---:|
+| ch1 | Basic Concepts                  | 8 | 5  | 28 |
+| ch2 | Basic Laws                      | 9 | 10 | 27 |
+| ch3 | Methods of Analysis             | 7 | 4  | 21 |
+| ch4 | Circuit Theorems                | 6 | 6  | 22 |
+| ch6 | Capacitors and Inductors        | 7 | 10 | 22 |
+| ch7 | First-Order Circuits (RC)       | 7 | 6  | 22 |
+| | **Totals**                          | **44** | **41** | **142** |
+
+Out-of-scope chapters (ch5 Op-Amps, ch8 Second-Order, ch9–ch19 AC/Laplace/Fourier/two-port) are marked `inScope: false` in `curriculum.json` and excluded from listings, `generateStaticParams`, and the bonus exam pool. ~34 legacy questions for those chapters remain in `lib/questions.ts` as reference material but never surface in UI.
 
 ---
 
 ## Architecture
 
 **Stack:**
-- Framework: Next.js 16 App Router (TypeScript), React 19
-- Styling: Tailwind CSS 4
-- Database: Neon (PostgreSQL) via Drizzle ORM (`drizzle-orm@^0.45`)
-- Auth: Clerk (`@clerk/nextjs@^7.3`)
-- Math typesetting: KaTeX (`katex@^0.16.22`) — server-rendered, no client JS needed
-- Charts: Recharts
-- PDF / canvas: jsPDF + html2canvas (used for certificate render)
-- Email: hand-rolled `lib/email/send.ts`
-- Deployment: target Vercel (per Fahim defaults; not yet configured)
+- Framework: **Next.js 16.2** App Router (TypeScript), **React 19.2**
+- Styling: **Tailwind CSS 4**
+- Database: **Neon (PostgreSQL)** via **Drizzle ORM** (`drizzle-orm@^0.45`)
+- Auth: **Clerk** (`@clerk/nextjs@^7.3`)
+- Math typesetting: **KaTeX** (`katex@^0.16.22`) — server-rendered, no client JS for math
+- Charts: **Recharts** (`^3.8`); custom SVG primitives for animated circuits
+- PDF / canvas: **jsPDF** + **html2canvas** (certificate render)
+- Email: hand-rolled `lib/email/send.ts` (Resend-compatible; falls back to `console.log` if `RESEND_API_KEY` unset)
+- Deployment target: Vercel (per Fahim defaults; not yet configured)
 
 **Folder Structure:**
 ```
 /
-├── knowledge-base/                  # Single source of truth for content
-│   ├── curriculum.json              # 19 chapters, key_formulas now in LaTeX
-│   ├── question-bank.json           # Mirrors lib/questions.ts (JSON, not yet wired as primary)
-│   ├── simulators.json              # Per-chapter simulator demo definitions
-│   └── cheat-sheet.md               # Aggregated formulas for the cheat-sheet page
+├── knowledge-base/                    # Content single-source-of-truth
+│   ├── curriculum.json                # 19 chapters; key_formulas in LaTeX (+ formula_ascii fallback); inScope flag
+│   ├── question-bank.json             # JSON mirror — valid (line comments stripped iter#3)
+│   ├── simulators.json                # Per-chapter simulator metadata
+│   └── cheat-sheet.md                 # Reference; live page now driven from curriculum.json
 │
 ├── src/
-│   ├── app/                         # Next.js routes
-│   │   ├── page.tsx                 # Landing page
-│   │   ├── layout.tsx               # Root layout — imports katex CSS once
-│   │   ├── learn/page.tsx           # Chapter index
+│   ├── app/                           # Next.js routes
+│   │   ├── page.tsx                   # Landing — shows only in-scope chapters
+│   │   ├── layout.tsx                 # Root layout (imports katex.min.css once)
+│   │   ├── learn/page.tsx             # Chapter index + quick-nav (Search · Cheat sheet · Exam prep)
 │   │   ├── learn/[chapterId]/
-│   │   │   ├── page.tsx             # Server component (data fetch)
-│   │   │   └── ChapterClient.tsx    # Tabs: Theory / Simulator / Quiz; renders LaTeX
-│   │   ├── dashboard/               # Student progress dashboard
-│   │   ├── bonus/                   # Bonus-problems exam-prep page
-│   │   ├── certificate/             # Certificate generator
-│   │   ├── admin/                   # Admin pages (quote management, approvals)
-│   │   ├── mod/                     # Moderator review queue
-│   │   └── api/                     # API routes (admin, mod, progress, quiz, certificate, bonus)
+│   │   │   ├── page.tsx               # Server component; generateStaticParams = in-scope only
+│   │   │   └── ChapterClient.tsx      # Theory / Simulator / Quiz tabs; all math via RichMath
+│   │   ├── cheat-sheet/               # All formulas, KaTeX, real-time search
+│   │   │   ├── page.tsx
+│   │   │   └── CheatSheetClient.tsx
+│   │   ├── search/page.tsx            # Unified search (chapters/topics/formulas/questions)
+│   │   ├── bonus/                     # Exam prep — five modes (midterm/final/CT1/CT2/full)
+│   │   │   ├── page.tsx
+│   │   │   └── BonusClient.tsx
+│   │   ├── dashboard/                 # Student progress
+│   │   ├── certificate/               # Certificate generator
+│   │   ├── admin/                     # Admin (quote management, approvals)
+│   │   ├── mod/                       # Moderator review queue
+│   │   └── api/                       # API routes
 │   │
 │   ├── components/
-│   │   ├── math/Tex.tsx             # ⭐ KaTeX wrapper + RichMath auto-detect prose/math
-│   │   └── simulator/CircuitSimulator.tsx
+│   │   ├── math/Tex.tsx               # ⭐ Tex (KaTeX server-render) + RichMath (auto-detect mixed prose+math)
+│   │   └── simulator/
+│   │       ├── CircuitSimulator.tsx   # Legacy fallback (unused for in-scope chapters)
+│   │       └── animated/              # ⭐ Per-chapter animated SVG sims
+│   │           ├── primitives.tsx     # AnimatedWire (stroke-dashoffset flow), Capacitor, Resistor,
+│   │           │                      # Battery, Lamp, CurrentArrow, Slider, Readout, CircuitAnimStyles
+│   │           ├── AnimatedSim.tsx    # Dispatcher: chapterId → simulator component (lazy-loaded)
+│   │           ├── Ch1BasicCircuitSim.tsx    # Lamp + battery + switch; brightness ∝ V·i
+│   │           ├── Ch2DividerSim.tsx         # Voltage divider with KVL bar gauge
+│   │           ├── Ch3NodalSim.tsx           # Two-source nodal solver; arrows flip with sign
+│   │           ├── Ch4TheveninSim.tsx        # Thévenin equivalent + max-power transfer curve
+│   │           ├── Ch6CapacitorSim.tsx       # Series/parallel cap combiner + energy split
+│   │           └── Ch7RCTransientSim.tsx     # Real-time RC charging/discharging with run/pause/reset
 │   │
 │   └── lib/
-│       ├── curriculum.ts            # Types + JSON loader (single source of truth)
-│       ├── questions.ts             # Question bank (TS; 81 verified questions across ch1–ch14)
-│       ├── auth-helpers.ts          # Clerk session helpers
-│       ├── db/{index,schema}.ts     # Drizzle client + schema
-│       └── email/send.ts            # Email sender
+│       ├── curriculum.ts              # JSON loader + types + IN_SCOPE_IDS + TOTAL_CHAPTERS
+│       ├── questions.ts               # Question bank + getRandomQuestions + getBonusQuestions(count, mode)
+│       ├── search.ts                  # Client-side full-text index across curriculum + questions
+│       ├── auth-helpers.ts            # Clerk session helpers
+│       ├── db/{index,schema}.ts       # Drizzle client + 8-table schema
+│       └── email/send.ts              # Outbound email
 │
-├── public/
-├── AGENTS.md                        # "This is NOT the Next.js you know" — caution flag
-├── CLAUDE.md                        # → @AGENTS.md
-├── PLANNER.md                       # This file
-├── DESIGN_GUIDE.md                  # Design tokens
-└── README.md                        # Lean dev setup
+├── public/                            # Static assets
+├── .env.example                       # All env vars with placeholders
+├── AGENTS.md                          # "This is NOT the Next.js you know"
+├── CLAUDE.md                          # → @AGENTS.md
+├── PLANNER.md                         # ⬅ this file
+├── DESIGN_GUIDE.md                    # Design system
+├── README.md                          # Lean dev setup
+└── TODO.md                            # Flat checklist
 ```
+
+---
+
+## Math Rendering (cross-cutting)
+
+All formulas, options, answers, and explanations on `/learn/*`, `/bonus`, `/cheat-sheet`, `/search` route through `<RichMath>` or `<Tex>` from `src/components/math/Tex.tsx`.
+
+- **`<Tex>`** — server-rendered KaTeX; pass `block` for display math.
+- **`<RichMath>`** — for mixed prose. Detects explicit `$…$` and `$$…$$` delimiters; falls back to whole-string auto-conversion via `asciiToLatex` for any string containing unicode math glyphs (`Ω`, `ρ`, `×`, `²`, `⁻¹⁹`, etc.) or LaTeX commands. Plain text is returned untouched.
+- KaTeX CSS imported once in `src/app/layout.tsx`. No client-side bundle cost for math.
+
+The 41 key formulas in `curriculum.json` are stored as KaTeX-ready LaTeX in `formula`, with the original ASCII preserved in `formula_ascii` for accessibility and tooltip-hover. Audit: 360/360 strings in the question bank render either as plain text (~56%) or correct math (~44%) — **zero failures**.
+
+---
+
+## Animated Simulators
+
+Built on `src/components/simulator/animated/primitives.tsx`. The visual signature is `<AnimatedWire>` — two stacked SVG paths, the upper one with `stroke-dasharray` and a CSS `@keyframes bee-flow` that animates `stroke-dashoffset`. Result: dashed segments **literally flow along the wire**, speed inversely proportional to `1/|I|`, direction set by current sign. When current ≈ 0 the overlay fades to invisible.
+
+Other primitives:
+- `Capacitor` — plate-fill opacity ∝ charge (`v/Vs`)
+- `Lamp` — brightness halo with `bee-glow` pulse keyframe when powered
+- `Battery`, `Resistor` (h or v), `CurrentArrow`, `NodeDot`
+- `Slider`, `Readout` for control panels
+
+The reference quality bar is **Ch7 RC Transient**: real-time clock (Run/Pause/Reset), scrubbable `t`, current animation speed bound to the actual exponential equation `(Vs/R)·e^(−t/τ)`, capacitor plates filling to `v_C(t)/Vs`, dual `v(t)` and `i(t)` plots with a moving dot, τ markers at 1τ through 5τ.
 
 ---
 
 ## User Flows
 
-### Flow 1: Student takes a chapter
-1. Visits `/learn` and picks a chapter (`/learn/ch7` etc.).
-2. Lands on Theory tab — checks off topics; reads LaTeX-typeset key formulas.
-3. Switches to Simulator tab — runs the per-chapter circuit demo (currently a generic `CircuitSimulator`; per-chapter wiring is a future step).
-4. Switches to Quiz tab — answers randomised MCQ / numerical / fill-blank from `lib/questions.ts`; explanation reveals on submit.
+### Flow 1: Student studies a chapter
+1. `/learn` → pick an in-scope chapter (`/learn/ch7` etc.). Out-of-scope IDs return 404.
+2. Theory tab — formulas render via KaTeX; topics can be ticked off (client-side).
+3. Simulator tab — runs the per-chapter animated SVG demo from `AnimatedSim` (lazy-loaded).
+4. Quiz tab — randomised questions from `getRandomQuestions(chapterId, n)`; instant feedback + LaTeX-typeset explanation on submit.
 5. Progress persists via `/api/progress` (Clerk session → Drizzle `user_progress`).
-6. After all 19 chapters complete + bonus + cert-registration → eligible for certificate.
 
-### Flow 2: Certificate request (moderator-gated)
-1. Student finishes everything → `/certificate` page.
-2. Submits a cert registration (`cert_registrations` row, status `pending_mod_review`).
-3. Moderator sees it in `/mod`, can approve / reject / add notes (`/api/mod/submissions`).
-4. Admin assigns a quote (custom or from `default_quotes` pool keyed by gender) (`/api/admin/quotes`, `/api/admin/approve`).
-5. Approved certificate becomes downloadable (`/api/certificate` → jsPDF + html2canvas).
+### Flow 2: Exam preparation
+1. `/bonus` shows five preset cards.
 
-### Flow 3: Exam prep
-1. `/bonus` page — bonus problems for midterm (chapters before super-node) / final (super-node onward) / 2 CTs.
-2. Admin can upload previous-year question PDFs (planned — drag-drop, not yet built).
-3. After bonus complete → cheat-sheet page surfaces aggregated formulas.
+   | Mode | Pool | Marks | Q | Time |
+   |---|---|---:|---:|---:|
+   | Midterm    | Ch1, Ch2, Ch3  | 20 | 15 | 90 min |
+   | Final term | Ch4, Ch6, Ch7  | 50 | 25 | 180 min |
+   | CT-1       | Midterm pool   | 10 |  8 | 30 min |
+   | CT-2       | Final pool     | 10 |  8 | 30 min |
+   | Full mock  | All in-scope   |  — | 20 | 150 min |
+
+2. Each card has Practice (per-question feedback) and Timed (countdown clock) entries.
+3. Score, breakdown, and per-question review at the end, all KaTeX-rendered.
+
+### Flow 3: Certificate request (moderator-gated)
+1. Eligible student visits `/certificate` after completing all 6 in-scope chapters + bonus.
+2. Form posts to `/api/certificate` → inserts a `cert_registrations` row (status `pending`).
+3. Moderator reviews at `/mod` → `/api/mod/submissions[/id]`. Approve, reject, or request changes.
+4. Admin assigns a quote (custom or auto-picked from `default_quotes` pool keyed by gender) via `/api/admin/approve`.
+5. Approved students download via `/api/certificate` (jsPDF render).
+
+### Flow 4: Cheat-sheet & search
+1. `/cheat-sheet` shows all 41 formulas grouped by chapter, KaTeX-rendered, with sticky search input.
+2. `/search` provides unified search across chapter titles, topics, formulas, and questions. Grouped results, click-through to source.
 
 ---
 
 ## DB Schema
 
-> Drizzle ORM format. Existing tables in `src/lib/db/schema.ts`:
+Drizzle (PostgreSQL). All defined in `src/lib/db/schema.ts`.
 
-```ts
-roleEnum                    // 'student' | 'moderator' | 'admin'
-genderEnum                  // 'male' | 'female' | 'other'
-certStatusEnum              // 'pending_mod_review' | 'pending_admin_quote' | 'approved' | 'rejected'
+```
+roleEnum            'student' | 'moderator' | 'admin'
+genderEnum          'male' | 'female' | 'other'
+certStatusEnum      'pending_mod_review' | 'pending_admin_quote' | 'approved' | 'rejected'
 
-users                       // Clerk-linked profile (name, gender, role, etc.)
-userProgress                // (userId, chapterId, completed, quizScore, theoryRead, simRan, updatedAt)
-quizAttempts                // (userId, chapterId, score, total, durationMs, createdAt)
-bonusAttempts               // Exam-prep attempts
-certRegistrations           // ⭐ Certificate request lifecycle
-defaultQuotes               // Pool of motivational quotes keyed by gender
-emailLog                    // Outbound email audit
-adminSettings               // K/V config
+users               Clerk-linked profile (name, gender, role, ...)
+userProgress        (userId, chapterId, completed, quizScore, theoryRead, simRan, updatedAt)
+quizAttempts        (userId, chapterId, score, total, durationMs, createdAt)
+bonusAttempts       Exam-prep attempts (mode, score, total, createdAt)
+certRegistrations   Certificate request lifecycle — includes studentName, university,
+                    department, semester, gender, adminCustomQuote, finalQuote,
+                    bonusScore, chaptersCompleted, status, reviewedBy, approvedBy
+defaultQuotes       (quote, gender, isActive, addedBy, createdAt) — pool keyed by gender + 'all'
+emailLog            (registrationId, recipient, type, sentAt)
+adminSettings       k/v config
 
-// Compat aliases (older routes import these names):
+Backward-compat aliases (older imports):
 certificates  → certRegistrations
 adminQuotes   → defaultQuotes
 ```
 
-**Known issue (carried from prior session):**
-`src/app/api/certificate/route.ts` inserts into `certificates` with fields (`userId`, `quote`, `semester`) that do not exist on `certRegistrations`. Route currently does not type-check. Needs either a schema migration adding those columns, or the route rewritten against the existing column set. See *Next Steps*.
+Migrations: currently using `drizzle-kit push` (no migration history). Switching to `generate` is on TODO.
 
 ---
 
@@ -134,12 +212,12 @@ adminQuotes   → defaultQuotes
 | Method | Path | Auth | Description |
 |---|---|---|---|
 | GET / POST | `/api/progress` | Clerk | Read / upsert per-chapter progress |
-| GET / POST | `/api/quiz` | Clerk | Submit quiz attempts, retrieve history |
-| GET / POST | `/api/bonus` | Clerk | Bonus-problem attempts |
+| GET / POST | `/api/quiz` | Clerk | Submit quiz attempts; retrieve history |
+| GET / POST | `/api/bonus` | Clerk | Bonus-problem attempts (mode-aware) |
 | POST | `/api/cert-registration` | Clerk | Student submits cert registration |
-| GET | `/api/certificate` | Clerk | Generate / download approved certificate (⚠️ broken — see schema issue) |
-| GET / POST | `/api/mod/submissions` | Moderator | Review queue |
-| GET / PUT | `/api/mod/submissions/[id]` | Moderator | Approve / reject single submission |
+| GET / POST | `/api/certificate` | Clerk | Read / create cert; jsPDF render on GET (rewritten iter#2 to match real schema) |
+| GET | `/api/mod/submissions` | Moderator | Review queue |
+| GET / PATCH | `/api/mod/submissions/[id]` | Moderator | Approve / reject / request changes (params upgraded to `Promise<{id}>` per Next 16) |
 | GET / POST | `/api/admin/quotes` | Admin | Manage motivational quote pool |
 | POST | `/api/admin/approve` | Admin | Final admin approval + quote assignment |
 | POST | `/api/admin/reject` | Admin | Final admin rejection |
@@ -148,54 +226,48 @@ adminQuotes   → defaultQuotes
 
 ## Env Vars
 
-| Variable | Required | Description | Example |
-|---|---|---|---|
-| `DATABASE_URL` | ✅ | Neon PostgreSQL connection string | `postgresql://…@…neon.tech/learnbee?sslmode=require` |
-| `NEXT_PUBLIC_APP_URL` | ✅ | Public base URL | `https://learnbee.vercel.app` |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | ✅ | Clerk frontend key | `pk_test_…` |
-| `CLERK_SECRET_KEY` | ✅ | Clerk backend secret | `sk_test_…` |
-| `RESEND_API_KEY` | ⚠️ Optional | Outbound email (only if `lib/email/send.ts` is wired to Resend) | — |
+| Variable | Required | Description |
+|---|---|---|
+| `DATABASE_URL` | ✅ | Neon PostgreSQL connection string |
+| `NEXT_PUBLIC_APP_URL` | ✅ | Public base URL (no trailing slash) |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | ✅ | Clerk frontend key |
+| `CLERK_SECRET_KEY` | ✅ | Clerk backend secret |
+| `RESEND_API_KEY` | ⚠️ Optional | Outbound email; falls back to `console.log` if unset |
 
-> Full `.env.example` not yet committed — TODO.
+All listed in `.env.example`.
+
+---
+
+## Build & Routes
+
+`npx next build` produces **28 routes**, all clean:
+- Static (`○`): all marketing pages, `/cheat-sheet`, `/search`, `/bonus`, `/certificate`, `/admin*`, `/mod`.
+- SSG with `generateStaticParams` (`●`): the 6 in-scope chapter pages.
+- Dynamic server-rendered (`ƒ`): all `/api/*` routes plus `/dashboard`.
 
 ---
 
 ## Phases & Timeline
 
-| Phase | Name | Status | Key Tasks |
+| Phase | Name | Status | Notes |
 |---|---|---|---|
-| 1 | Foundation (repo, schema, routes scaffolded) | ✅ | Next.js 16 + Clerk + Drizzle + Neon; 19-chapter curriculum scaffolded |
-| 2 | Content layer single-source-of-truth | ✅ | `lib/curriculum.ts` now imports `knowledge-base/curriculum.json` (no duplication) |
-| 3 | **LaTeX rollout** (this PR) | ✅ | KaTeX server-render component; 114 formulas converted with KaTeX validation; auto-detection wraps math in question bank prose |
-| 4 | Question bank expansion | ⏳ | 81 / target 500+ verified questions; ch15–ch19 have 0 |
-| 5 | Per-chapter simulators | ⏳ | Currently one generic `CircuitSimulator`; need per-topic demos (RC transient, KVL/KCL solver, mesh/nodal, phasor, etc.) |
-| 6 | Admin PDF drag-drop for past papers | ⏳ | Spec mentions admin uploads PDFs; not built |
-| 7 | Cheat-sheet auto-generation | 🔄 | `cheat-sheet.md` exists, not yet wired as a page consuming `curriculum.json` |
-| 8 | Certificate route bug fix | ⏳ | Schema/route mismatch (see DB Schema known issue) |
-| 9 | Deploy + smoke test | ⏳ | Vercel project + Neon prod DB |
-
----
-
-## Next Steps
-
-> Ordered by priority. Rewritten fresh on each `update repo`.
-
-1. [ ] **Fix `api/certificate/route.ts` schema mismatch** — decide: extend `certRegistrations` with `quote` and `semester` columns (Drizzle migration), or rewrite the route to use existing columns. Blocking certificate download flow.
-2. [ ] **Reconcile question source** — `question-bank.json` and `lib/questions.ts` both exist; the JSON has invalid `//` comments. Pick one as canonical; the JSON path is cleaner if we want admin-edited questions.
-3. [ ] **Expand question bank to chapters 15–19** (Laplace, Fourier, two-port) — currently 0 questions; need ~25 per chapter minimum.
-4. [ ] **Per-chapter simulator demos** — author RC charging/discharging, KVL/KCL solver, mesh-current solver, source-transformation, Thevenin/Norton equivalent finder, RLC second-order, phasor calculator, power-triangle.
-5. [ ] **Wire cheat-sheet page** — `/cheat-sheet` route that consumes `curriculum.json` and renders all key_formulas with KaTeX.
-6. [ ] **Admin past-paper PDF drag-drop** — `S3`/`R2` upload + a `past_papers` table; show on `/bonus`.
-7. [ ] **Replace `defaultTopics: string[]` with rich topic objects** in `curriculum.json` so each topic carries `body` (markdown w/ LaTeX), `examples`, `pitfalls` — currently topics are just titles.
-8. [ ] **Commit `.env.example`** with all variables listed above.
-9. [ ] **Deploy preview to Vercel** + connect Neon production branch.
+| 1 | Foundation — Next.js + schema + scaffolding | ✅ | Prior session |
+| 2 | Content single-source-of-truth | ✅ | `lib/curriculum.ts` imports JSON |
+| 3 | LaTeX (KaTeX) rollout | ✅ | Iteration #1 (`feat/latex-throughout`) |
+| 4 | Scope filter + animated simulators + question bank | ✅ | Iteration #2 (`feat/scope-and-simulators`) |
+| 5 | Cheat-sheet · search · exam modes · env · JSON cleanup | ✅ | Iteration #3 (`feat/cheatsheet-search-polish`) |
+| 6 | Deploy (Vercel + Neon prod branch) | ⏳ | Next priority |
+| 7 | Auxiliary features (bookmarks, streaks, weak-area recs, admin PDF upload) | ⏳ | Decisions needed per item |
 
 ---
 
 ## Notes / Decisions Log
 
-- **2026-05-29** — LaTeX rollout chose **KaTeX server-render** over MathJax/client-side render. Reasons: zero client JS for math (faster), works in Server Components and Client Components alike (`katex.renderToString` is pure), and `react-katex` adds 30KB for what amounts to a one-line wrapper.
-- **2026-05-29** — `curriculum.ts` rewritten to import from `knowledge-base/curriculum.json` instead of inlining a duplicate copy. Single source of truth.
-- **2026-05-29** — `RichMath` component does **auto-detection**: explicit `$...$` and `$$...$$`, plus a fallback that detects unicode math glyphs and auto-converts ASCII to LaTeX. Tested across all 360 strings in the question bank — 100% render either as plain text or correct math.
-- **2026-05-29** — Hand-curated LaTeX for ~30 formulas where heuristic auto-conversion lost meaning (matrix forms for Z/T parameters, Fourier sums with limits, `\sqrt{LC}`, `V_{Th}^{2}/(4R_{Th})`, etc.). Kept original ASCII in `formula_ascii` field for accessibility/fallback.
-- **2026-05-29** — Pre-existing PAT in `instruction.txt` (`ghp_K5Lq…`) returned HTTP 401 against GitHub API. Push attempt deferred until a new fine-grained PAT is provided.
+- **2026-05-29 (iter #3)** — Bonus exam modes derived directly from the BGCTUB exam structure in `instruction.txt`: Midterm covers ch1–ch3 ("beginning → supernode"), Final covers ch4/6/7 ("supernode onward"). CT-1 and CT-2 mirror those syllabuses with 10-mark / 8-question / 30-min sessions.
+- **2026-05-29 (iter #3)** — `/cheat-sheet` and `/search` are **static** pages — index is built client-side from the bundled JSON, so no server round-trip per keystroke.
+- **2026-05-29 (iter #2)** — Animated wires use `stroke-dashoffset` **CSS** animation, not JS `requestAnimationFrame`, so they run smoothly on mobile and pause when the tab is backgrounded.
+- **2026-05-29 (iter #2)** — Out-of-scope chapters kept in `curriculum.json` (and ~34 legacy questions kept in `lib/questions.ts`) instead of being deleted, so the file remains a complete BEE reference even though only 6 chapters surface in the UI.
+- **2026-05-29 (iter #1)** — KaTeX server-render chosen over MathJax/client-side: zero client JS for math, works in Server and Client Components alike. Pre-converted all 41 in-scope formulas to LaTeX with KaTeX validation; hand-curated the ones where heuristics would lose meaning (matrices, Fourier sums, `√(LC)`, etc.).
+- **2026-05-29 (iter #1)** — `lib/curriculum.ts` rewritten to import from `knowledge-base/curriculum.json` instead of inlining a duplicate.
+- **Pre-existing bug fixes in passing**: `api/certificate/route.ts` rewritten against real schema; `api/mod/submissions/[id]/route.ts` upgraded to Next 16's `params: Promise<...>`; `StudentDashboard` curriculum.filter bug; nullable `curriculum.parts`.
+- **Security**: GitHub PAT in `instruction.txt` (`ghp_K5Lq…`) returned HTTP 401 — pre-rotated. Subsequent PATs used in chat have been single-use; rotation after each merge is recommended.
