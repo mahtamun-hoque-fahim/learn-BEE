@@ -1,30 +1,42 @@
 import type { Metadata } from 'next'
-import { Syne, Onest } from 'next/font/google'
+import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import 'katex/dist/katex.min.css'
+import { ThemeProvider } from '@/components/design/ThemeProvider'
 
-const syne = Syne({
+const display = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-syne',
-  weight: ['400', '600', '700', '800'],
+  variable: '--font-display',
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
 })
 
-const onest = Onest({
+const sans = Inter({
   subsets: ['latin'],
-  variable: '--font-onest',
+  variable: '--font-sans',
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+})
+
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
   weight: ['400', '500', '600'],
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'learn·BEE — Basic Electrical Engineering',
-  description: 'University-level BEE course: interactive theory, circuit simulators, quizzes, and certificates.',
+  title: 'learnBEE — Basic Electrical Engineering, BGCTUB 45th',
+  description: 'Lecture notes, lab manuals, past papers, animated simulators and exam-ready quizzes for the 2nd-semester BEE course at BGCTUB.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${syne.variable} ${onest.variable}`}>
-      <body className="min-h-screen bg-[#0a0a0a] text-white antialiased">
-        {children}
+    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+      <body>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )
