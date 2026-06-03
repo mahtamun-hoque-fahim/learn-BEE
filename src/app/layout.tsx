@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import 'katex/dist/katex.min.css'
-import { ThemeProvider } from '@/components/design/ThemeProvider'
+import { ThemeProvider, themeInitScript } from '@/components/design/ThemeProvider'
 
 const display = Space_Grotesk({
   subsets: ['latin'],
@@ -33,6 +33,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Blocking script — set data-theme on <html> before paint so dark-OS users don't see a light flash. */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body>
         <ThemeProvider>
           {children}

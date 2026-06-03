@@ -9,25 +9,45 @@ const ThemeCtx = createContext<{
   toggle: () => void
 }>({ theme: 'light', toggle: () => {} })
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // Defer reading localStorage until after mount to avoid SSR/CSR mismatch.
-  const [theme, setTheme] = useState<Theme>('light')
+/**
+ * Blocking inline script that runs *before* React hydrates so the first paint
+ * already has the right theme — no light-flash on dark-OS users.
+ * Logic mirrors ThemeProvider's mount effect.
+ */
+export const themeInitScript = `
+(function() {
+  try {
+    var saved = localStorage.getItem('learnbee.theme');
+    var theme = (saved === 'dark' || saved === 'light')
+      ? saved
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+`
 
-  // On mount, read saved theme + apply
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  // We assume the inline script already set data-theme on <html>. Mirror it here.
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof document === 'undefined') return 'light'
+    const attr = document.documentElement.getAttribute('data-theme')
+    return attr === 'dark' ? 'dark' : 'light'
+  })
+
+  // Track system preference changes when user hasn't explicitly chosen a theme
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('learnbee.theme')
-      if (saved === 'dark' || saved === 'light') {
-        setTheme(saved)
-        document.documentElement.setAttribute('data-theme', saved)
-        return
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    const handler = (e: MediaQueryListEvent) => {
+      let saved = null
+      try { saved = localStorage.getItem('learnbee.theme') } catch {}
+      if (saved !== 'light' && saved !== 'dark') {
+        const next: Theme = e.matches ? 'dark' : 'light'
+        setTheme(next)
+        document.documentElement.setAttribute('data-theme', next)
       }
-    } catch {}
-    // No saved value → respect system preference, default light otherwise
-    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches
-    const initial: Theme = prefersDark ? 'dark' : 'light'
-    setTheme(initial)
-    document.documentElement.setAttribute('data-theme', initial)
+    }
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
   }, [])
 
   const toggle = useCallback(() => {

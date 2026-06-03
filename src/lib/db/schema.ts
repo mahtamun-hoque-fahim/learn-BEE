@@ -169,6 +169,79 @@ export const adminSettings = pgTable('admin_settings', {
 })
 
 
+// ─── Content collections (admin/staff-managed: lectures, labs, papers, books) ──
+
+export const lectureTypeEnum = pgEnum('lecture_type', ['Lecture', 'Tutorial', 'Review'])
+export const lectureExtEnum  = pgEnum('lecture_ext',  ['PDF', 'PPT', 'DOC'])
+export const paperTypeEnum   = pgEnum('paper_type',   ['Midterm', 'Final', 'CT', 'Quiz'])
+export const bookTagEnum     = pgEnum('book_tag',     ['Primary', 'Reference', 'Optional'])
+
+export const lectures = pgTable('lectures', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  /** Chapter id (e.g. 'ch1'). Free-form so we don't have to FK the in-memory curriculum. */
+  chapterId: text('chapter_id').notNull(),
+  title: text('title').notNull(),
+  date: text('date'),               // 'Jan 14'
+  duration: text('duration'),       // '42 min'
+  type: lectureTypeEnum('type').default('Lecture').notNull(),
+  pages: integer('pages').default(0),
+  ext: lectureExtEnum('ext').default('PDF').notNull(),
+  fileUrl: text('file_url'),
+  videoUrl: text('video_url'),
+  sortOrder: integer('sort_order').default(0).notNull(),
+  createdBy: text('created_by'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})
+
+export const labs = pgTable('labs', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  /** Lab number as a string so '01' renders correctly. */
+  number: text('number').notNull(),
+  title: text('title').notNull(),
+  hasVideo: boolean('has_video').default(false).notNull(),
+  hasManual: boolean('has_manual').default(false).notNull(),
+  contributor: text('contributor'),
+  videoLength: text('video_length'),   // '06:24' or '—'
+  videoUrl: text('video_url'),
+  manualUrl: text('manual_url'),
+  sortOrder: integer('sort_order').default(0).notNull(),
+  createdBy: text('created_by'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})
+
+export const papers = pgTable('papers', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  title: text('title').notNull(),
+  session: text('session'),         // 'Spring 2024'
+  type: paperTypeEnum('type').default('Midterm').notNull(),
+  pages: integer('pages').default(0),
+  qCount: integer('q_count').default(0),
+  fileUrl: text('file_url'),
+  sortOrder: integer('sort_order').default(0).notNull(),
+  createdBy: text('created_by'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})
+
+export const books = pgTable('books', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  title: text('title').notNull(),
+  author: text('author').notNull(),
+  edition: text('edition'),
+  tag: bookTagEnum('tag').default('Primary').notNull(),
+  note: text('note'),
+  swatch: text('swatch').default('#1F3A5F').notNull(),
+  externalUrl: text('external_url'),
+  coverUrl: text('cover_url'),
+  sortOrder: integer('sort_order').default(0).notNull(),
+  createdBy: text('created_by'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})
+
+
 
 // ─── Backward-compat aliases (pre-existing route imports) ─────────────────
 export const certificates = certRegistrations

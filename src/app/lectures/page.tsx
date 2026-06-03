@@ -1,13 +1,18 @@
 import { Nav } from '@/components/design/Nav'
 import { Footer } from '@/components/design/Footer'
 import { SectionHeader } from '@/components/design/SectionHeader'
-import { LECTURES } from '@/lib/landing-data'
+import { getLectures } from '@/lib/content-public'
+import { LECTURES as SEED_LECTURES } from '@/lib/landing-data'
 import { inScopeChapters } from '@/lib/curriculum'
 import LecturesClient from './LecturesClient'
 
 export const metadata = { title: 'Lectures — learnBEE' }
 
-export default function LecturesPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function LecturesPage() {
+  const LECTURES = await getLectures()
+  const isSeed = LECTURES === SEED_LECTURES
   const totalDur = LECTURES.reduce((s, l) => {
     const m = parseInt(l.duration)
     return s + (isFinite(m) ? m : 0)
@@ -31,7 +36,7 @@ export default function LecturesPage() {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 24 }}>
               <span className="pill">{LECTURES.length} lectures</span>
               <span className="pill">~{Math.round(totalDur / 60)} hrs of video</span>
-              <span className="pill warn">Sample data — replace with real links</span>
+              {isSeed && <span className="pill warn">Sample data — admin can add real entries</span>}
             </div>
 
             <LecturesClient lectures={LECTURES} chapterTitleById={chapterTitleById} />

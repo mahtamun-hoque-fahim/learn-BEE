@@ -3,7 +3,8 @@ import { Nav } from '@/components/design/Nav'
 import { Footer } from '@/components/design/Footer'
 import { SectionHeader } from '@/components/design/SectionHeader'
 import { Icon } from '@/components/design/icons'
-import { PAPERS, type Paper } from '@/lib/landing-data'
+import { getPapers } from '@/lib/content-public'
+import { PAPERS as SEED_PAPERS, type Paper } from '@/lib/landing-data'
 
 export const metadata = { title: 'Past papers — learnBEE' }
 
@@ -16,7 +17,11 @@ const TYPE_BLURB: Record<Paper['type'], string> = {
   Quiz:    'Compiled quizzes from past lecture sessions. Useful for warm-ups.',
 }
 
-export default function PapersPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function PapersPage() {
+  const PAPERS = await getPapers()
+  const isSeed = PAPERS === SEED_PAPERS
   const groups = TYPE_ORDER.map(type => ({
     type,
     items: PAPERS.filter(p => p.type === type),
@@ -52,7 +57,7 @@ export default function PapersPage() {
               <span className="pill">{PAPERS.filter(p => p.type === 'Final').length} finals</span>
               <span className="pill">{PAPERS.filter(p => p.type === 'CT').length} CTs</span>
               <span className="pill">{PAPERS.filter(p => p.type === 'Quiz').length} quiz banks</span>
-              <span className="pill warn">Sample data — replace with real PDFs</span>
+              {isSeed && <span className="pill warn">Sample data — admin can add real PDFs</span>}
             </div>
 
             <div style={{ display: 'grid', gap: 28 }}>

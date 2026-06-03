@@ -75,8 +75,8 @@ export default function Home() {
               maxWidth: 920,
             }}>
               Basic Electrical<br/>
-              Engineering, but{' '}
-              <span style={{ fontStyle: 'italic', fontFamily: 'var(--display)', color: 'var(--accent)' }}>
+              Engineering,{' '}
+              <span style={{ color: 'var(--accent)' }}>
                 organised.
               </span>
             </h1>
@@ -194,46 +194,87 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ─── Contributors + About BGCTUB ────────────────────────── */}
+        {/* ─── About + Contributors + BGCTUB ─────────────────────── */}
         <section style={{
-          paddingTop: 32, paddingBottom: 72,
+          paddingTop: 56, paddingBottom: 72,
           background: 'var(--surface)', borderTop: '1px solid var(--line)',
         }}>
           <div className="container">
             <SectionHeader
-              eyebrow="Contributors / about"
-              title="Built by students, for students"
-              sub="learnBEE is curated by Mahtamun Hoque Fahim — with lab footage and notes contributed by the 45th batch, Department of CSE, BGCTUB."
+              eyebrow="About"
+              title="A site built because we got tired of losing the Drive link"
             />
 
+            {/* Story */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-              gap: 12,
-              marginBottom: 32,
+              gridTemplateColumns: '1fr',
+              gap: 18,
+              maxWidth: 760,
+              marginBottom: 44,
+              fontSize: 16,
+              lineHeight: 1.65,
+              color: 'var(--ink-2)',
             }}>
-              {CONTRIBUTORS.map(c => (
-                <div key={c.name} style={{
-                  padding: 16,
-                  background: 'var(--bg)',
-                  border: '1px solid var(--line)',
-                  borderRadius: 14,
-                  display: 'flex', gap: 14, alignItems: 'flex-start',
-                }}>
-                  <div style={{
-                    width: 44, height: 44, borderRadius: '50%',
-                    background: 'var(--primary)', color: 'white',
-                    fontFamily: 'var(--display)', fontWeight: 600, fontSize: 14,
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    flexShrink: 0,
-                  }}>{c.initials}</div>
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontFamily: 'var(--display)', fontWeight: 600, fontSize: 15 }}>{c.name}</div>
-                    <div className="mono" style={{ fontSize: 11, color: 'var(--accent)', letterSpacing: '0.04em' }}>{c.role}</div>
-                    <div style={{ fontSize: 13, color: 'var(--muted)', marginTop: 6 }}>{c.note}</div>
+              <p>
+                learnBEE started as a complaint. Every semester at BGCTUB, the Basic Electrical
+                Engineering course turned into a scavenger hunt — Google Drive folders shared three
+                times over, lecture slides that lived only on one classmate&apos;s laptop, lab
+                manuals that were photocopies of photocopies. The 45th batch of CSE decided to
+                stop putting up with it.
+              </p>
+              <p>
+                What began as one folder grew into a structured site. Lecture notes paired with the
+                chapter they belong to. Past papers organised by exam type. An interactive simulator
+                where you can watch a capacitor charge in real time. A formula cheat-sheet you can
+                actually search during exam week. Forty thousand characters of original theory
+                prose, sourced from Sadiku and Boylestad, all typeset with proper math typography
+                instead of inline images.
+              </p>
+              <p>
+                The site is and will stay free. The code is on GitHub. Content is curated by the
+                45th batch, for the batches who come after. If you spot a mistake or a missing
+                lecture, open an issue — the next semester will thank you.
+              </p>
+            </div>
+
+            {/* Contributors */}
+            <div style={{ marginBottom: 32 }}>
+              <div className="mono" style={{
+                fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase',
+                color: 'var(--accent)', marginBottom: 16,
+              }}>
+                Contributors
+              </div>
+
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+                gap: 12,
+              }}>
+                {CONTRIBUTORS.map(c => (
+                  <div key={c.name} style={{
+                    padding: 16,
+                    background: 'var(--bg)',
+                    border: '1px solid var(--line)',
+                    borderRadius: 14,
+                    display: 'flex', gap: 14, alignItems: 'flex-start',
+                  }}>
+                    <div style={{
+                      width: 44, height: 44, borderRadius: '50%',
+                      background: 'var(--primary)', color: 'white',
+                      fontFamily: 'var(--display)', fontWeight: 600, fontSize: 14,
+                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                      flexShrink: 0,
+                    }}>{c.initials}</div>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontFamily: 'var(--display)', fontWeight: 600, fontSize: 15 }}>{c.name}</div>
+                      <div className="mono" style={{ fontSize: 11, color: 'var(--accent)', letterSpacing: '0.04em' }}>{c.role}</div>
+                      <div style={{ fontSize: 13, color: 'var(--muted)', marginTop: 6 }}>{c.note}</div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
             {/* BGCTUB band */}

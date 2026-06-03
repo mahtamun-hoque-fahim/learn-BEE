@@ -2,7 +2,8 @@ import { Nav } from '@/components/design/Nav'
 import { Footer } from '@/components/design/Footer'
 import { SectionHeader } from '@/components/design/SectionHeader'
 import { Icon } from '@/components/design/icons'
-import { BOOKS, type Book } from '@/lib/landing-data'
+import { getBooks } from '@/lib/content-public'
+import { BOOKS as SEED_BOOKS, type Book } from '@/lib/landing-data'
 
 export const metadata = { title: 'Books — learnBEE' }
 
@@ -12,7 +13,11 @@ const TAG_PILL: Record<Book['tag'], string> = {
   Optional:  'pill warn',
 }
 
-export default function BooksPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function BooksPage() {
+  const BOOKS = await getBooks()
+  const isSeed = BOOKS === SEED_BOOKS
   return (
     <>
       <Nav />

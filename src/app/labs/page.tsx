@@ -2,11 +2,16 @@ import { Nav } from '@/components/design/Nav'
 import { Footer } from '@/components/design/Footer'
 import { SectionHeader } from '@/components/design/SectionHeader'
 import { Icon } from '@/components/design/icons'
-import { LABS } from '@/lib/landing-data'
+import { getLabs } from '@/lib/content-public'
+import { LABS as SEED_LABS } from '@/lib/landing-data'
 
 export const metadata = { title: 'Labs — learnBEE' }
 
-export default function LabsPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function LabsPage() {
+  const LABS = await getLabs()
+  const isSeed = LABS === SEED_LABS
   const withVideo = LABS.filter(l => l.hasVideo).length
 
   return (
@@ -25,7 +30,7 @@ export default function LabsPage() {
               <span className="pill">{LABS.length} experiments</span>
               <span className="pill ok dot">{withVideo} with video</span>
               <span className="pill">{LABS.length} with manual</span>
-              <span className="pill warn">Sample data — replace with real links</span>
+              {isSeed && <span className="pill warn">Sample data — admin can add real entries</span>}
             </div>
 
             <div style={{
