@@ -60,7 +60,7 @@ export default function CheatSheetClient({ chapters }: { chapters: ChapterSummar
       )}
 
       {filteredChapters.map(ch => (
-        <section key={ch.id} className="mb-12">
+        <section key={ch.id} id={ch.id} className="mb-12" style={{ scrollMarginTop: '140px' }}>
           <div className="flex items-baseline gap-3 mb-4">
             <span className="text-xs text-[#00e676] font-mono uppercase tracking-wider">Chapter {ch.number}</span>
             <h2 className="font-syne text-2xl font-bold">{ch.title}</h2>
