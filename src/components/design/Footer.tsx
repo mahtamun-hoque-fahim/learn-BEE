@@ -1,95 +1,101 @@
 import Link from 'next/link'
-import { BeeMark } from './icons'
+import { BeeMark, Icon } from './icons'
 
-const FOOTER_LINKS = [
-  { href: '/syllabus', label: 'Syllabus' },
-  { href: '/lectures', label: 'Lectures' },
-  { href: '/labs',     label: 'Labs' },
-  { href: '/papers',   label: 'Papers' },
-  { href: '/books',    label: 'Books' },
-  { href: '/cheat-sheet', label: 'Cheat sheet' },
-  { href: '/bonus',    label: 'Exam prep' },
-  { href: '/learn',    label: 'Study' },
+const REPO = 'https://github.com/mahtamun-hoque-fahim/learn-BEE'
+const DISCUSS = 'https://github.com/mahtamun-hoque-fahim/learn-BEE/discussions'
+
+const COURSE: { href: string; label: string; icon: string }[] = [
+  { href: '/syllabus', label: 'Syllabus', icon: 'book' },
+  { href: '/lectures', label: 'Lectures', icon: 'play' },
+  { href: '/labs',     label: 'Labs',     icon: 'flask' },
+  { href: '/papers',   label: 'Papers',   icon: 'paper' },
+  { href: '/books',    label: 'Books',    icon: 'book' },
+]
+
+const PROJECT: { href: string; label: string; external?: boolean }[] = [
+  { href: '/', label: 'Home' },
+  { href: '/contributors', label: 'Contributors' },
+  { href: DISCUSS, label: 'Discussion', external: true },
+  { href: REPO, label: 'GitHub', external: true },
 ]
 
 export function Footer() {
   return (
-    <footer style={{ borderTop: '1px solid var(--line)', paddingTop: 36, paddingBottom: 28, marginTop: 96 }}>
-      <div
-        className="container"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr',
-          gap: 28,
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 24,
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
-            <BeeMark size={26} />
-            <div>
-              <div style={{ fontFamily: 'var(--display)', fontWeight: 700, fontSize: 16, letterSpacing: '-0.02em' }}>
+    <footer style={{ borderTop: '1px solid var(--line)', background: 'var(--bg-2)', marginTop: 96 }}>
+      <div className="container" style={{ paddingTop: 48, paddingBottom: 36 }}>
+        <div className="foot-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 36 }}>
+          {/* Brand + tagline */}
+          <div style={{ maxWidth: 400 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+              <BeeMark size={26} />
+              <span style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 18, letterSpacing: '-0.02em' }}>
                 learn<span style={{ color: 'var(--accent)' }}>BEE</span>
-              </div>
-              <div className="mono" style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>
-                v0.2 · spring 2026
-              </div>
+              </span>
             </div>
+            <p style={{ fontSize: 13.5, color: 'var(--muted)', lineHeight: 1.6 }}>
+              A 45th-batch effort. Not officially affiliated with the BGCTUB administration — just students who got tired of losing the Drive link.
+            </p>
           </div>
 
-          <nav
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 4,
-              rowGap: 4,
-            }}
-          >
-            {FOOTER_LINKS.map(l => (
-              <Link
-                key={l.href}
-                href={l.href}
-                style={{
-                  padding: '6px 10px',
-                  borderRadius: 8,
-                  color: 'var(--muted)',
-                  fontSize: 13,
-                  fontWeight: 500,
-                }}
-              >
-                {l.label}
+          <FootCol title="Course">
+            {COURSE.map(l => (
+              <Link key={l.href} href={l.href} className="foot-link" style={footLink}>
+                <Icon name={l.icon} size={15} /> {l.label}
               </Link>
             ))}
-          </nav>
+          </FootCol>
+
+          <FootCol title="Project">
+            {PROJECT.map(l => (
+              l.external ? (
+                <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="foot-link" style={footLink}>
+                  {l.label === 'GitHub' && <Icon name="github" size={15} />} {l.label}
+                </a>
+              ) : (
+                <Link key={l.href} href={l.href} className="foot-link" style={footLink}>
+                  {l.label}
+                </Link>
+              )
+            ))}
+          </FootCol>
         </div>
 
+        {/* Bottom row */}
         <div
           style={{
-            borderTop: '1px solid var(--line)',
-            paddingTop: 18,
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 12,
-            alignItems: 'baseline',
-            justifyContent: 'space-between',
-            fontSize: 12,
-            color: 'var(--muted)',
+            borderTop: '1px solid var(--line)', marginTop: 40, paddingTop: 22,
+            display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'baseline', justifyContent: 'space-between',
           }}
         >
-          <div style={{ maxWidth: 620 }}>
-            A 45th-batch effort. Not officially affiliated with the BGCTUB administration —
-            just students who got tired of losing the Drive link.
+          <div className="mono" style={{ fontSize: 12, color: 'var(--dim)', letterSpacing: '0.04em' }}>
+            v0.2 · spring 2026 · BGCTUB CSE
           </div>
-          <div className="mono">Made with KaTeX, Next.js, and a lot of Sadiku.</div>
+          <div style={{ fontSize: 13, color: 'var(--muted)' }}>
+            Built for the batches that come after.
+          </div>
         </div>
       </div>
+
+      <style>{`
+        @media (min-width: 760px) {
+          .foot-grid { grid-template-columns: 1.4fr 1fr 1fr !important; }
+        }
+        .foot-link:hover { color: var(--ink) !important; }
+      `}</style>
     </footer>
+  )
+}
+
+const footLink: React.CSSProperties = {
+  display: 'inline-flex', alignItems: 'center', gap: 9,
+  fontSize: 14, color: 'var(--muted)', transition: 'color .15s',
+}
+
+function FootCol({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <div className="tiny" style={{ marginBottom: 16 }}>{title}</div>
+      <nav style={{ display: 'grid', gap: 12 }}>{children}</nav>
+    </div>
   )
 }

@@ -262,8 +262,8 @@ export default function Home() {
                   }}>
                     <div style={{
                       width: 44, height: 44, borderRadius: '50%',
-                      background: 'var(--primary)', color: 'white',
-                      fontFamily: 'var(--display)', fontWeight: 600, fontSize: 14,
+                      background: 'var(--primary)', color: 'var(--on-mint)',
+                      fontFamily: 'var(--display)', fontWeight: 700, fontSize: 14,
                       display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                       flexShrink: 0,
                     }}>{c.initials}</div>
