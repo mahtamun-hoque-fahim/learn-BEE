@@ -1,9 +1,7 @@
 'use client'
 /**
- * Dispatch by chapter ID to the right animated simulator. In-scope chapters
- * (per instruction.txt) get a topic-tailored sim with animated current flow.
- * Out-of-scope chapters render a placeholder that explains they're outside
- * the BGCTUB 2nd-semester syllabus.
+ * Dispatch by chapter ID to the right animated simulator. Modern themed
+ * panel wrapper; the simulator canvas itself stays a dark "scope" surface.
  */
 import { lazy, Suspense } from 'react'
 
@@ -16,8 +14,8 @@ const Ch7 = lazy(() => import('./Ch7RCTransientSim'))
 
 const REGISTRY: Record<string, { title: string; Comp: React.LazyExoticComponent<React.FC> }> = {
   ch1: { title: 'Power flow in a basic circuit', Comp: Ch1 },
-  ch2: { title: 'Voltage divider — KVL verifier',  Comp: Ch2 },
-  ch3: { title: 'Nodal analysis demonstrator',     Comp: Ch3 },
+  ch2: { title: 'Voltage divider — KVL verifier', Comp: Ch2 },
+  ch3: { title: 'Nodal analysis demonstrator', Comp: Ch3 },
   ch4: { title: 'Thévenin equivalent + max power', Comp: Ch4 },
   ch6: { title: 'Capacitors: series / parallel + energy', Comp: Ch6 },
   ch7: { title: 'RC transient — charging & discharging', Comp: Ch7 },
@@ -26,18 +24,33 @@ const REGISTRY: Record<string, { title: string; Comp: React.LazyExoticComponent<
 export default function AnimatedSim({ chapterId }: { chapterId: string }) {
   const entry = REGISTRY[chapterId]
   return (
-    <div className="bg-[#111] border border-[#222] rounded-xl overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#222] bg-[#0d0d0d] flex items-center gap-3">
-        <span className="text-xs font-mono text-[#3DF49A] uppercase tracking-wider">Interactive demo</span>
-        <span className="text-sm text-[#d4d4d4] font-syne font-semibold">{entry?.title ?? 'Out of scope'}</span>
+    <div style={{
+      background: 'var(--bg-2)', border: '1px solid var(--line-2)', borderRadius: 18,
+      overflow: 'hidden', boxShadow: 'var(--shadow-md)', position: 'relative',
+    }}>
+      {/* bottom-left accent glow */}
+      <span aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'radial-gradient(420px 280px at 0% 100%, var(--mint-soft), transparent 70%)' }} />
+
+      <div style={{
+        position: 'relative', display: 'flex', alignItems: 'center', gap: 12,
+        padding: '14px 22px', borderBottom: '1px solid var(--line)', background: 'rgba(255,255,255,.015)',
+      }}>
+        <span className="badge-pill"><span className="pip" /> Live</span>
+        <span style={{ fontFamily: 'var(--display)', fontWeight: 700, fontSize: 15.5, letterSpacing: '-0.01em' }}>
+          {entry?.title ?? 'Out of scope'}
+        </span>
+        <span className="mono" style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--dim)', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+          Interactive
+        </span>
       </div>
-      <div className="p-5">
+
+      <div style={{ position: 'relative', padding: 'clamp(16px,2.5vw,28px)' }}>
         {entry ? (
-          <Suspense fallback={<div className="text-sm text-[#888] py-8 text-center">Loading simulator…</div>}>
+          <Suspense fallback={<div style={{ fontSize: 14, color: 'var(--muted)', padding: '48px 0', textAlign: 'center' }}>Loading simulator…</div>}>
             <entry.Comp />
           </Suspense>
         ) : (
-          <div className="text-sm text-[#888] py-8 text-center font-mono">
+          <div className="mono" style={{ fontSize: 14, color: 'var(--muted)', padding: '48px 0', textAlign: 'center' }}>
             This chapter is outside the BGCTUB 2nd-semester BEE syllabus and currently has no interactive demo.
           </div>
         )}

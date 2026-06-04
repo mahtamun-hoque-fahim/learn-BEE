@@ -20,8 +20,6 @@ export default function ChapterClient({ chapter, prev, next }: Props) {
   const sections = useMemo(() => {
     const list = topics.map((t, i) => ({ id: `t${i}`, label: typeof t === 'string' ? (t as string) : (t as TopicObj).title }))
     list.push({ id: 'formulas', label: 'Key formulas' })
-    list.push({ id: 'simulator', label: 'Simulator' })
-    list.push({ id: 'quiz', label: 'Quiz' })
     return list
   }, [topics])
 
@@ -137,48 +135,6 @@ export default function ChapterClient({ chapter, prev, next }: Props) {
                 Open in cheat sheet <Icon name="external" size={12} />
               </Link>
             </section>
-
-            {/* Simulator */}
-            <section id="simulator">
-              <h2><span className="h2num" style={{ display: 'inline-flex', alignItems: 'center' }}><Icon name="spark" size={12} /></span>Simulator</h2>
-              {(chapter.simulator_demos?.length ?? 0) > 0 && (
-                <ul style={{ display: 'grid', gap: 6, margin: '0 0 16px', padding: 0, listStyle: 'none' }}>
-                  {chapter.simulator_demos!.map((d, i) => (
-                    <li key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                      <span style={{ color: 'var(--accent)', marginTop: 2, display: 'inline-flex' }}><Icon name="spark" size={14} /></span>{d}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <div className="card" style={{ padding: 8 }}><AnimatedSim chapterId={chapter.id} /></div>
-            </section>
-
-            {/* Quiz */}
-            <section id="quiz">
-              <h2><span className="h2num">Q</span>Chapter quiz</h2>
-              <QuizSection chapter={chapter} next={next} />
-            </section>
-
-            {/* Pager */}
-            <div className="pager">
-              {prev ? (
-                <Link className="prev" href={`/learn/${prev.id}`}>
-                  <div className="pg-tag">Previous</div>
-                  <div className="pg-t">Ch {prev.number}: {prev.title}</div>
-                </Link>
-              ) : <div />}
-              {next ? (
-                <Link className="next" href={`/learn/${next.id}`}>
-                  <div className="pg-tag">Next</div>
-                  <div className="pg-t">Ch {next.number}: {next.title}</div>
-                </Link>
-              ) : (
-                <Link className="next" href="/bonus">
-                  <div className="pg-tag">Next</div>
-                  <div className="pg-t">Bonus exam</div>
-                </Link>
-              )}
-            </div>
           </article>
 
           {/* Rail */}
@@ -208,6 +164,54 @@ export default function ChapterClient({ chapter, prev, next }: Props) {
               </div>
             </div>
           </aside>
+        </div>
+
+        {/* Simulator — full-width band */}
+        <section id="simulator" style={{ maxWidth: 1120, margin: '8px auto 0', scrollMarginTop: 90 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 8, flexWrap: 'wrap' }}>
+            <span className="eyebrow">Interactive</span>
+            <h2 style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 'clamp(22px,3vw,30px)', letterSpacing: '-0.02em' }}>Simulator &amp; graphs</h2>
+          </div>
+          {(chapter.simulator_demos?.length ?? 0) > 0 && (
+            <ul style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 18px', margin: '0 0 16px', padding: 0, listStyle: 'none' }}>
+              {chapter.simulator_demos!.map((d, i) => (
+                <li key={i} style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 13.5, color: 'var(--muted)' }}>
+                  <span style={{ color: 'var(--accent)', display: 'inline-flex' }}><Icon name="spark" size={13} /></span>{d}
+                </li>
+              ))}
+            </ul>
+          )}
+          <AnimatedSim chapterId={chapter.id} />
+        </section>
+
+        {/* Quiz — centered */}
+        <section id="quiz" style={{ maxWidth: 860, margin: '56px auto 0', scrollMarginTop: 90 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+            <span className="eyebrow">Test yourself</span>
+            <h2 style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 'clamp(22px,3vw,30px)', letterSpacing: '-0.02em' }}>Chapter quiz</h2>
+          </div>
+          <QuizSection chapter={chapter} next={next} />
+        </section>
+
+        {/* Pager */}
+        <div className="pager" style={{ maxWidth: 860, margin: '48px auto 0' }}>
+          {prev ? (
+            <Link className="prev" href={`/learn/${prev.id}`}>
+              <div className="pg-tag">Previous</div>
+              <div className="pg-t">Ch {prev.number}: {prev.title}</div>
+            </Link>
+          ) : <div />}
+          {next ? (
+            <Link className="next" href={`/learn/${next.id}`}>
+              <div className="pg-tag">Next</div>
+              <div className="pg-t">Ch {next.number}: {next.title}</div>
+            </Link>
+          ) : (
+            <Link className="next" href="/bonus">
+              <div className="pg-tag">Next</div>
+              <div className="pg-t">Bonus exam</div>
+            </Link>
+          )}
         </div>
       </div>
     </div>
