@@ -277,34 +277,30 @@ export default function Home() {
               </div>
             </div>
 
-            {/* BGCTUB band */}
+            {/* BGCTUB band — dy/dx dark panel */}
             <div style={{
-              padding: 28,
-              background: 'var(--ink)',
-              color: 'var(--bg)',
-              borderRadius: 18,
+              padding: 'clamp(24px,3.5vw,40px)',
+              background: 'var(--bg-2)',
+              border: '1px solid var(--line-2)',
+              borderRadius: 20,
               display: 'grid',
               gridTemplateColumns: '1fr',
-              gap: 24,
-            }}>
+              gap: 28,
+            }} className="bgctub-grid">
               <div>
-                <div className="mono" style={{ fontSize: 11, opacity: 0.6, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>
+                <div className="eyebrow" style={{ letterSpacing: '0.16em', marginBottom: 12 }}>
                   About BGCTUB
                 </div>
-                <h3 style={{ fontFamily: 'var(--display)', fontSize: 30, color: 'var(--bg)', letterSpacing: '-0.02em', marginBottom: 12, lineHeight: 1.1 }}>
+                <h3 style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 'clamp(24px,3vw,32px)', color: 'var(--ink)', letterSpacing: '-0.03em', marginBottom: 14, lineHeight: 1.08 }}>
                   BGC Trust University Bangladesh
                 </h3>
-                <p style={{ color: 'color-mix(in oklab, var(--bg) 70%, transparent)', maxWidth: 540, fontSize: 14, lineHeight: 1.55 }}>
+                <p style={{ color: 'var(--muted)', maxWidth: 540, fontSize: 14.5, lineHeight: 1.65 }}>
                   A private university in Chittagong. The Department of Computer Science &amp; Engineering
                   runs the BEE course in the 2nd semester — this site is a 45th-batch effort to keep the
                   resources in one place for the batches that come after.
                 </p>
               </div>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
-                gap: 12,
-              }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
                 {[
                   ['Department', 'CSE'],
                   ['Course code', 'EEE 1201'],
@@ -312,18 +308,44 @@ export default function Home() {
                   ['Semester', '2nd / Sp'],
                 ].map(([l, v]) => (
                   <div key={l} style={{
-                    padding: 14, borderRadius: 10,
-                    background: 'color-mix(in oklab, var(--bg) 8%, transparent)',
-                    border: '1px solid color-mix(in oklab, var(--bg) 12%, transparent)',
+                    padding: 16, borderRadius: 12,
+                    background: 'rgba(255,255,255,.02)',
+                    border: '1px solid var(--line)',
                   }}>
-                    <div className="mono" style={{ fontSize: 10, opacity: 0.6, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                    <div className="mono" style={{ fontSize: 10.5, color: 'var(--muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                       {l}
                     </div>
-                    <div style={{ fontFamily: 'var(--display)', fontSize: 24, fontWeight: 600, marginTop: 4 }}>
+                    <div style={{ fontFamily: 'var(--display)', fontWeight: 700, fontSize: 26, color: 'var(--ink)', letterSpacing: '-0.02em', marginTop: 6 }}>
                       {v}
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* Stuck on a topic? Ask. */}
+            <div className="card" style={{ marginTop: 16, padding: 'clamp(22px,3vw,30px)', background: 'var(--surface)' }}>
+              <div className="cta-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 22, alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, flexShrink: 0, background: 'var(--mint-soft)', color: 'var(--accent)', border: '1px solid var(--mint-line)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon name="chat" size={20} />
+                  </div>
+                  <div>
+                    <h3 style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 24, letterSpacing: '-0.02em', marginBottom: 8 }}>Stuck on a topic? Ask.</h3>
+                    <p style={{ color: 'var(--muted)', fontSize: 14.5, lineHeight: 1.6, maxWidth: 520 }}>
+                      We hang out on a Messenger group and a Discord server — both pinned in the README of the
+                      GitHub repo. Solutions, doubts, the occasional meme.
+                    </p>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                  <a href="https://github.com/mahtamun-hoque-fahim/learn-BEE" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ background: 'var(--ink)', color: 'var(--bg)', borderColor: 'var(--ink)' }}>
+                    <Icon name="github" size={16} /> GitHub repo <Icon name="external" size={13} />
+                  </a>
+                  <a href="https://github.com/mahtamun-hoque-fahim/learn-BEE/discussions" target="_blank" rel="noopener noreferrer" className="btn-line">
+                    <Icon name="chat" size={16} /> Join discussion
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -331,6 +353,13 @@ export default function Home() {
       </main>
 
       <Footer />
+
+      <style>{`
+        @media (min-width: 860px) {
+          .bgctub-grid { grid-template-columns: 1.15fr 0.85fr !important; }
+          .cta-grid { grid-template-columns: 1fr auto !important; }
+        }
+      `}</style>
     </>
   )
 }
