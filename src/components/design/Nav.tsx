@@ -89,9 +89,10 @@ export function Nav() {
 
         <div style={{ flex: 1 }} />
 
-        {/* Search button (desktop only) */}
-        <Link
-          href="/search"
+        {/* Search button (desktop only) — opens the command palette */}
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new Event('open-command-palette'))}
           aria-label="Search the syllabus"
           style={{
             display: 'none',
@@ -109,7 +110,7 @@ export function Nav() {
           <Icon name="search" size={15} />
           <span>Search</span>
           <span className="kbd" style={{ marginLeft: 8 }}>⌘K</span>
-        </Link>
+        </button>
 
         {/* Theme toggle */}
         <button

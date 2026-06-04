@@ -1,4 +1,5 @@
-import Link from 'next/link'
+import { Nav } from '@/components/design/Nav'
+import { Footer } from '@/components/design/Footer'
 import { inScopeChapters } from '@/lib/curriculum'
 import CheatSheetClient from './CheatSheetClient'
 
@@ -14,28 +15,23 @@ export default function CheatSheetPage() {
   const totalFormulas = chapters.reduce((s, c) => s + c.formulas.length, 0)
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
-      <nav className="border-b border-[#222] bg-[#0a0a0a]/90 sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center gap-4">
-          <Link href="/" className="font-syne font-bold text-lg">
-            learn<span className="text-[#00e676]">·BEE</span>
-          </Link>
-          <span className="text-[#444]">/</span>
-          <span className="text-[#888] text-sm">Cheat sheet</span>
-        </div>
-      </nav>
-
-      <div className="max-w-5xl mx-auto px-6 py-12">
-        <header className="mb-10">
-          <h1 className="font-syne text-4xl font-bold mb-2">Cheat sheet</h1>
-          <p className="text-[#888]">
-            {totalFormulas} formulas across {chapters.length} chapters. All math rendered with KaTeX.
-            Search by name, formula, or chapter; use <kbd className="px-1.5 py-0.5 text-xs bg-[#1a1a1a] border border-[#222] rounded font-mono">Ctrl/⌘ + F</kbd> for in-page browser search.
+    <>
+      <Nav />
+      <main className="container" style={{ maxWidth: 1080, paddingTop: 48, paddingBottom: 96 }}>
+        <header style={{ marginBottom: 8 }}>
+          <div className="eyebrow">Cheat sheet</div>
+          <h1 style={{ fontSize: 'clamp(32px,5vw,48px)', letterSpacing: '-0.035em', margin: '14px 0 12px' }}>
+            Every formula, one page
+          </h1>
+          <p style={{ color: 'var(--muted)', maxWidth: 640, fontSize: 15, lineHeight: 1.6 }}>
+            {totalFormulas} formulas across {chapters.length} chapters, KaTeX-rendered. Search by name,
+            formula or chapter — or hit <kbd className="kbd">⌘/Ctrl + F</kbd> for browser find.
           </p>
         </header>
 
         <CheatSheetClient chapters={chapters} />
-      </div>
-    </div>
+      </main>
+      <Footer />
+    </>
   )
 }

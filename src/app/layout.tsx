@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import 'katex/dist/katex.min.css'
 import { ThemeProvider, themeInitScript } from '@/components/design/ThemeProvider'
+import CommandPalette from '@/components/design/CommandPalette'
 
 // Plus Jakarta Sans serves both display (700/800) and body (400-600).
 const jakarta = Plus_Jakarta_Sans({
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider>
           {children}
+          <CommandPalette />
         </ThemeProvider>
       </body>
     </html>

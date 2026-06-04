@@ -4,6 +4,14 @@ import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { searchAll, type Hit } from '@/lib/search'
 import { Tex } from '@/components/math/Tex'
+import { Nav } from '@/components/design/Nav'
+import { Footer } from '@/components/design/Footer'
+import { Icon } from '@/components/design/icons'
+
+const cardStyle: React.CSSProperties = {
+  display: 'block', background: 'var(--surface)', border: '1px solid var(--line)',
+  borderRadius: 12, padding: 14, transition: 'border-color .15s',
+}
 
 export default function SearchPage() {
   const [query, setQuery] = useState('')
@@ -16,48 +24,43 @@ export default function SearchPage() {
   }, [hits])
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
-      <nav className="border-b border-[#222] bg-[#0a0a0a]/90 sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center gap-4">
-          <Link href="/" className="font-syne font-bold text-lg">
-            learn<span className="text-[#00e676]">·BEE</span>
-          </Link>
-          <span className="text-[#444]">/</span>
-          <span className="text-[#888] text-sm">Search</span>
-        </div>
-      </nav>
-
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <h1 className="font-syne text-3xl font-bold mb-4">Search the syllabus</h1>
-        <p className="text-[#888] text-sm mb-6">
-          Looks across chapter titles, topics, key formulas, and the entire in-scope question bank.
+    <>
+      <Nav />
+      <main className="container" style={{ maxWidth: 880, paddingTop: 48, paddingBottom: 96 }}>
+        <div className="eyebrow">Search</div>
+        <h1 style={{ fontSize: 'clamp(30px,4.5vw,44px)', letterSpacing: '-0.035em', margin: '14px 0 10px' }}>
+          Search the syllabus
+        </h1>
+        <p style={{ color: 'var(--muted)', fontSize: 14.5, marginBottom: 24, lineHeight: 1.6 }}>
+          Across chapter titles, topics, key formulas and the whole in-scope question bank.
+          Tip: press <kbd className="kbd">⌘/Ctrl + K</kbd> anywhere for the quick palette.
         </p>
 
-        <input
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          placeholder="e.g. Thévenin, KVL, time constant, capacitor energy"
-          className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-3 text-base
-                     focus:border-[#00e676] focus:outline-none placeholder-[#555] mb-8"
-          autoFocus
-        />
+        <div style={{ position: 'relative', marginBottom: 32 }}>
+          <span style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)', pointerEvents: 'none' }}>
+            <Icon name="search" size={18} />
+          </span>
+          <input
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="e.g. Thévenin, KVL, time constant, capacitor energy"
+            className="search-page-input"
+            autoFocus
+            style={{ width: '100%', background: 'var(--surface)', border: '1px solid var(--line-2)', borderRadius: 12, padding: '14px 16px 14px 46px', fontSize: 16, color: 'var(--ink)' }}
+          />
+        </div>
 
-        {query.length === 0 && (
-          <div className="text-[#555] text-sm">Type at least 2 characters to begin.</div>
-        )}
-
-        {query.length >= 2 && hits.length === 0 && (
-          <div className="text-[#555] text-sm">No matches.</div>
-        )}
+        {query.length === 0 && <div style={{ color: 'var(--dim)', fontSize: 14 }}>Type at least 2 characters to begin.</div>}
+        {query.length >= 2 && hits.length === 0 && <div style={{ color: 'var(--dim)', fontSize: 14 }}>No matches.</div>}
 
         {hits.length > 0 && (
-          <div className="space-y-8">
+          <div style={{ display: 'grid', gap: 28 }}>
             {grouped.chapter.length > 0 && (
               <Section title="Chapters" count={grouped.chapter.length}>
                 {grouped.chapter.map((h, i) => h.kind === 'chapter' && (
-                  <Link key={i} href={`/learn/${h.chapterId}`} className="block bg-[#111] border border-[#222] rounded-lg p-3 hover:border-[#00e676]/40">
-                    <div className="font-semibold text-[#ccc]">{h.title}</div>
-                    <div className="text-xs text-[#666] font-mono">{h.chapterId}</div>
+                  <Link key={i} href={`/learn/${h.chapterId}`} className="result-card" style={cardStyle}>
+                    <div style={{ fontWeight: 600, color: 'var(--ink)' }}>{h.title}</div>
+                    <div className="mono" style={{ fontSize: 12, color: 'var(--muted)' }}>{h.chapterId}</div>
                   </Link>
                 ))}
               </Section>
@@ -66,9 +69,9 @@ export default function SearchPage() {
             {grouped.topic.length > 0 && (
               <Section title="Topics" count={grouped.topic.length}>
                 {grouped.topic.map((h, i) => h.kind === 'topic' && (
-                  <Link key={i} href={`/learn/${h.chapterId}`} className="block bg-[#111] border border-[#222] rounded-lg p-3 hover:border-[#00e676]/40">
-                    <div className="text-[#ccc]">{h.topic}</div>
-                    <div className="text-xs text-[#666] font-mono mt-0.5">in {h.chapterTitle}</div>
+                  <Link key={i} href={`/learn/${h.chapterId}`} className="result-card" style={cardStyle}>
+                    <div style={{ color: 'var(--ink)' }}>{h.topic}</div>
+                    <div className="mono" style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>in {h.chapterTitle}</div>
                   </Link>
                 ))}
               </Section>
@@ -77,10 +80,10 @@ export default function SearchPage() {
             {grouped.formula.length > 0 && (
               <Section title="Formulas" count={grouped.formula.length}>
                 {grouped.formula.map((h, i) => h.kind === 'formula' && (
-                  <Link key={i} href={`/cheat-sheet`} className="block bg-[#111] border border-[#222] rounded-lg p-3 hover:border-[#00e676]/40">
-                    <div className="text-[#00e676] text-xs uppercase tracking-wider font-mono mb-1">{h.name}</div>
-                    <div className="text-white overflow-x-auto"><Tex>{h.latex}</Tex></div>
-                    <div className="text-xs text-[#666] font-mono mt-1">in {h.chapterTitle}</div>
+                  <Link key={i} href={`/cheat-sheet#${h.chapterId}`} className="result-card" style={cardStyle}>
+                    <div className="tiny" style={{ color: 'var(--accent)', marginBottom: 6 }}>{h.name}</div>
+                    <div style={{ color: 'var(--ink)', overflowX: 'auto' }}><Tex>{h.latex}</Tex></div>
+                    <div className="mono" style={{ fontSize: 12, color: 'var(--muted)', marginTop: 6 }}>in {h.chapterTitle}</div>
                   </Link>
                 ))}
               </Section>
@@ -89,27 +92,34 @@ export default function SearchPage() {
             {grouped.question.length > 0 && (
               <Section title="Questions" count={grouped.question.length}>
                 {grouped.question.map((h, i) => h.kind === 'question' && (
-                  <Link key={i} href={`/learn/${h.chapterId}`} className="block bg-[#111] border border-[#222] rounded-lg p-3 hover:border-[#00e676]/40">
-                    <div className="text-xs text-[#666] font-mono mb-1">{h.questionId} · {h.topic}</div>
-                    <div className="text-[#ccc] text-sm">{h.snippet}</div>
+                  <Link key={i} href={`/learn/${h.chapterId}`} className="result-card" style={cardStyle}>
+                    <div className="mono" style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 4 }}>{h.questionId} · {h.topic}</div>
+                    <div style={{ color: 'var(--ink-2)', fontSize: 14 }}>{h.snippet}</div>
                   </Link>
                 ))}
               </Section>
             )}
           </div>
         )}
-      </div>
-    </div>
+      </main>
+      <Footer />
+
+      <style>{`
+        .search-page-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--mint-soft); }
+        .search-page-input::placeholder { color: var(--dim); }
+        .result-card:hover { border-color: var(--mint-line) !important; }
+      `}</style>
+    </>
   )
 }
 
 function Section({ title, count, children }: { title: string; count: number; children: React.ReactNode }) {
   return (
     <section>
-      <div className="text-xs font-mono uppercase tracking-wider text-[#666] mb-2">
-        {title} <span className="text-[#444]">· {count}</span>
+      <div className="tiny" style={{ marginBottom: 10 }}>
+        {title} <span style={{ color: 'var(--dim)' }}>· {count}</span>
       </div>
-      <div className="space-y-2">{children}</div>
+      <div style={{ display: 'grid', gap: 8 }}>{children}</div>
     </section>
   )
 }
