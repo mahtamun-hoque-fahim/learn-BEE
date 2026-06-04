@@ -55,17 +55,17 @@ export default function ContributorsPage() {
           ))}
         </div>
 
-        {/* BGCTUB feature card — dy/dx dark panel */}
-        <section style={{ background: 'var(--bg-2)', border: '1px solid var(--line-2)', borderRadius: 22, padding: 'clamp(28px,4vw,44px)', marginTop: 36 }}>
+        {/* BGCTUB feature card — inverted (dark-on-white / white-on-dark) */}
+        <section style={{ background: 'var(--ink)', color: 'var(--bg)', borderRadius: 22, padding: 'clamp(28px,4vw,44px)', marginTop: 36 }}>
           <div className="bgctub-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 28, alignItems: 'start' }}>
             <div>
-              <div className="eyebrow" style={{ letterSpacing: '0.16em', marginBottom: 14 }}>
+              <div className="mono" style={{ fontSize: 11, opacity: 0.55, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 14 }}>
                 About BGCTUB
               </div>
-              <h2 style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 'clamp(26px,3.5vw,36px)', color: 'var(--ink)', letterSpacing: '-0.03em', lineHeight: 1.05, marginBottom: 16 }}>
+              <h2 style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 'clamp(26px,3.5vw,36px)', color: 'var(--bg)', letterSpacing: '-0.03em', lineHeight: 1.05, marginBottom: 16 }}>
                 BGC Trust University Bangladesh
               </h2>
-              <p style={{ color: 'var(--muted)', maxWidth: 560, fontSize: 14.5, lineHeight: 1.65 }}>
+              <p style={{ color: 'color-mix(in oklab, var(--bg) 68%, transparent)', maxWidth: 560, fontSize: 14.5, lineHeight: 1.65 }}>
                 A private university in Chittagong, Bangladesh. The Department of Computer Science &amp; Engineering
                 runs the BEE course in the 2nd semester — this site is a 45th-batch effort to keep the resources
                 in one place for the batches that come after.
@@ -75,11 +75,11 @@ export default function ContributorsPage() {
               {FACTS.map(([l, v]) => (
                 <div key={l} style={{
                   padding: 18, borderRadius: 14,
-                  background: 'rgba(255,255,255,.02)',
-                  border: '1px solid var(--line)',
+                  background: 'color-mix(in oklab, var(--bg) 8%, transparent)',
+                  border: '1px solid color-mix(in oklab, var(--bg) 14%, transparent)',
                 }}>
-                  <div className="mono" style={{ fontSize: 10.5, color: 'var(--muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{l}</div>
-                  <div style={{ fontFamily: 'var(--display)', fontWeight: 700, fontSize: 28, color: 'var(--ink)', letterSpacing: '-0.02em', marginTop: 8 }}>{v}</div>
+                  <div className="mono" style={{ fontSize: 10.5, opacity: 0.55, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{l}</div>
+                  <div style={{ fontFamily: 'var(--display)', fontWeight: 700, fontSize: 28, letterSpacing: '-0.02em', marginTop: 8 }}>{v}</div>
                 </div>
               ))}
             </div>

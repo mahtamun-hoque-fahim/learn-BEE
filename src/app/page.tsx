@@ -197,7 +197,7 @@ export default function Home() {
         {/* ─── About + Contributors + BGCTUB ─────────────────────── */}
         <section style={{
           paddingTop: 56, paddingBottom: 72,
-          background: 'var(--surface)', borderTop: '1px solid var(--line)',
+          borderTop: '1px solid var(--line)',
         }}>
           <div className="container">
             <SectionHeader
@@ -255,7 +255,7 @@ export default function Home() {
                 {CONTRIBUTORS.map(c => (
                   <div key={c.name} style={{
                     padding: 16,
-                    background: 'var(--bg)',
+                    background: 'var(--surface)',
                     border: '1px solid var(--line)',
                     borderRadius: 14,
                     display: 'flex', gap: 14, alignItems: 'flex-start',
@@ -277,24 +277,24 @@ export default function Home() {
               </div>
             </div>
 
-            {/* BGCTUB band — dy/dx dark panel */}
+            {/* BGCTUB band — inverted card (dark-on-white / white-on-dark) */}
             <div style={{
               padding: 'clamp(24px,3.5vw,40px)',
-              background: 'var(--bg-2)',
-              border: '1px solid var(--line-2)',
+              background: 'var(--ink)',
+              color: 'var(--bg)',
               borderRadius: 20,
               display: 'grid',
               gridTemplateColumns: '1fr',
               gap: 28,
             }} className="bgctub-grid">
               <div>
-                <div className="eyebrow" style={{ letterSpacing: '0.16em', marginBottom: 12 }}>
+                <div className="mono" style={{ fontSize: 11, opacity: 0.55, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 12 }}>
                   About BGCTUB
                 </div>
-                <h3 style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 'clamp(24px,3vw,32px)', color: 'var(--ink)', letterSpacing: '-0.03em', marginBottom: 14, lineHeight: 1.08 }}>
+                <h3 style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 'clamp(24px,3vw,32px)', color: 'var(--bg)', letterSpacing: '-0.03em', marginBottom: 14, lineHeight: 1.08 }}>
                   BGC Trust University Bangladesh
                 </h3>
-                <p style={{ color: 'var(--muted)', maxWidth: 540, fontSize: 14.5, lineHeight: 1.65 }}>
+                <p style={{ color: 'color-mix(in oklab, var(--bg) 68%, transparent)', maxWidth: 540, fontSize: 14.5, lineHeight: 1.65 }}>
                   A private university in Chittagong. The Department of Computer Science &amp; Engineering
                   runs the BEE course in the 2nd semester — this site is a 45th-batch effort to keep the
                   resources in one place for the batches that come after.
@@ -309,13 +309,13 @@ export default function Home() {
                 ].map(([l, v]) => (
                   <div key={l} style={{
                     padding: 16, borderRadius: 12,
-                    background: 'rgba(255,255,255,.02)',
-                    border: '1px solid var(--line)',
+                    background: 'color-mix(in oklab, var(--bg) 8%, transparent)',
+                    border: '1px solid color-mix(in oklab, var(--bg) 14%, transparent)',
                   }}>
-                    <div className="mono" style={{ fontSize: 10.5, color: 'var(--muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                    <div className="mono" style={{ fontSize: 10.5, opacity: 0.55, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                       {l}
                     </div>
-                    <div style={{ fontFamily: 'var(--display)', fontWeight: 700, fontSize: 26, color: 'var(--ink)', letterSpacing: '-0.02em', marginTop: 6 }}>
+                    <div style={{ fontFamily: 'var(--display)', fontWeight: 700, fontSize: 26, letterSpacing: '-0.02em', marginTop: 6 }}>
                       {v}
                     </div>
                   </div>
