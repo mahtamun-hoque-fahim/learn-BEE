@@ -5,6 +5,32 @@ import { SectionHeader } from '@/components/design/SectionHeader'
 import { Icon } from '@/components/design/icons'
 import { inScopeChapters } from '@/lib/curriculum'
 import { questionBank } from '@/lib/questions'
+import type { Metadata } from 'next'
+import { SITE_URL, SITE_DESCRIPTION } from '@/lib/seo'
+
+export const metadata: Metadata = {
+  title: 'Basic Electrical Engineering, organised — BGCTUB 2nd semester',
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: '/' },
+}
+
+const courseJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: 'Basic Electrical Engineering (EEE 1201)',
+  description: SITE_DESCRIPTION,
+  url: `${SITE_URL}/learn`,
+  inLanguage: 'en',
+  educationalLevel: 'University, 2nd semester',
+  teaches: inScopeChapters.map(c => c.title),
+  provider: { '@type': 'CollegeOrUniversity', name: 'BGC Trust University Bangladesh', sameAs: 'https://bgctub.ac.bd' },
+  hasCourseInstance: {
+    '@type': 'CourseInstance',
+    courseMode: 'online',
+    courseWorkload: 'P1S',
+    instructor: { '@type': 'Person', name: 'BEE course instructor' },
+  },
+}
 
 const IN_SCOPE_QS = questionBank.filter(q =>
   ['ch1','ch2','ch3','ch4','ch6','ch7'].includes(q.chapter)
@@ -55,6 +81,7 @@ const SECTION_TEASERS: Array<{
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(courseJsonLd) }} />
       <Nav />
       <main>
         {/* ─── Hero ─────────────────────────────────────────────────── */}

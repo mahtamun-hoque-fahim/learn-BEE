@@ -1,6 +1,14 @@
 import Link from 'next/link'
 import { curriculum, IN_SCOPE_IDS, TOTAL_CHAPTERS } from '@/lib/curriculum'
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'All chapters — Basic Electrical Engineering',
+  description: 'Browse all 6 in-scope BGCTUB Basic Electrical Engineering chapters: basic concepts, laws, methods of analysis, circuit theorems, capacitors and first-order circuits. Notes, simulators and quizzes.',
+  alternates: { canonical: '/learn' },
+}
+
 export default function LearnPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
