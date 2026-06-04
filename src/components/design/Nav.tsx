@@ -13,6 +13,7 @@ const LINKS = [
   { href: '/papers',   label: 'Papers' },
   { href: '/books',    label: 'Books' },
   { href: '/cheat-sheet', label: 'Cheat sheet' },
+  { href: '/dashboard', label: 'Dashboard' },
 ] as const
 
 export function Nav() {

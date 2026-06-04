@@ -15,6 +15,9 @@ const COURSE: { href: string; label: string; icon: string }[] = [
 const PROJECT: { href: string; label: string; external?: boolean }[] = [
   { href: '/', label: 'Home' },
   { href: '/contributors', label: 'Contributors' },
+  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/mod', label: 'Moderator' },
+  { href: '/admin', label: 'Admin' },
   { href: DISCUSS, label: 'Discussion', external: true },
   { href: REPO, label: 'GitHub', external: true },
 ]
