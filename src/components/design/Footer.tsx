@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { BeeMark, Icon } from './icons'
+import { BeeLogo, Icon } from './icons'
 
 const REPO = 'https://github.com/mahtamun-hoque-fahim/learn-BEE'
 const DISCUSS = 'https://github.com/mahtamun-hoque-fahim/learn-BEE/discussions'
@@ -29,11 +29,8 @@ export function Footer() {
         <div className="foot-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 36 }}>
           {/* Brand + tagline */}
           <div style={{ maxWidth: 400 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-              <BeeMark size={26} />
-              <span style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 18, letterSpacing: '-0.02em' }}>
-                learn<span style={{ color: 'var(--accent)' }}>BEE</span>
-              </span>
+            <div style={{ marginBottom: 14 }}>
+              <BeeLogo height={30} />
             </div>
             <p style={{ fontSize: 13.5, color: 'var(--muted)', lineHeight: 1.6 }}>
               A 45th-batch effort. Not officially affiliated with the BGCTUB administration — just students who got tired of losing the Drive link.
