@@ -155,6 +155,7 @@ a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; }
 
 .mono { font-family: var(--mono); }
+.font-display { font-family: var(--display); letter-spacing: -0.02em; }
 .muted { color: var(--muted); }
 .dim { color: var(--dim); }
 .accent-text { color: var(--accent); font-style: normal; }

@@ -345,7 +345,7 @@ function FieldEditor({
             type="text"
             value={value ?? ''}
             onChange={e => onChange(e.target.value)}
-            placeholder="#000000"
+            placeholder="var(--on-mint)"
             style={{ ...inputStyle, fontFamily: 'var(--mono)' }}
           />
         </div>

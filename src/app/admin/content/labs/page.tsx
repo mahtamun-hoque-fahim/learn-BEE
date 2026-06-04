@@ -37,7 +37,7 @@ export default async function AdminLabsPage() {
                 { key: 'number', label: '#' },
                 { key: 'title',  label: 'Title' },
                 { key: 'contributor', label: 'Contributor' },
-                { key: 'hasVideo', label: 'Video', render: (i) => i.hasVideo ? '✓' : '—' },
+                { key: 'hasVideo', label: 'Video', render: (i) => i.hasVideo ? 'Yes' : '—' },
               ]}
             />
           </div>

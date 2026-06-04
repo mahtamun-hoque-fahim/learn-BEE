@@ -23,10 +23,10 @@ interface Submission {
 interface StatusCounts { status: Status; count: number }[]
 
 const STATUS_COLOR: Record<Status, string> = {
-  pending:   '#f59e0b',
-  reviewing: '#3b82f6',
-  approved:  '#00e676',
-  rejected:  '#ef4444',
+  pending:   'var(--amber)',
+  reviewing: 'var(--blue)',
+  approved:  'var(--accent)',
+  rejected:  'var(--rose)',
 }
 
 export default function ModDashboard() {
@@ -74,12 +74,12 @@ export default function ModDashboard() {
   const countFor = (s: Status) => counts.find(c => c.status === s)?.count ?? 0
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', color: '#e5e5e5', background: '#0a0a0a' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', color: 'var(--ink)', background: 'var(--bg)' }}>
 
       {/* Sidebar */}
-      <div style={{ width: 240, borderRight: '1px solid #1a1a1a', padding: '24px 0', flexShrink: 0 }}>
-        <div style={{ padding: '0 20px 20px', borderBottom: '1px solid #1a1a1a', marginBottom: 12 }}>
-          <div style={{ fontSize: 11, color: '#555', fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>Moderator</div>
+      <div style={{ width: 240, borderRight: '1px solid var(--surface-2)', padding: '24px 0', flexShrink: 0 }}>
+        <div style={{ padding: '0 20px 20px', borderBottom: '1px solid var(--surface-2)', marginBottom: 12 }}>
+          <div style={{ fontSize: 11, color: 'var(--dim)', fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>Moderator</div>
           <div style={{ fontSize: 17, fontWeight: 700, marginTop: 4 }}>Submissions</div>
         </div>
         {(['pending','reviewing','approved','rejected','all'] as const).map(s => (
@@ -88,15 +88,15 @@ export default function ModDashboard() {
             onClick={() => { setFilter(s); setSelected(null); setDetail(null) }}
             style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              width: '100%', padding: '10px 20px', background: filter === s ? '#1a1a1a' : 'none',
-              border: 'none', color: filter === s ? '#fff' : '#666', cursor: 'pointer',
-              fontSize: 14, textTransform: 'capitalize', borderLeft: filter === s ? `2px solid ${STATUS_COLOR[s as Status] ?? '#00e676'}` : '2px solid transparent',
+              width: '100%', padding: '10px 20px', background: filter === s ? 'var(--surface-2)' : 'none',
+              border: 'none', color: filter === s ? 'var(--ink)' : 'var(--dim)', cursor: 'pointer',
+              fontSize: 14, textTransform: 'capitalize', borderLeft: filter === s ? `2px solid ${STATUS_COLOR[s as Status] ?? 'var(--accent)'}` : '2px solid transparent',
             }}
           >
             <span>{s}</span>
             {s !== 'all' && (
               <span style={{
-                background: '#1e1e1e', borderRadius: 99, padding: '1px 8px',
+                background: 'var(--line-2)', borderRadius: 99, padding: '1px 8px',
                 fontSize: 12, color: STATUS_COLOR[s as Status],
               }}>{countFor(s as Status)}</span>
             )}
@@ -105,8 +105,8 @@ export default function ModDashboard() {
       </div>
 
       {/* List */}
-      <div style={{ width: 320, borderRight: '1px solid #1a1a1a', overflowY: 'auto' }}>
-        <div style={{ padding: '18px 16px', borderBottom: '1px solid #1a1a1a', fontSize: 13, color: '#555' }}>
+      <div style={{ width: 320, borderRight: '1px solid var(--surface-2)', overflowY: 'auto' }}>
+        <div style={{ padding: '18px 16px', borderBottom: '1px solid var(--surface-2)', fontSize: 13, color: 'var(--dim)' }}>
           {loading ? 'Loading…' : `${submissions.length} submission${submissions.length !== 1 ? 's' : ''}`}
         </div>
         {submissions.map(sub => (
@@ -115,26 +115,26 @@ export default function ModDashboard() {
             onClick={() => openDetail(sub.id)}
             style={{
               display: 'block', width: '100%', padding: '16px', textAlign: 'left',
-              background: selected === sub.id ? '#141414' : 'none',
-              border: 'none', borderBottom: '1px solid #1a1a1a',
+              background: selected === sub.id ? 'var(--surface)' : 'none',
+              border: 'none', borderBottom: '1px solid var(--surface-2)',
               cursor: 'pointer',
-              borderLeft: selected === sub.id ? `2px solid #00e676` : '2px solid transparent',
+              borderLeft: selected === sub.id ? `2px solid var(--accent)` : '2px solid transparent',
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-              <span style={{ fontWeight: 600, fontSize: 14, color: '#fff' }}>{sub.studentName}</span>
+              <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--ink)' }}>{sub.studentName}</span>
               <span style={{ fontSize: 11, color: STATUS_COLOR[sub.status], fontWeight: 700 }}>{sub.status}</span>
             </div>
-            <div style={{ fontSize: 12, color: '#666' }}>{sub.university}</div>
-            <div style={{ display: 'flex', gap: 12, marginTop: 6, fontSize: 11, color: '#555' }}>
+            <div style={{ fontSize: 12, color: 'var(--dim)' }}>{sub.university}</div>
+            <div style={{ display: 'flex', gap: 12, marginTop: 6, fontSize: 11, color: 'var(--dim)' }}>
               <span>Ch: {sub.chaptersCompleted}/19</span>
               <span>Bonus: {sub.bonusScore}%</span>
-              {sub.hasCustomQuote && <span style={{ color: '#00e676' }}>✓ quote</span>}
+              {sub.hasCustomQuote && <span style={{ color: 'var(--accent)' }}>quote</span>}
             </div>
           </button>
         ))}
         {!loading && submissions.length === 0 && (
-          <div style={{ padding: 24, color: '#444', fontSize: 14, textAlign: 'center' }}>
+          <div style={{ padding: 24, color: 'var(--dim)', fontSize: 14, textAlign: 'center' }}>
             No submissions here
           </div>
         )}
@@ -143,13 +143,13 @@ export default function ModDashboard() {
       {/* Detail pane */}
       <div style={{ flex: 1, overflowY: 'auto', padding: 28 }}>
         {!selected && (
-          <div style={{ color: '#444', textAlign: 'center', marginTop: 80, fontSize: 15 }}>
+          <div style={{ color: 'var(--dim)', textAlign: 'center', marginTop: 80, fontSize: 15 }}>
             Select a submission to review
           </div>
         )}
 
         {selected && !detail && (
-          <div style={{ color: '#555', textAlign: 'center', marginTop: 80 }}>Loading…</div>
+          <div style={{ color: 'var(--dim)', textAlign: 'center', marginTop: 80 }}>Loading…</div>
         )}
 
         {detail && (
@@ -157,7 +157,7 @@ export default function ModDashboard() {
             {/* Student info */}
             <div style={{ marginBottom: 24 }}>
               <div style={{ fontSize: 22, fontWeight: 700 }}>{detail.registration.studentName}</div>
-              <div style={{ color: '#888', fontSize: 14, marginTop: 2 }}>{detail.student?.email}</div>
+              <div style={{ color: 'var(--muted)', fontSize: 14, marginTop: 2 }}>{detail.student?.email}</div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 20 }}>
@@ -169,8 +169,8 @@ export default function ModDashboard() {
                 { label: 'Chapters done', value: `${detail.registration.chaptersCompleted} / 19` },
                 { label: 'Bonus score', value: `${detail.registration.bonusScore}%` },
               ].map(({ label, value }) => (
-                <div key={label} style={{ background: '#111', borderRadius: 8, padding: '12px 14px', border: '1px solid #1e1e1e' }}>
-                  <div style={{ fontSize: 11, color: '#555', marginBottom: 3 }}>{label}</div>
+                <div key={label} style={{ background: 'var(--surface)', borderRadius: 8, padding: '12px 14px', border: '1px solid var(--line-2)' }}>
+                  <div style={{ fontSize: 11, color: 'var(--dim)', marginBottom: 3 }}>{label}</div>
                   <div style={{ fontWeight: 600, fontSize: 15 }}>{value}</div>
                 </div>
               ))}
@@ -178,34 +178,34 @@ export default function ModDashboard() {
 
             {/* Student note */}
             {detail.registration.additionalNote && (
-              <div style={{ background: '#0f1000', border: '1px solid #f59e0b33', borderRadius: 8, padding: '12px 14px', marginBottom: 20 }}>
-                <div style={{ fontSize: 11, color: '#f59e0b', marginBottom: 4 }}>Student note</div>
-                <p style={{ margin: 0, fontSize: 14, color: '#d97706', fontStyle: 'italic' }}>
+              <div style={{ background: 'var(--amber-soft)', border: '1px solid color-mix(in oklab, var(--amber) 20%, transparent)', borderRadius: 8, padding: '12px 14px', marginBottom: 20 }}>
+                <div style={{ fontSize: 11, color: 'var(--amber)', marginBottom: 4 }}>Student note</div>
+                <p style={{ margin: 0, fontSize: 14, color: 'var(--amber)', fontStyle: 'italic' }}>
                   "{detail.registration.additionalNote}"
                 </p>
               </div>
             )}
 
             {/* Quiz summary */}
-            <div style={{ background: '#111', borderRadius: 8, padding: '14px 16px', marginBottom: 20, border: '1px solid #1e1e1e' }}>
+            <div style={{ background: 'var(--surface)', borderRadius: 8, padding: '14px 16px', marginBottom: 20, border: '1px solid var(--line-2)' }}>
               <div style={{ fontWeight: 600, marginBottom: 10, fontSize: 14 }}>Quiz performance</div>
               <div style={{ display: 'flex', gap: 20 }}>
                 <div>
-                  <div style={{ fontSize: 11, color: '#555' }}>Attempts</div>
+                  <div style={{ fontSize: 11, color: 'var(--dim)' }}>Attempts</div>
                   <div style={{ fontSize: 18, fontWeight: 700 }}>{detail.quizzesSummary.total}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, color: '#555' }}>Passed</div>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: '#00e676' }}>{detail.quizzesSummary.passed}</div>
+                  <div style={{ fontSize: 11, color: 'var(--dim)' }}>Passed</div>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--accent)' }}>{detail.quizzesSummary.passed}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, color: '#555' }}>Bonus passed</div>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: detail.bonusSummary.passed ? '#00e676' : '#ef4444' }}>
+                  <div style={{ fontSize: 11, color: 'var(--dim)' }}>Bonus passed</div>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: detail.bonusSummary.passed ? 'var(--accent)' : 'var(--rose)' }}>
                     {detail.bonusSummary.passed ? 'Yes' : 'No'}
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, color: '#555' }}>Best bonus</div>
+                  <div style={{ fontSize: 11, color: 'var(--dim)' }}>Best bonus</div>
                   <div style={{ fontSize: 18, fontWeight: 700 }}>{detail.bonusSummary.best}%</div>
                 </div>
               </div>
@@ -213,11 +213,11 @@ export default function ModDashboard() {
 
             {/* Custom quote input */}
             {detail.registration.status !== 'approved' && (
-              <div style={{ background: '#111', borderRadius: 8, padding: '16px', marginBottom: 20, border: '1px solid #1e1e1e' }}>
+              <div style={{ background: 'var(--surface)', borderRadius: 8, padding: '16px', marginBottom: 20, border: '1px solid var(--line-2)' }}>
                 <div style={{ fontWeight: 600, marginBottom: 6, fontSize: 14 }}>
                   Personal quote for {detail.registration.studentName.split(' ')[0]}
                 </div>
-                <div style={{ fontSize: 12, color: '#555', marginBottom: 10 }}>
+                <div style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 10 }}>
                   Write a custom quote to appear on their certificates. Leave blank to use a default from the quote pool.
                 </div>
                 <textarea
@@ -226,8 +226,8 @@ export default function ModDashboard() {
                   onChange={e => setQuote(e.target.value)}
                   placeholder="e.g. Your dedication to mastering circuits reflects the engineer you are becoming…"
                   style={{
-                    width: '100%', background: '#1a1a1a', border: '1px solid #2a2a2a',
-                    borderRadius: 8, padding: '10px 12px', color: '#fff', fontSize: 14,
+                    width: '100%', background: 'var(--surface-2)', border: '1px solid var(--line-2)',
+                    borderRadius: 8, padding: '10px 12px', color: 'var(--ink)', fontSize: 14,
                     resize: 'vertical', boxSizing: 'border-box', outline: 'none',
                   }}
                 />
@@ -235,8 +235,8 @@ export default function ModDashboard() {
                   onClick={saveQuote}
                   disabled={savingQuote}
                   style={{
-                    marginTop: 8, background: '#1e3a2a', color: '#00e676',
-                    border: '1px solid #00e67633', borderRadius: 6, padding: '8px 16px',
+                    marginTop: 8, background: 'var(--mint-soft)', color: 'var(--accent)',
+                    border: '1px solid color-mix(in oklab, var(--accent) 20%, transparent)', borderRadius: 6, padding: '8px 16px',
                     fontSize: 13, fontWeight: 600, cursor: 'pointer',
                   }}
                 >
@@ -247,9 +247,9 @@ export default function ModDashboard() {
 
             {/* Approved state — show final quote */}
             {detail.registration.status === 'approved' && detail.registration.finalQuote && (
-              <div style={{ background: '#001a0a', border: '1px solid #00e67633', borderRadius: 8, padding: '14px 16px', marginBottom: 20 }}>
-                <div style={{ fontSize: 11, color: '#00e676', marginBottom: 6 }}>Quote on certificate</div>
-                <p style={{ margin: 0, fontStyle: 'italic', color: '#6ee7b7', fontSize: 14 }}>
+              <div style={{ background: 'var(--mint-soft)', border: '1px solid color-mix(in oklab, var(--accent) 20%, transparent)', borderRadius: 8, padding: '14px 16px', marginBottom: 20 }}>
+                <div style={{ fontSize: 11, color: 'var(--accent)', marginBottom: 6 }}>Quote on certificate</div>
+                <p style={{ margin: 0, fontStyle: 'italic', color: 'var(--accent)', fontSize: 14 }}>
                   "{detail.registration.finalQuote}"
                 </p>
               </div>
@@ -257,7 +257,7 @@ export default function ModDashboard() {
 
             {/* Action note for mods */}
             {detail.registration.status !== 'approved' && (
-              <div style={{ color: '#555', fontSize: 13, padding: '12px 0', borderTop: '1px solid #1a1a1a' }}>
+              <div style={{ color: 'var(--dim)', fontSize: 13, padding: '12px 0', borderTop: '1px solid var(--surface-2)' }}>
                 ℹ️ Save your quote draft here. Final approval and rejection are admin-only actions.
               </div>
             )}
