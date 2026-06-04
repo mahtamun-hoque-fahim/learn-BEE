@@ -60,12 +60,8 @@ export default function Home() {
         {/* ─── Hero ─────────────────────────────────────────────────── */}
         <section style={{ position: 'relative', paddingTop: 48, paddingBottom: 56 }}>
           <div className="container">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 22, flexWrap: 'wrap' }}>
-              <span className="pill primary dot">CSE · 2nd Semester</span>
-              <span className="pill">BGCTUB</span>
-              <span className="pill">45th Batch</span>
-              <span className="pill">Spring 2026</span>
-            </div>
+            {/* hero meta pills removed — whitespace preserved */}
+            <div aria-hidden style={{ height: 28, marginBottom: 22 }} />
 
             <h1 style={{
               fontSize: 'clamp(40px, 7.5vw, 80px)',

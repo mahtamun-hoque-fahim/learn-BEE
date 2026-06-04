@@ -43,6 +43,10 @@ export interface Book {
   tag: 'Primary' | 'Reference' | 'Optional'
   note: string
   swatch: string
+  /** Admin-uploaded cover image (Vercel Blob). Presence implies provisioned. */
+  coverUrl?: string | null
+  /** Admin-set link to obtain a copy (Amazon / library). */
+  externalUrl?: string | null
 }
 
 export const LECTURES: Lecture[] = [

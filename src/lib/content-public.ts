@@ -85,6 +85,8 @@ export async function getBooks(): Promise<Book[]> {
       tag: r.tag,
       note: r.note ?? '',
       swatch: r.swatch,
+      coverUrl: r.coverUrl ?? null,
+      externalUrl: r.externalUrl ?? null,
     }))
   } catch {
     return SEED_BOOKS
