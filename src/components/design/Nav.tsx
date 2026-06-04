@@ -71,8 +71,8 @@ export function Nav() {
                 key={l.href}
                 href={l.href}
                 style={{
-                  padding: '8px 12px',
-                  borderRadius: 8,
+                  padding: '8px 14px',
+                  borderRadius: 999,
                   color: active ? 'var(--ink)' : 'var(--ink-2)',
                   fontSize: 14,
                   fontWeight: 500,
@@ -100,7 +100,7 @@ export function Nav() {
             padding: '8px 12px',
             background: 'var(--surface)',
             border: '1px solid var(--line)',
-            borderRadius: 10,
+            borderRadius: 999,
             color: 'var(--muted)',
             fontSize: 13,
           }}
@@ -123,7 +123,7 @@ export function Nav() {
             height: 38,
             background: 'var(--surface)',
             border: '1px solid var(--line)',
-            borderRadius: 10,
+            borderRadius: 999,
             color: 'var(--ink-2)',
           }}
         >
@@ -140,11 +140,11 @@ export function Nav() {
             gap: 6,
             padding: '9px 14px',
             background: 'var(--accent)',
-            color: '#0A0A0A',
+            color: 'var(--on-mint)',
             border: '1px solid var(--accent)',
-            borderRadius: 10,
+            borderRadius: 999,
             fontSize: 13,
-            fontWeight: 600,
+            fontWeight: 700,
           }}
         >
           Start studying
@@ -162,7 +162,7 @@ export function Nav() {
             height: 38,
             background: 'var(--surface)',
             border: '1px solid var(--line)',
-            borderRadius: 10,
+            borderRadius: 999,
             color: 'var(--ink-2)',
             display: 'inline-flex',
             alignItems: 'center',
@@ -227,9 +227,9 @@ export function Nav() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                 padding: '12px 14px',
                 background: 'var(--accent)',
-                color: '#0A0A0A',
-                borderRadius: 10,
-                fontWeight: 600,
+                color: 'var(--on-mint)',
+                borderRadius: 999,
+                fontWeight: 700,
               }}
             >
               Start studying <Icon name="arrow" size={14} />

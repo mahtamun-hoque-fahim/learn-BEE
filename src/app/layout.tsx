@@ -1,27 +1,21 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google'
+import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import 'katex/dist/katex.min.css'
 import { ThemeProvider, themeInitScript } from '@/components/design/ThemeProvider'
 
-const display = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-display',
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-})
-
-const sans = Inter({
+// Plus Jakarta Sans serves both display (700/800) and body (400-600).
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
 })
 
 const mono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
-  weight: ['400', '500', '600'],
+  weight: ['400', '500'],
   display: 'swap',
 })
 
@@ -31,10 +25,16 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // --font-display reuses the Jakarta variable; both map to the same family.
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${jakarta.variable} ${mono.variable}`}
+      style={{ ['--font-display' as string]: 'var(--font-sans)' }}
+      suppressHydrationWarning
+    >
       <head>
-        {/* Blocking script — set data-theme on <html> before paint so dark-OS users don't see a light flash. */}
+        {/* Blocking script — set data-theme on <html> before paint. Dark is default. */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body>
