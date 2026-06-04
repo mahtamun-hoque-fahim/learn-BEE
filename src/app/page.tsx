@@ -280,7 +280,7 @@ export default function Home() {
             {/* BGCTUB band — inverted card (dark-on-white / white-on-dark) */}
             <div style={{
               padding: 'clamp(24px,3.5vw,40px)',
-              background: 'var(--ink)',
+              background: 'radial-gradient(480px 340px at 0% 100%, color-mix(in oklab, var(--accent) 20%, transparent), transparent 72%), var(--ink)',
               color: 'var(--bg)',
               borderRadius: 20,
               display: 'grid',

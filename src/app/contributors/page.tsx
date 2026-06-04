@@ -56,7 +56,7 @@ export default function ContributorsPage() {
         </div>
 
         {/* BGCTUB feature card — inverted (dark-on-white / white-on-dark) */}
-        <section style={{ background: 'var(--ink)', color: 'var(--bg)', borderRadius: 22, padding: 'clamp(28px,4vw,44px)', marginTop: 36 }}>
+        <section style={{ background: 'radial-gradient(560px 380px at 0% 100%, color-mix(in oklab, var(--accent) 20%, transparent), transparent 72%), var(--ink)', color: 'var(--bg)', borderRadius: 22, padding: 'clamp(28px,4vw,44px)', marginTop: 36 }}>
           <div className="bgctub-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 28, alignItems: 'start' }}>
             <div>
               <div className="mono" style={{ fontSize: 11, opacity: 0.55, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 14 }}>
