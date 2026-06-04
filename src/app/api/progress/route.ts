@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from '@/lib/auth'
 import { getDb } from "@/lib/db";
 import { userProgress } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 
 export async function GET(req: NextRequest) {
   try {
-    const { userId } = await auth();
+    const session = await auth.api.getSession({ headers: req.headers })
+    const userId = session?.user?.id
     if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const db = getDb();
@@ -24,7 +25,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await auth();
+    const session = await auth.api.getSession({ headers: req.headers })
+    const userId = session?.user?.id
     if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();

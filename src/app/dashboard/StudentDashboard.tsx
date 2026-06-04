@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useUser } from '@clerk/nextjs'
+import { useSession } from '@/lib/auth-client'
 import Link from 'next/link'
 import { Icon } from '@/components/design/icons'
 import { curriculum, TOTAL_CHAPTERS } from '@/lib/curriculum'
@@ -34,7 +34,8 @@ const STATUS_CONFIG: Record<RegStatus, { label: string; color: string; icon: str
 }
 
 export default function StudentDashboard() {
-  const { user } = useUser()
+  const { data: session } = useSession()
+  const user = session?.user
   const [progress, setProgress]     = useState<any[]>([])
   const [reg, setReg]               = useState<Registration | null>(null)
   const [loading, setLoading]       = useState(true)
@@ -108,7 +109,7 @@ export default function StudentDashboard() {
       {/* Header */}
       <div style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 26, fontWeight: 600, margin: 0 }}>
-          Hi, {user?.firstName ?? 'Student'} 👋
+          Hi, {user?.name?.split(' ')[0] ?? 'Student'}
         </h1>
         <p style={{ color: 'var(--muted)', margin: '6px 0 0' }}>Your learn·BEE dashboard</p>
       </div>

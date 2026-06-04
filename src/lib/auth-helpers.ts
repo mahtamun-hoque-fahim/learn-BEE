@@ -1,7 +1,5 @@
-import { auth } from '@clerk/nextjs/server'
-import { getDb } from '@/lib/db'
-import { users } from '@/lib/db/schema'
-import { eq } from 'drizzle-orm'
+import { headers } from 'next/headers'
+import { auth } from '@/lib/auth'
 
 export type Role = 'student' | 'moderator' | 'admin'
 
@@ -11,16 +9,12 @@ export interface AuthResult {
   email: string
 }
 
-/** Returns the authenticated user with their DB role, or throws a Response. */
+/** Returns the authenticated user (with role from the session), or throws a Response. */
 export async function requireAuth(): Promise<AuthResult> {
-  const { userId } = await auth()
-  if (!userId) throw new Response('Unauthorized', { status: 401 })
-
-  const db = getDb()
-  const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1)
-  if (!user) throw new Response('User not found', { status: 404 })
-
-  return { userId, role: user.role as Role, email: user.email }
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (!session) throw new Response('Unauthorized', { status: 401 })
+  const u = session.user as { id: string; email: string; role?: string | null }
+  return { userId: u.id, role: (u.role ?? 'student') as Role, email: u.email }
 }
 
 /** Requires moderator OR admin. */
