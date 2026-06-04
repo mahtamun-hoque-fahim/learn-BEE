@@ -16,9 +16,10 @@ export default async function AdminBooksPage() {
     { type: 'select',   key: 'tag',         label: 'Tag', options: ['Primary','Reference','Optional'] as const },
     { type: 'textarea', key: 'note',        label: 'Note', placeholder: 'A one-line description for the card.' },
     { type: 'color',    key: 'swatch',      label: 'Spine colour' },
-    { type: 'text',     key: 'externalUrl', label: 'External URL (Amazon / Library)' },
+    { type: 'text',     key: 'externalUrl', label: 'External / download URL (Drive, library, Amazon)' },
     { type: 'number',   key: 'sortOrder',   label: 'Sort order' },
     { type: 'file',     key: 'coverUrl',    label: 'Cover image', folder: 'books', accept: 'image/*' },
+    { type: 'file',     key: 'fileUrl',     label: 'Book PDF (users download this)', folder: 'books', accept: 'application/pdf,.pdf' },
   ]
 
   return (

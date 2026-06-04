@@ -86,6 +86,7 @@ export async function getBooks(): Promise<Book[]> {
       note: r.note ?? '',
       swatch: r.swatch,
       coverUrl: r.coverUrl ?? null,
+      fileUrl: r.fileUrl ?? null,
       externalUrl: r.externalUrl ?? null,
     }))
   } catch {

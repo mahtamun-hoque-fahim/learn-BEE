@@ -43,9 +43,11 @@ export interface Book {
   tag: 'Primary' | 'Reference' | 'Optional'
   note: string
   swatch: string
-  /** Admin-uploaded cover image (Vercel Blob). Presence implies provisioned. */
+  /** Admin-uploaded cover image (Vercel Blob). */
   coverUrl?: string | null
-  /** Admin-set link to obtain a copy (Amazon / library). */
+  /** Admin-uploaded PDF (Vercel Blob) — download source when present. */
+  fileUrl?: string | null
+  /** Admin-set link to obtain a copy (Amazon / library / Drive). */
   externalUrl?: string | null
 }
 

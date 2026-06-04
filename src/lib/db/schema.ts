@@ -235,6 +235,7 @@ export const books = pgTable('books', {
   swatch: text('swatch').default('#1F3A5F').notNull(),
   externalUrl: text('external_url'),
   coverUrl: text('cover_url'),
+  fileUrl: text('file_url'),
   sortOrder: integer('sort_order').default(0).notNull(),
   createdBy: text('created_by'),
   createdAt: timestamp('created_at').defaultNow().notNull(),

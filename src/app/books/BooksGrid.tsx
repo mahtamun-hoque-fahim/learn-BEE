@@ -55,7 +55,9 @@ function BookCover({ book, w = 150 }: { book: Book; w?: number }) {
 }
 
 function BookModal({ book, onClose }: { book: Book; onClose: () => void }) {
-  const available = Boolean(book.coverUrl || book.externalUrl)
+  const downloadHref = book.fileUrl || book.externalUrl || null
+  const available = Boolean(downloadHref)
+  const isPdf = Boolean(book.fileUrl)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -125,10 +127,16 @@ function BookModal({ book, onClose }: { book: Book; onClose: () => void }) {
             )}
 
             <div style={{ display: 'flex', gap: 10, marginTop: 18, flexWrap: 'wrap' }}>
-              {book.externalUrl && (
-                <a href={book.externalUrl} target="_blank" rel="noopener noreferrer" className="btn-primary btn-sm">
-                  <Icon name="external" size={13} /> Find a copy
+              {downloadHref ? (
+                <a
+                  href={downloadHref}
+                  {...(isPdf ? { download: '' } : { target: '_blank', rel: 'noopener noreferrer' })}
+                  className="btn-primary btn-sm"
+                >
+                  <Icon name="download" size={14} /> {isPdf ? 'Download PDF' : 'Download'}
                 </a>
+              ) : (
+                <span className="pill warn" style={{ alignSelf: 'center' }}>Not uploaded yet</span>
               )}
               <button onClick={onClose} className="btn-line btn-sm">Close</button>
             </div>
@@ -154,7 +162,7 @@ export default function BooksGrid({ books }: { books: Book[] }) {
     <>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 14 }}>
         {books.map(book => {
-          const available = Boolean(book.coverUrl || book.externalUrl)
+          const available = Boolean(book.fileUrl || book.externalUrl)
           return (
             <button
               key={book.id}
