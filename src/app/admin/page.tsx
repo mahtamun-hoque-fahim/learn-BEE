@@ -163,9 +163,9 @@ export default function AdminPage() {
               <h3 className="font-display font-semibold mb-4">Platform Status</h3>
               <div className="space-y-3">
                 {[
-                  { label: 'Chapters available', value: '19 / 19', ok: true },
-                  { label: 'Question bank', value: '200+ questions', ok: true },
-                  { label: 'Simulators', value: '12 active', ok: true },
+                  { label: 'Chapters available', value: '6 / 6', ok: true },
+                  { label: 'Question bank', value: '142 questions', ok: true },
+                  { label: 'Simulators', value: '6 active', ok: true },
                   { label: 'Database', value: 'Connect Neon DB via env vars', ok: false },
                   { label: 'Auth (Clerk)', value: 'Configure CLERK_* env vars', ok: false },
                 ].map(item => (
@@ -261,11 +261,11 @@ export default function AdminPage() {
         {section === 'questions' && (
           <div>
             <h1 className="font-display text-2xl font-bold mb-2">Question Bank</h1>
-            <p className="text-[var(--muted)] text-sm mb-6">200+ questions across 19 chapters. Sourced from Sadiku, Boylestad, and Tikle&apos;s Academy.</p>
+            <p className="text-[var(--muted)] text-sm mb-6">142 questions across 6 chapters. Sourced from Sadiku, Boylestad, and Tikle&apos;s Academy.</p>
             
             <div className="bg-[var(--surface)] border border-[var(--line)] rounded-xl p-5">
               <div className="grid grid-cols-3 gap-4 mb-4 text-center">
-                <div><div className="text-2xl font-bold text-[var(--accent)]">200+</div><div className="text-xs text-[var(--muted)]">Total Questions</div></div>
+                <div><div className="text-2xl font-bold text-[var(--accent)]">142</div><div className="text-xs text-[var(--muted)]">Total Questions</div></div>
                 <div><div className="text-2xl font-bold text-[var(--amber)]">MCQ / T-F / Numerical</div><div className="text-xs text-[var(--muted)]">Question Types</div></div>
                 <div><div className="text-2xl font-bold text-[var(--blue)]">Easy / Medium / Hard</div><div className="text-xs text-[var(--muted)]">Difficulty Levels</div></div>
               </div>

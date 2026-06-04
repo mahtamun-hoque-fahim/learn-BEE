@@ -15,16 +15,16 @@ import type { ReactNode } from 'react'
 
 // ─── Tokens (kept in JS so animation logic can use them) ──────────────────
 export const C = {
-  wire: '#888',
-  wireOn: '#00e676',
-  current: '#00e676',
-  text: '#d4d4d4',
-  muted: '#888',
-  dim: '#555',
-  bg: '#0a0a0a',
-  surface: '#111',
-  warn: '#ffaa00',
-  danger: '#ff4444',
+  wire: '#8A938E',
+  wireOn: '#3DF49A',
+  current: '#3DF49A',
+  text: '#CDD3D0',
+  muted: '#8A938E',
+  dim: '#5D6661',
+  bg: '#070807',
+  surface: '#0E1110',
+  warn: '#F5A85C',
+  danger: '#F26B6B',
 }
 
 // ─── Animated wire ────────────────────────────────────────────────────────

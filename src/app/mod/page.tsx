@@ -127,7 +127,7 @@ export default function ModDashboard() {
             </div>
             <div style={{ fontSize: 12, color: 'var(--dim)' }}>{sub.university}</div>
             <div style={{ display: 'flex', gap: 12, marginTop: 6, fontSize: 11, color: 'var(--dim)' }}>
-              <span>Ch: {sub.chaptersCompleted}/19</span>
+              <span>Ch: {sub.chaptersCompleted}/6</span>
               <span>Bonus: {sub.bonusScore}%</span>
               {sub.hasCustomQuote && <span style={{ color: 'var(--accent)' }}>quote</span>}
             </div>
@@ -166,7 +166,7 @@ export default function ModDashboard() {
                 { label: 'Department', value: detail.registration.department },
                 { label: 'Semester', value: detail.registration.semester },
                 { label: 'Gender', value: detail.registration.gender },
-                { label: 'Chapters done', value: `${detail.registration.chaptersCompleted} / 19` },
+                { label: 'Chapters done', value: `${detail.registration.chaptersCompleted} / 6` },
                 { label: 'Bonus score', value: `${detail.registration.bonusScore}%` },
               ].map(({ label, value }) => (
                 <div key={label} style={{ background: 'var(--surface)', borderRadius: 8, padding: '12px 14px', border: '1px solid var(--line-2)' }}>

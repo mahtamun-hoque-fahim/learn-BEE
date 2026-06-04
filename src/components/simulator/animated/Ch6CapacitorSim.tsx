@@ -47,8 +47,8 @@ export default function Ch6CapacitorSim() {
       <CircuitAnimStyles />
 
       <div className="flex gap-2">
-        <button onClick={() => setMode('parallel')} className={`text-xs font-mono px-3 py-1.5 rounded border ${mode === 'parallel' ? 'bg-[#00e676] text-black border-[#00e676]' : 'border-[#333] text-[#888]'}`}>Parallel</button>
-        <button onClick={() => setMode('series')}    className={`text-xs font-mono px-3 py-1.5 rounded border ${mode === 'series' ? 'bg-[#00e676] text-black border-[#00e676]' : 'border-[#333] text-[#888]'}`}>Series</button>
+        <button onClick={() => setMode('parallel')} className={`text-xs font-mono px-3 py-1.5 rounded border ${mode === 'parallel' ? 'bg-[#3DF49A] text-black border-[#3DF49A]' : 'border-[#333] text-[#888]'}`}>Parallel</button>
+        <button onClick={() => setMode('series')}    className={`text-xs font-mono px-3 py-1.5 rounded border ${mode === 'series' ? 'bg-[#3DF49A] text-black border-[#3DF49A]' : 'border-[#333] text-[#888]'}`}>Series</button>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4 items-start">

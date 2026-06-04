@@ -76,11 +76,11 @@ export default function Ch4TheveninSim() {
             <Readout label="i" value={I.toFixed(3)} unit="A" />
             <Readout label="V_L" value={VL.toFixed(2)} unit="V" />
             <Readout label="P_L (load)" value={PL.toFixed(3)} unit="W" color="#7aa2ff" />
-            <Readout label="P_max @ R_L=R_Th" value={Pmax.toFixed(3)} unit="W" color="#00e676" />
+            <Readout label="P_max @ R_L=R_Th" value={Pmax.toFixed(3)} unit="W" color="#3DF49A" />
           </div>
           <div className="text-xs font-mono text-[#888] bg-[#0a0a0a] border border-[#1a1a1a] rounded-md px-3 py-2">
             Efficiency η = P_L / P_source = {efficiency.toFixed(1)}%
-            {Math.abs(RL - Rs) < 0.5 && <span className="text-[#00e676] ml-2">✓ at max power</span>}
+            {Math.abs(RL - Rs) < 0.5 && <span className="text-[#3DF49A] ml-2">✓ at max power</span>}
           </div>
         </div>
       </div>
@@ -92,8 +92,8 @@ export default function Ch4TheveninSim() {
           <path d={pathD} fill="none" stroke="#7aa2ff" strokeWidth="1.8" />
           {/* Peak marker: R_L = Rs */}
           <line x1={(Rs / RLmax) * plotW} x2={(Rs / RLmax) * plotW} y1={3} y2={plotH - 3}
-                stroke="#00e676" strokeDasharray="3 3" strokeWidth="1" />
-          <text x={(Rs / RLmax) * plotW + 4} y={12} fill="#00e676" fontSize="9" fontFamily="var(--font-mono, monospace)">R_Th</text>
+                stroke="#3DF49A" strokeDasharray="3 3" strokeWidth="1" />
+          <text x={(Rs / RLmax) * plotW + 4} y={12} fill="#3DF49A" fontSize="9" fontFamily="var(--font-mono, monospace)">R_Th</text>
           {/* Current operating point */}
           <circle cx={xCur} cy={yCur} r={4} fill="#7aa2ff" stroke="#0a0a0a" strokeWidth="1.5" />
           <text x={4} y={12} fill="#666" fontSize="9" fontFamily="var(--font-mono, monospace)">P</text>

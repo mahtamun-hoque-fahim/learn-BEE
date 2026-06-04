@@ -196,7 +196,7 @@ export default function AdminDashboard() {
                   </div>
                   <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 2 }}>{sub.university}</div>
                   <div style={{ fontSize: 11, color: 'var(--dim)', marginTop: 4 }}>
-                    Ch {sub.chaptersCompleted}/19 · Bonus {sub.bonusScore}%
+                    Ch {sub.chaptersCompleted}/6 · Bonus {sub.bonusScore}%
                     {sub.hasCustomQuote && <span style={{ color: 'var(--accent)', marginLeft: 8 }}>quote</span>}
                   </div>
                 </button>
@@ -240,7 +240,7 @@ export default function AdminDashboard() {
                     { l: 'Department', v: detail.registration.department },
                     { l: 'Semester', v: detail.registration.semester },
                     { l: 'Gender', v: detail.registration.gender },
-                    { l: 'Chapters', v: `${detail.registration.chaptersCompleted}/19` },
+                    { l: 'Chapters', v: `${detail.registration.chaptersCompleted}/6` },
                     { l: 'Bonus', v: `${detail.registration.bonusScore}%` },
                   ].map(({ l, v }) => (
                     <div key={l} style={{ background: 'var(--surface)', borderRadius: 8, padding: '10px 12px', border: '1px solid var(--line-2)' }}>

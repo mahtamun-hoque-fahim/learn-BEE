@@ -28,7 +28,7 @@ export default function AnimatedSim({ chapterId }: { chapterId: string }) {
   return (
     <div className="bg-[#111] border border-[#222] rounded-xl overflow-hidden">
       <div className="px-5 py-3 border-b border-[#222] bg-[#0d0d0d] flex items-center gap-3">
-        <span className="text-xs font-mono text-[#00e676] uppercase tracking-wider">Interactive demo</span>
+        <span className="text-xs font-mono text-[#3DF49A] uppercase tracking-wider">Interactive demo</span>
         <span className="text-sm text-[#d4d4d4] font-syne font-semibold">{entry?.title ?? 'Out of scope'}</span>
       </div>
       <div className="p-5">

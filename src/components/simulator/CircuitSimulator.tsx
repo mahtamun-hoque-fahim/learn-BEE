@@ -39,7 +39,7 @@ export default function CircuitSimulator({ chapterId }: Props) {
     <div className="bg-[#111] border border-[#222] rounded-xl overflow-hidden">
       <div className="flex items-center justify-between px-5 py-3 border-b border-[#222] bg-[#0d0d0d]">
         <div className="flex items-center gap-3">
-          <span className="text-[#00e676]">⚡</span>
+          <span className="text-[#3DF49A]">⚡</span>
           <span className="font-syne font-semibold text-sm">{config.title}</span>
         </div>
         <span className="text-xs text-[#555]">Interactive</span>
@@ -70,31 +70,31 @@ function OhmsLawSim() {
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs text-[#888] mb-2">Voltage (V): <span className="text-[#00e676]">{voltage} V</span></label>
+          <label className="block text-xs text-[#888] mb-2">Voltage (V): <span className="text-[#3DF49A]">{voltage} V</span></label>
           <input type="range" min={0} max={48} step={0.5} value={voltage}
             onChange={e => setVoltage(Number(e.target.value))}
-            className="w-full accent-[#00e676]" />
+            className="w-full accent-[#3DF49A]" />
         </div>
         <div>
-          <label className="block text-xs text-[#888] mb-2">Resistance (Ω): <span className="text-[#00e676]">{resistance} Ω</span></label>
+          <label className="block text-xs text-[#888] mb-2">Resistance (Ω): <span className="text-[#3DF49A]">{resistance} Ω</span></label>
           <input type="range" min={1} max={200} step={1} value={resistance}
             onChange={e => setResistance(Number(e.target.value))}
-            className="w-full accent-[#00e676]" />
+            className="w-full accent-[#3DF49A]" />
         </div>
       </div>
 
       {/* Circuit diagram (SVG) */}
       <svg viewBox="0 0 400 180" className="w-full bg-[#0a0a0a] rounded-lg border border-[#1a1a1a]">
         {/* Wire */}
-        <line x1="50" y1="90" x2="150" y2="90" stroke="#00e676" strokeWidth="2"/>
-        <line x1="250" y1="90" x2="350" y2="90" stroke="#00e676" strokeWidth="2"/>
-        <line x1="350" y1="90" x2="350" y2="140" stroke="#00e676" strokeWidth="2"/>
-        <line x1="50" y1="140" x2="350" y2="140" stroke="#00e676" strokeWidth="2"/>
-        <line x1="50" y1="90" x2="50" y2="140" stroke="#00e676" strokeWidth="2"/>
+        <line x1="50" y1="90" x2="150" y2="90" stroke="#3DF49A" strokeWidth="2"/>
+        <line x1="250" y1="90" x2="350" y2="90" stroke="#3DF49A" strokeWidth="2"/>
+        <line x1="350" y1="90" x2="350" y2="140" stroke="#3DF49A" strokeWidth="2"/>
+        <line x1="50" y1="140" x2="350" y2="140" stroke="#3DF49A" strokeWidth="2"/>
+        <line x1="50" y1="90" x2="50" y2="140" stroke="#3DF49A" strokeWidth="2"/>
         
         {/* Voltage source */}
-        <circle cx="50" cy="115" r="18" fill="none" stroke="#00e676" strokeWidth="2"/>
-        <text x="50" y="110" textAnchor="middle" fill="#00e676" fontSize="10">+</text>
+        <circle cx="50" cy="115" r="18" fill="none" stroke="#3DF49A" strokeWidth="2"/>
+        <text x="50" y="110" textAnchor="middle" fill="#3DF49A" fontSize="10">+</text>
         <text x="50" y="124" textAnchor="middle" fill="#888" fontSize="9">{voltage}V</text>
         
         {/* Resistor (zigzag) */}
@@ -120,7 +120,7 @@ function OhmsLawSim() {
         ].map(out => (
           <div key={out.label} className="bg-[#0a0a0a] rounded-lg p-3 border border-[#1a1a1a] text-center">
             <div className="text-xs text-[#888] mb-1">{out.label}</div>
-            <div className="font-mono font-bold text-[#00e676]">{out.value}</div>
+            <div className="font-mono font-bold text-[#3DF49A]">{out.value}</div>
             <div className="text-xs text-[#555] mt-1 font-mono">{out.formula}</div>
           </div>
         ))}
@@ -147,8 +147,8 @@ function KVLSim() {
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="text-xs text-[#888]">V_source: <span className="text-[#00e676]">{vs}V</span></label>
-          <input type="range" min={1} max={48} value={vs} onChange={e => setVs(Number(e.target.value))} className="w-full accent-[#00e676]"/>
+          <label className="text-xs text-[#888]">V_source: <span className="text-[#3DF49A]">{vs}V</span></label>
+          <input type="range" min={1} max={48} value={vs} onChange={e => setVs(Number(e.target.value))} className="w-full accent-[#3DF49A]"/>
         </div>
         <div>
           <label className="text-xs text-[#888]">R1: <span className="text-yellow-400">{r1}Ω</span></label>
@@ -182,7 +182,7 @@ function KVLSim() {
       <div className="grid grid-cols-2 gap-2">
         <div className="bg-[#0a0a0a] rounded-lg p-3 text-center border border-[#1a1a1a]">
           <div className="text-xs text-[#888]">Current I</div>
-          <div className="font-mono text-[#00e676] font-bold">{current.toFixed(3)} A</div>
+          <div className="font-mono text-[#3DF49A] font-bold">{current.toFixed(3)} A</div>
         </div>
         <div className={`rounded-lg p-3 text-center border ${Math.abs(kvlCheck) < 0.001 ? 'border-green-800 bg-green-900/10' : 'border-red-800 bg-red-900/10'}`}>
           <div className="text-xs text-[#888]">KVL Check (Σv = 0)</div>
@@ -228,14 +228,14 @@ function RCCircuitSim() {
   return (
     <div className="space-y-4">
       <div className="flex gap-2 mb-2">
-        <button onClick={() => setMode('charge')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${mode === 'charge' ? 'bg-[#00e676] text-black' : 'border border-[#333] text-[#888]'}`}>Charging</button>
-        <button onClick={() => setMode('discharge')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${mode === 'discharge' ? 'bg-[#00e676] text-black' : 'border border-[#333] text-[#888]'}`}>Discharging</button>
+        <button onClick={() => setMode('charge')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${mode === 'charge' ? 'bg-[#3DF49A] text-black' : 'border border-[#333] text-[#888]'}`}>Charging</button>
+        <button onClick={() => setMode('discharge')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${mode === 'discharge' ? 'bg-[#3DF49A] text-black' : 'border border-[#333] text-[#888]'}`}>Discharging</button>
       </div>
 
       <div className="grid grid-cols-3 gap-2">
         <div>
-          <label className="text-xs text-[#888]">V_s: <span className="text-[#00e676]">{vs}V</span></label>
-          <input type="range" min={1} max={24} value={vs} onChange={e => setVs(Number(e.target.value))} className="w-full accent-[#00e676]"/>
+          <label className="text-xs text-[#888]">V_s: <span className="text-[#3DF49A]">{vs}V</span></label>
+          <input type="range" min={1} max={24} value={vs} onChange={e => setVs(Number(e.target.value))} className="w-full accent-[#3DF49A]"/>
         </div>
         <div>
           <label className="text-xs text-[#888]">R: <span className="text-yellow-400">{R}kΩ</span></label>
@@ -264,7 +264,7 @@ function RCCircuitSim() {
         <text x={pad.left - 5} y={svgH - pad.bottom} textAnchor="end" fill="#888" fontSize="9">0</text>
         <text x={svgW/2} y={svgH - 2} textAnchor="middle" fill="#555" fontSize="9">Time (s) — 5τ = {(5*tau).toFixed(2)}s</text>
         {/* Curve */}
-        <path d={pathD} fill="none" stroke="#00e676" strokeWidth="2.5"/>
+        <path d={pathD} fill="none" stroke="#3DF49A" strokeWidth="2.5"/>
         {/* Tau marker */}
         <line x1={xTau} y1={pad.top} x2={xTau} y2={svgH - pad.bottom} stroke="#fbbf24" strokeWidth="1" strokeDasharray="4,3"/>
         <circle cx={xTau} cy={yTau} r="4" fill="#fbbf24"/>
@@ -274,7 +274,7 @@ function RCCircuitSim() {
       <div className="grid grid-cols-3 gap-2 text-center">
         <div className="bg-[#0a0a0a] rounded-lg p-2 border border-[#1a1a1a]">
           <div className="text-xs text-[#888]">τ = RC</div>
-          <div className="font-mono text-[#00e676] text-sm">{tau.toFixed(3)} s</div>
+          <div className="font-mono text-[#3DF49A] text-sm">{tau.toFixed(3)} s</div>
         </div>
         <div className="bg-[#0a0a0a] rounded-lg p-2 border border-[#1a1a1a]">
           <div className="text-xs text-[#888]">V at τ</div>
@@ -299,7 +299,7 @@ function RLCSim() {
   const alpha = R / (2 * L)
   const omega0 = 1 / Math.sqrt(L * C)
   const damping = alpha > omega0 ? 'Overdamped' : alpha < omega0 ? 'Underdamped' : 'Critically Damped'
-  const color = damping === 'Overdamped' ? '#f87171' : damping === 'Underdamped' ? '#60a5fa' : '#00e676'
+  const color = damping === 'Overdamped' ? '#f87171' : damping === 'Underdamped' ? '#60a5fa' : '#3DF49A'
 
   const omegaD = Math.max(0, Math.sqrt(Math.abs(omega0 ** 2 - alpha ** 2)))
   const tEnd = Math.min(5 * (1 / alpha || 1), 20)
@@ -345,8 +345,8 @@ function RLCSim() {
           <input type="range" min={0.01} max={1} step={0.01} value={C} onChange={e => setC(Number(e.target.value))} className="w-full accent-blue-400"/>
         </div>
         <div>
-          <label className="text-xs text-[#888]">V_step: <span className="text-[#00e676]">{vs}V</span></label>
-          <input type="range" min={1} max={20} value={vs} onChange={e => setVs(Number(e.target.value))} className="w-full accent-[#00e676]"/>
+          <label className="text-xs text-[#888]">V_step: <span className="text-[#3DF49A]">{vs}V</span></label>
+          <input type="range" min={1} max={20} value={vs} onChange={e => setVs(Number(e.target.value))} className="w-full accent-[#3DF49A]"/>
         </div>
       </div>
 
@@ -395,8 +395,8 @@ function PhasorSim() {
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <label className="text-xs text-[#888]">V_m: <span className="text-[#00e676]">{Vm}V</span></label>
-          <input type="range" min={1} max={20} value={Vm} onChange={e => setVm(Number(e.target.value))} className="w-full accent-[#00e676]"/>
+          <label className="text-xs text-[#888]">V_m: <span className="text-[#3DF49A]">{Vm}V</span></label>
+          <input type="range" min={1} max={20} value={Vm} onChange={e => setVm(Number(e.target.value))} className="w-full accent-[#3DF49A]"/>
         </div>
         <div>
           <label className="text-xs text-[#888]">φ: <span className="text-yellow-400">{phi}°</span></label>
@@ -419,14 +419,14 @@ function PhasorSim() {
           <line x1={cx - r - 10} y1={cy} x2={cx + r + 10} y2={cy} stroke="#333" strokeWidth="1"/>
           <line x1={cx} y1={cy - r - 10} x2={cx} y2={cy + r + 10} stroke="#333" strokeWidth="1"/>
           {/* Phasor arrow */}
-          <line x1={cx} y1={cy} x2={px} y2={py} stroke="#00e676" strokeWidth="3" markerEnd="url(#parrow)"/>
+          <line x1={cx} y1={cy} x2={px} y2={py} stroke="#3DF49A" strokeWidth="3" markerEnd="url(#parrow)"/>
           <defs>
             <marker id="parrow" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto">
-              <path d="M0,0 L6,3 L0,6 Z" fill="#00e676"/>
+              <path d="M0,0 L6,3 L0,6 Z" fill="#3DF49A"/>
             </marker>
           </defs>
           {/* Labels */}
-          <text x={px + 5} y={py - 5} fill="#00e676" fontSize="10">{Vm}∠{phi}°</text>
+          <text x={px + 5} y={py - 5} fill="#3DF49A" fontSize="10">{Vm}∠{phi}°</text>
           <text x={cx + r + 5} y={cy + 4} fill="#555" fontSize="9">Re</text>
           <text x={cx + 2} y={cy - r - 3} fill="#555" fontSize="9">Im</text>
           {/* Angle arc */}
@@ -437,7 +437,7 @@ function PhasorSim() {
         <div className="flex-1 space-y-2">
           <div className="formula-card">
             <div className="text-[#888] text-xs mb-1">Phasor (polar)</div>
-            <div className="text-[#00e676] font-mono text-sm">V = {Vm}∠{phi}°</div>
+            <div className="text-[#3DF49A] font-mono text-sm">V = {Vm}∠{phi}°</div>
           </div>
           <div className="formula-card">
             <div className="text-[#888] text-xs mb-1">Rectangular form</div>
@@ -499,8 +499,8 @@ function BodeSim() {
   return (
     <div className="space-y-4">
       <div className="flex gap-2 mb-2">
-        <button onClick={() => setFilterType('lp')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${filterType === 'lp' ? 'bg-[#00e676] text-black' : 'border border-[#333] text-[#888]'}`}>Low-Pass</button>
-        <button onClick={() => setFilterType('hp')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${filterType === 'hp' ? 'bg-[#00e676] text-black' : 'border border-[#333] text-[#888]'}`}>High-Pass</button>
+        <button onClick={() => setFilterType('lp')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${filterType === 'lp' ? 'bg-[#3DF49A] text-black' : 'border border-[#333] text-[#888]'}`}>Low-Pass</button>
+        <button onClick={() => setFilterType('hp')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${filterType === 'hp' ? 'bg-[#3DF49A] text-black' : 'border border-[#333] text-[#888]'}`}>High-Pass</button>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -528,14 +528,14 @@ function BodeSim() {
         {/* cutoff freq */}
         <line x1={toX(fc)} y1={pad.top} x2={toX(fc)} y2={svgH - pad.bottom} stroke="#f87171" strokeWidth="1" strokeDasharray="4"/>
         <text x={toX(fc) + 3} y={pad.top + 10} fill="#f87171" fontSize="8">f_c={fc.toFixed(0)}Hz</text>
-        <path d={pathD} fill="none" stroke="#00e676" strokeWidth="2.5"/>
+        <path d={pathD} fill="none" stroke="#3DF49A" strokeWidth="2.5"/>
         <text x={svgW/2} y={svgH} textAnchor="middle" fill="#555" fontSize="9">Frequency (Hz) — log scale</text>
         <text x={5} y={svgH/2} fill="#555" fontSize="9" transform={`rotate(-90, 5, ${svgH/2})`}>|H| (dB)</text>
       </svg>
 
       <div className="formula-card">
         <div className="text-[#888] text-xs mb-1">Cutoff Frequency</div>
-        <div className="text-[#00e676] font-mono">f_c = 1/(2πRC) = {fc.toFixed(1)} Hz</div>
+        <div className="text-[#3DF49A] font-mono">f_c = 1/(2πRC) = {fc.toFixed(1)} Hz</div>
       </div>
     </div>
   )
