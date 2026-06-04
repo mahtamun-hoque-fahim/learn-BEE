@@ -94,10 +94,10 @@ export default function Ch7RCTransientSim() {
       <CircuitAnimStyles />
 
       <div className="flex gap-2">
-        <button onClick={() => { setMode('charge'); setT(0) }}    className={`text-xs font-mono px-3 py-1.5 rounded border ${mode === 'charge'    ? 'bg-[#00e676] text-black border-[#00e676]' : 'border-[#333] text-[#888]'}`}>Charging</button>
-        <button onClick={() => { setMode('discharge'); setT(0) }} className={`text-xs font-mono px-3 py-1.5 rounded border ${mode === 'discharge' ? 'bg-[#00e676] text-black border-[#00e676]' : 'border-[#333] text-[#888]'}`}>Discharging</button>
+        <button onClick={() => { setMode('charge'); setT(0) }}    className={`text-xs font-mono px-3 py-1.5 rounded border ${mode === 'charge'    ? 'bg-[#3DF49A] text-black border-[#3DF49A]' : 'border-[#333] text-[#888]'}`}>Charging</button>
+        <button onClick={() => { setMode('discharge'); setT(0) }} className={`text-xs font-mono px-3 py-1.5 rounded border ${mode === 'discharge' ? 'bg-[#3DF49A] text-black border-[#3DF49A]' : 'border-[#333] text-[#888]'}`}>Discharging</button>
         <div className="flex-1" />
-        <button onClick={() => setRunning(r => !r)} className="text-xs font-mono px-3 py-1.5 rounded bg-[#1a1a1a] border border-[#333] text-[#d4d4d4] hover:border-[#00e676]">
+        <button onClick={() => setRunning(r => !r)} className="text-xs font-mono px-3 py-1.5 rounded bg-[#1a1a1a] border border-[#333] text-[#d4d4d4] hover:border-[#3DF49A]">
           {running ? '⏸ Pause' : '▶ Run'}
         </button>
         <button onClick={() => { setT(0); setRunning(false) }} className="text-xs font-mono px-3 py-1.5 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">↺ Reset</button>
@@ -116,11 +116,11 @@ export default function Ch7RCTransientSim() {
             <NodeDot x={50} y={30} /><NodeDot x={50} y={190} /><NodeDot x={290} y={30} /><NodeDot x={290} y={190} />
           </svg>
           <div className="text-[10px] uppercase tracking-wider text-[#666] font-mono mt-2">
-            Time: <span className="text-[#00e676]">{t < 1 ? (t * 1000).toFixed(0) + ' ms' : t.toFixed(2) + ' s'}</span>
+            Time: <span className="text-[#3DF49A]">{t < 1 ? (t * 1000).toFixed(0) + ' ms' : t.toFixed(2) + ' s'}</span>
             <span className="mx-2 text-[#444]">·</span>
             τ markers:&nbsp;
             {[1, 2, 3, 4, 5].map(k => (
-              <span key={k} className={k * tau <= t ? 'text-[#00e676]' : 'text-[#555]'}>
+              <span key={k} className={k * tau <= t ? 'text-[#3DF49A]' : 'text-[#555]'}>
                 {k}τ{k < 5 ? ' ' : ''}
               </span>
             ))}

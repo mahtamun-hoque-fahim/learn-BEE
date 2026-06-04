@@ -1,41 +1,49 @@
 # DESIGN_GUIDE.md — learn-BEE
 
 > Living design system reference. Refreshed on every `update repo`.
-> Last updated: 2026-05-29 (after iteration #3)
+> Last updated: 2026-06-04 (redesign v2 — "dy/dx" dark-default theme)
 
 ---
 
 ## Color Tokens
 
+**Dark is the default theme** (`:root`). Light is derived under `[data-theme="light"]`; the toggle persists to `localStorage('learnbee.theme')` and defaults to dark when unset.
+
+### Dark (default)
 | Token | Hex | Usage |
 |---|---|---|
-| Background | `#0a0a0a` | Page background |
-| Surface | `#111111` | Cards, panels, formula cards |
-| Surface 2 | `#1a1a1a` | Hover / elevated surfaces, code blocks, plot backgrounds |
-| Border | `#222222` | Dividers, card outlines |
-| Border subtle | `#1a1a1a` | Inner borders within elevated cards |
-| **Accent** | `#00e676` | CTAs, animated current flow, active tab underline, formula labels |
-| Accent dim | `#00b85d` | Hover state for accent buttons |
-| Text primary | `#ffffff` | Body text, headings |
-| Text 2 | `#d4d4d4` | Schematic-component fills |
-| Text 3 | `#cccccc` | Secondary body text inside cards |
-| Text muted | `#888888` | Labels, captions, descriptions, dim wires |
-| Text disabled | `#555555` | Disabled state, completed-checked text |
-| Warning | `#ffaa00` / `#ffd24d` | Lamp brightness halo, V₁ in divider |
-| Info | `#7aa2ff` | V₂ / R_L slider accent, capacitor blue tone, plot curves |
-| Danger | `#ff4444` / `#7f1d1d` (bg-red-900) | Wrong-answer outlines, KCL error indicator |
-| Success border | `#14532d` (bg-green-900) | Correct-answer outlines |
+| `--bg` | `#070807` | Page background |
+| `--bg-2` / `--surface` | `#0E1110` | Cards, panels, equation blocks |
+| `--surface-2` | `#131715` | Elevated / hover surfaces |
+| `--line` | `#1F2421` | Hairline dividers, card outlines |
+| `--line-2` | `#2A312D` | Stronger borders, inputs, pills |
+| **`--primary` / `--accent`** | `#3DF49A` (mint) | CTAs, accent words, current flow, active states |
+| `--primary-2` / `--accent-2` | `#27D685` | Accent hover / gradient stop |
+| `--mint-soft` | `rgba(61,244,154,.12)` | Accent chip/callout fills |
+| `--on-mint` | `#06160E` | Text/icon colour on a mint fill |
+| `--ink` | `#F3F6F4` | Body text, headings |
+| `--ink-2` | `#CDD3D0` | Article body copy |
+| `--muted` | `#8A938E` | Labels, captions, eyebrows |
+| `--dim` | `#5D6661` | Counters, disabled text |
+| `--warn` / `--amber` | `#F5A85C` | Warnings, V₁ in divider |
+| `--blue` | `#60A8FA` | V₂ / R_L accent, capacitor tone, plot curves |
+| `--danger` / `--rose` | `#F26B6B` | Wrong-answer outlines, KCL error |
+| `--ok` | `#3DF49A` | Correct-answer outlines (= mint) |
 
-These are also exposed as `--accent`, `--accent-dim`, `--bg`, `--text`, `--text-muted` CSS variables (via `globals.css`), with the JS-side mirror in `simulator/animated/primitives.tsx` as the `C` constant for SVG strokes.
+### Light (derived)
+`--bg #FAFAF9` · `--surface #FFFFFF` · `--surface-2 #F1F1EF` · `--ink #0A0A0A` · `--ink-2 #33403A` · `--muted #5E6B65` · `--line #E4E4E1` / `--line-2 #D6D6D2` · **`--primary/--accent #0E9E5C`** (mint darkened for AA contrast on paper) · `--on-mint #052B19` · `--warn #B5811E` · `--blue #2563EB` · `--danger #C5443B`.
+
+All tokens live in `globals.css`. Legacy aliases `--accent-dim`, `--border`, `--text`, `--text-muted`, `--surface2` are kept pointing at the new tokens so un-migrated pages keep rendering. The JS-side mirror in `simulator/animated/primitives.tsx` (`C` constant) must be re-synced to the mint `#3DF49A` during the simulator re-skin.
+
+**Signature treatment:** `body::before` paints a faint 48px grid (`--grid-line`); `body::after` paints a dual radial mint glow (`--glow-1/2`). Accent words use `.accent-text` (mint, never italic). Mono uppercase eyebrows use `.eyebrow` / `.tiny` at `.14–.16em` tracking.
 
 ---
 
 ## Typography
 
 **Font Stack** (via `next/font/google`):
-- Headings: **Syne** — weights 400, 600, 700, 800
-- Body: **Onest** — weights 400, 500, 600
-- Mono / formula-ASCII / code: **JetBrains Mono** (via Tailwind `font-mono`)
+- Display + Body: **Plus Jakarta Sans** — weights 400, 500, 600, 700, 800 (headings use 700/800, exposed as both `--font-sans` and `--font-display`)
+- Mono / formula-ASCII / code / eyebrow labels: **JetBrains Mono** — weights 400, 500 (`var(--mono)`)
 - LaTeX math: KaTeX's bundled fonts (auto-loaded by `katex/dist/katex.min.css`)
 
 **Scale (Tailwind):**

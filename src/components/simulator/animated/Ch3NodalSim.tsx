@@ -82,7 +82,7 @@ export default function Ch3NodalSim() {
           </div>
           <div className="bg-[#0a0a0a] border border-[#1a1a1a] rounded-md px-3 py-2">
             <div className="text-[10px] uppercase tracking-wider text-[#666] font-mono">KCL at node A</div>
-            <div className="text-sm font-mono mt-1" style={{ color: Math.abs(kclResidual) < 1e-9 ? '#00e676' : '#ff4444' }}>
+            <div className="text-sm font-mono mt-1" style={{ color: Math.abs(kclResidual) < 1e-9 ? '#3DF49A' : '#ff4444' }}>
               i₁ + i₂ − i₃ = {kclResidual.toFixed(6)} A ≈ 0 ✓
             </div>
           </div>

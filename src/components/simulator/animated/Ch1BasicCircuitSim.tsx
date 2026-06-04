@@ -31,7 +31,7 @@ export default function Ch1BasicCircuitSim() {
             {/* Switch in top wire */}
             <g transform="translate(180 30)">
               {closed
-                ? <line x1={-10} y1={0} x2={10} y2={0} stroke="#00e676" strokeWidth={1.8} />
+                ? <line x1={-10} y1={0} x2={10} y2={0} stroke="#3DF49A" strokeWidth={1.8} />
                 : <line x1={-10} y1={0} x2={8} y2={-10} stroke="#888" strokeWidth={1.8} />}
               <circle cx={-10} cy={0} r={2} fill="#d4d4d4" />
               <circle cx={10} cy={0} r={2} fill="#d4d4d4" />
@@ -59,7 +59,7 @@ export default function Ch1BasicCircuitSim() {
           <button
             onClick={() => setClosed(c => !c)}
             className={`w-full text-sm font-semibold px-3 py-2 rounded-md border transition-colors
-              ${closed ? 'bg-[#00e676] text-black border-[#00e676]' : 'bg-[#1a1a1a] text-[#888] border-[#333]'}`}
+              ${closed ? 'bg-[#3DF49A] text-black border-[#3DF49A]' : 'bg-[#1a1a1a] text-[#888] border-[#333]'}`}
           >
             {closed ? '⏼ Open switch' : '⏼ Close switch'}
           </button>

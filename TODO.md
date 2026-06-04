@@ -1,3 +1,21 @@
+## ✅ Redesign v2 — "dy/dx" dark theme (2026-06-04, branch feat/redesign-v2)
+
+- [x] **Design foundation** — globals.css rewritten to the dy/dx palette as the dark `:root` default with a derived `[data-theme=light]`; Plus Jakarta Sans + JetBrains Mono; signature grid + radial-glow body; shared components (eqn/callout/steps/qcard/qopt/pills); toggle kept (dark default, no OS auto-switch).
+- [x] **Phase 2 + reader** — `/learn/[chapterId]` rebuilt as the learnDE 3-column reader: sticky TOC (scrollspy), flowing article (numbered h2 chips, eqn/callout/steps), key-formula eqn blocks, inline simulator + qcard quiz, sticky rail (progress + stats + cross-links to simulator/quiz/cheat-sheet).
+- [x] **Phase 3** — `/cheat-sheet`, `/search` re-skinned; global **Cmd+K command palette** (layout-mounted, opens via ⌘K and the Nav search button); `/bonus` re-skinned, emoji-free.
+- [x] **Phase 4** — `/dashboard`, `/admin`, `/admin/dashboard`, `/mod`, ContentCRUD tokenised; **certificate** kept as a fixed light-paper printable artifact; all emoji → SVG icons.
+- [x] **Contributors/About** — new `/contributors`, footer rebuilt (COURSE/PROJECT columns), "Stuck on a topic?" CTA on landing + contributors; BGCTUB inverted card with bottom-left accent glow over the glowing background.
+- [x] **Books** — `/books` entries open a modal (cover look + availability + "provided by BEE course instructor, Jan–Jun 2026"); admin gains a **PDF upload** (`file_url`) alongside cover + external link; available = PDF or link.
+- [x] **Simulators** — mint re-synced to #3DF49A across all 9 sims + the `C` palette constant.
+- [x] **Counts audit** — admin Platform Status/blurb → 6 chapters · 142 questions · 6 simulators; chaptersCompleted `/6`; certificate 6 ch / 3-credit. Landing/syllabus/cheat-sheet already dynamic.
+
+### Ops / follow-ups
+- [ ] ⚠️ Run `npm run db:push` to add the books `file_url` column to Neon.
+- [ ] ⚠️ Rotate the GitHub PAT after merging feat/redesign-v2.
+- [ ] Merge feat/redesign-v2 → main once preview is signed off.
+
+---
+
 ## ✅ Done in iteration #4 (2026-05-29)
 
 - [x] **Topic bodies authored** for all 6 in-scope chapters — ~40,000 chars of textbook-style prose, sourced from Sadiku & Boylestad.

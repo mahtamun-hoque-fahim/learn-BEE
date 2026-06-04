@@ -55,7 +55,7 @@ export default function Ch2DividerSim() {
             <Readout label="i = V / (R₁+R₂)" value={(I * 1000).toFixed(1)} unit="mA" />
             <Readout label="V₁ = i·R₁" value={V1.toFixed(2)} unit="V" color="#ffaa00" />
             <Readout label="V₂ = i·R₂" value={V2.toFixed(2)} unit="V" color="#7aa2ff" />
-            <Readout label="KVL check" value={kvl.toFixed(3)} unit="V ≈ 0" color={Math.abs(kvl) < 0.01 ? '#00e676' : '#ff4444'} />
+            <Readout label="KVL check" value={kvl.toFixed(3)} unit="V ≈ 0" color={Math.abs(kvl) < 0.01 ? '#3DF49A' : '#ff4444'} />
           </div>
         </div>
       </div>
