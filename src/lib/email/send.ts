@@ -4,7 +4,7 @@
 
 const RESEND_KEY = process.env.RESEND_API_KEY
 const APP_URL   = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
-const FROM      = 'learn·BEE <no-reply@learnbee.app>'
+const FROM      = 'learnBEE <no-reply@learnbee.app>'
 
 // Recipients
 const ADMIN_EMAILS = (process.env.ADMIN_EMAIL ?? '').split(',').map(e => e.trim()).filter(Boolean)
@@ -61,7 +61,7 @@ export async function emailNewSubmission(data: {
 <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
   <div style="background:#00e676;padding:20px 24px;border-radius:8px 8px 0 0">
     <h1 style="margin:0;font-size:20px;color:#000">New Certificate Request</h1>
-    <p style="margin:4px 0 0;font-size:14px;color:#003319">learn·BEE platform</p>
+    <p style="margin:4px 0 0;font-size:14px;color:#003319">learnBEE platform</p>
   </div>
   <div style="background:#f9f9f9;padding:24px;border-radius:0 0 8px 8px;border:1px solid #e5e5e5">
     <table style="width:100%;border-collapse:collapse;font-size:14px">
@@ -95,12 +95,12 @@ export async function emailApproved(data: {
 }) {
   await sendEmail({
     to: data.to,
-    subject: `🎓 Your learn·BEE certificate is ready!`,
+    subject: `🎓 Your learnBEE certificate is ready!`,
     html: `
 <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
   <div style="background:#00e676;padding:20px 24px;border-radius:8px 8px 0 0">
     <h1 style="margin:0;font-size:20px;color:#000">Your certificate is approved!</h1>
-    <p style="margin:4px 0 0;font-size:14px;color:#003319">learn·BEE — Basic Electrical Engineering</p>
+    <p style="margin:4px 0 0;font-size:14px;color:#003319">learnBEE — Basic Electrical Engineering</p>
   </div>
   <div style="background:#f9f9f9;padding:24px;border-radius:0 0 8px 8px;border:1px solid #e5e5e5">
     <p style="font-size:16px">Congratulations, <strong>${data.studentName}</strong>!</p>
@@ -124,12 +124,12 @@ export async function emailRejected(data: {
 }) {
   await sendEmail({
     to: data.to,
-    subject: `learn·BEE — Certificate request needs attention`,
+    subject: `learnBEE — Certificate request needs attention`,
     html: `
 <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
   <div style="background:#1a1a1a;padding:20px 24px;border-radius:8px 8px 0 0">
     <h1 style="margin:0;font-size:20px;color:#fff">Action required</h1>
-    <p style="margin:4px 0 0;font-size:14px;color:#999">learn·BEE certificate request</p>
+    <p style="margin:4px 0 0;font-size:14px;color:#999">learnBEE certificate request</p>
   </div>
   <div style="background:#f9f9f9;padding:24px;border-radius:0 0 8px 8px;border:1px solid #e5e5e5">
     <p style="font-size:16px">Hi <strong>${data.studentName}</strong>,</p>

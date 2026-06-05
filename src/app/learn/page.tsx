@@ -1,7 +1,9 @@
 import Link from 'next/link'
-import { curriculum, IN_SCOPE_IDS, TOTAL_CHAPTERS } from '@/lib/curriculum'
-
 import type { Metadata } from 'next'
+import { curriculum, IN_SCOPE_IDS, TOTAL_CHAPTERS } from '@/lib/curriculum'
+import { Nav } from '@/components/design/Nav'
+import { Footer } from '@/components/design/Footer'
+import { Icon } from '@/components/design/icons'
 
 export const metadata: Metadata = {
   title: 'All chapters — Basic Electrical Engineering',
@@ -9,142 +11,108 @@ export const metadata: Metadata = {
   alternates: { canonical: '/learn' },
 }
 
+const diffPill = (d?: string) => `pill ${d === 'beginner' ? 'ok' : d === 'intermediate' ? 'warn' : ''}`
+
+const ACTIONS = [
+  { href: '/search', icon: 'search', label: 'Search the syllabus' },
+  { href: '/cheat-sheet', icon: 'paper', label: 'Cheat sheet — all formulas' },
+  { href: '/bonus', icon: 'spark', label: 'Exam prep (Midterm / Final / CT)' },
+] as const
+
 export default function LearnPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
-      {/* TOP NAV */}
-      <nav className="border-b border-[#222] bg-[#0a0a0a]/90 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center gap-4">
-          <Link href="/" className="font-syne font-bold text-lg">
-            learn<span className="text-[#00e676]">·BEE</span>
-          </Link>
-          <span className="text-[#444]">/</span>
-          <span className="text-[#888] text-sm">Course Overview</span>
-        </div>
-      </nav>
-
-      <div className="max-w-5xl mx-auto px-6 py-12">
-        <div className="mb-10">
-          <h1 className="font-syne text-4xl font-bold mb-3">
+    <>
+      <Nav />
+      <main className="container" style={{ maxWidth: 1040, paddingTop: 48, paddingBottom: 96 }}>
+        {/* Hero */}
+        <header style={{ marginBottom: 32 }}>
+          <div className="eyebrow">Course overview</div>
+          <h1 style={{ fontSize: 'clamp(34px,5vw,52px)', fontWeight: 800, letterSpacing: '-0.035em', margin: '14px 0 12px' }}>
             Basic Electrical Engineering
           </h1>
-          <p className="text-[#888]">{TOTAL_CHAPTERS} chapters · BGCTUB 2nd-semester syllabus · Start from Ch 1 and unlock each chapter sequentially</p>
-        </div>
+          <p style={{ color: 'var(--muted)', fontSize: 15.5, lineHeight: 1.6, maxWidth: 680 }}>
+            {TOTAL_CHAPTERS} chapters · BGCTUB 2nd-semester syllabus (EEE 1201) · aligned with Sadiku and Boylestad.
+          </p>
+        </header>
 
-        {/* Progress overview - client will handle state */}
-        <div className="bg-[#111] border border-[#222] rounded-xl p-6 mb-10">
-          <div className="flex items-center justify-between mb-3">
-            <span className="font-syne font-semibold">Your Progress</span>
-            <span className="text-[#00e676] text-sm font-mono">0 / {TOTAL_CHAPTERS} chapters</span>
+        {/* Progress */}
+        <div className="card" style={{ padding: 22, marginBottom: 28, background: 'var(--surface)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
+            <span style={{ fontFamily: 'var(--display)', fontWeight: 700 }}>Your progress</span>
+            <span className="mono" style={{ color: 'var(--accent)', fontSize: 13 }}>0 / {TOTAL_CHAPTERS} chapters</span>
           </div>
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: '0%' }} />
-          </div>
-          <p className="text-[#555] text-xs mt-2">Sign in to track your progress</p>
+          <div className="progress-track"><div className="progress-fill" style={{ width: '0%' }} /></div>
+          <p style={{ color: 'var(--dim)', fontSize: 12.5, marginTop: 10 }}>
+            <Link href="/sign-in" style={{ color: 'var(--muted)' }}>Sign in</Link> to track your progress across chapters.
+          </p>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-10">
-          <Link href="/search" className="text-sm px-4 py-2 bg-[#111] border border-[#222] rounded-lg hover:border-[#00e676]/40">
-            🔍 Search the syllabus
-          </Link>
-          <Link href="/cheat-sheet" className="text-sm px-4 py-2 bg-[#111] border border-[#222] rounded-lg hover:border-[#00e676]/40">
-            📋 Cheat sheet — all formulas
-          </Link>
-          <Link href="/bonus" className="text-sm px-4 py-2 bg-[#111] border border-[#222] rounded-lg hover:border-[#00e676]/40">
-            🏆 Exam prep (Midterm / Final / CT)
-          </Link>
+        {/* Quick actions */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 40 }}>
+          {ACTIONS.map(a => (
+            <Link key={a.href} href={a.href} className="btn-line btn-sm">
+              <Icon name={a.icon} size={14} /> {a.label}
+            </Link>
+          ))}
         </div>
 
+        {/* Parts + chapters */}
         {(curriculum.parts ?? []).map(part => {
-          // Only show parts that contain at least one in-scope chapter; show only in-scope chapters within them.
           const visibleChapterIds = part.chapters.filter(id => IN_SCOPE_IDS.has(id))
           if (visibleChapterIds.length === 0) return null
           return (
-          <div key={part.id} className="mb-10">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="h-px flex-1 bg-[#1a1a1a]" />
-              <h2 className="font-syne text-lg font-bold px-4 py-2 bg-[#111] border border-[#222] rounded-xl">
-                {part.title}
-              </h2>
-              <div className="h-px flex-1 bg-[#1a1a1a]" />
-            </div>
+            <section key={part.id} style={{ marginBottom: 40 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
+                <div style={{ height: 1, flex: 1, background: 'var(--line)' }} />
+                <span className="chapter-pill">{part.title}</span>
+                <div style={{ height: 1, flex: 1, background: 'var(--line)' }} />
+              </div>
 
-            <div className="space-y-3">
-              {visibleChapterIds.map((chId, idx) => {
-                const ch = curriculum.chapters.find(c => c.id === chId)!
-                const locked = idx > 0 // first chapter always open; rest sequentially unlock
-                return (
-                  <Link
-                    key={chId}
-                    href={`/learn/${chId}`}
-                    className={`flex items-center gap-5 p-5 rounded-xl border transition-all group ${
-                      locked
-                        ? 'border-[#1a1a1a] bg-[#0d0d0d] hover:border-[#333]'
-                        : 'border-[#222] bg-[#111] hover:border-[#00e676]'
-                    }`}
-                  >
-                    {/* Chapter number */}
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-mono text-sm font-bold flex-shrink-0 ${
-                      locked ? 'bg-[#1a1a1a] text-[#444]' : 'bg-[#00e676]/10 text-[#00e676] border border-[#00e676]/20'
-                    }`}>
-                      {ch.number}
-                    </div>
+              <div style={{ display: 'grid', gap: 12 }}>
+                {visibleChapterIds.map(chId => {
+                  const ch = curriculum.chapters.find(c => c.id === chId)!
+                  const titles = (ch.topics as Array<string | { title: string }>).map(t => typeof t === 'string' ? t : t.title)
+                  const preview = titles.slice(0, 3).join(' · ') + (titles.length > 3 ? ` +${titles.length - 3} more` : '')
+                  return (
+                    <Link key={chId} href={`/learn/${chId}`} className="chapter-card">
+                      <div className="chapter-num mono">{ch.number}</div>
 
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-1">
-                        <span className={`font-syne font-semibold ${locked ? 'text-[#555]' : 'group-hover:text-[#00e676] transition-colors'}`}>
-                          {ch.title}
-                        </span>
-                        <span className={`text-xs px-2 py-0.5 rounded-full ${
-                          ch.difficulty === 'beginner' ? 'text-green-400 bg-green-900/20' :
-                          ch.difficulty === 'intermediate' ? 'text-yellow-400 bg-yellow-900/20' :
-                          'text-red-400 bg-red-900/20'
-                        }`}>{ch.difficulty}</span>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4, flexWrap: 'wrap' }}>
+                          <span style={{ fontFamily: 'var(--display)', fontWeight: 700, fontSize: 16 }}>{ch.title}</span>
+                          <span className={diffPill(ch.difficulty)}>{ch.difficulty}</span>
+                        </div>
+                        <div style={{ color: 'var(--muted)', fontSize: 13.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {preview}
+                        </div>
                       </div>
-                      <div className="text-[#555] text-sm truncate">
-                        {(() => {
-                          const titles = (ch.topics as Array<string | { title: string }>).map(t => typeof t === 'string' ? t : t.title)
-                          return titles.slice(0, 3).join(' · ') + (titles.length > 3 ? ` +${titles.length - 3} more` : '')
-                        })()}
+
+                      <div className="chapter-steps">
+                        {['Theory', 'Sim', 'Quiz'].map(s => <span key={s} className="step-chip mono">{s}</span>)}
                       </div>
-                    </div>
-
-                    {/* Steps */}
-                    <div className="hidden md:flex items-center gap-2">
-                      {['Theory', 'Sim', 'Quiz'].map(step => (
-                        <span key={step} className="text-xs px-2 py-1 rounded bg-[#1a1a1a] text-[#555]">
-                          {step}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Sadiku pages */}
-                    <div className="hidden lg:block text-[#444] text-xs font-mono">
-                      p.{ch.sadiku_pages}
-                    </div>
-
-                    <div className={`text-lg flex-shrink-0 ${locked ? 'text-[#333]' : 'text-[#444] group-hover:text-[#00e676]'}`}>
-                      →
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
+                      {ch.sadiku_pages && <div className="mono chapter-pp">p. {ch.sadiku_pages}</div>}
+                      <span className="chapter-arrow"><Icon name="arrow" size={18} /></span>
+                    </Link>
+                  )
+                })}
+              </div>
+            </section>
           )
         })}
 
-        {/* Bonus section */}
-        <div className="mt-12 border border-dashed border-[#333] rounded-xl p-8 text-center">
-          <div className="text-4xl mb-3">🎓</div>
-          <h3 className="font-syne text-xl font-bold mb-2">Bonus Problems + Certificate</h3>
-          <p className="text-[#888] text-sm mb-4">Unlocks after completing all {TOTAL_CHAPTERS} chapters. 20 comprehensive problems from all topics.</p>
-          <div className="inline-flex items-center gap-2 text-[#555] text-sm border border-[#222] rounded-lg px-4 py-2">
-            🔒 Complete all chapters to unlock
+        {/* Bonus / certificate */}
+        <div style={{ marginTop: 8, border: '1px dashed var(--line-2)', borderRadius: 16, padding: 32, textAlign: 'center' }}>
+          <div style={{ display: 'inline-grid', placeItems: 'center', width: 52, height: 52, borderRadius: 14, background: 'var(--mint-soft)', color: 'var(--accent)', border: '1px solid var(--mint-line)', marginBottom: 14 }}>
+            <Icon name="spark" size={26} />
           </div>
+          <h3 style={{ fontFamily: 'var(--display)', fontWeight: 700, fontSize: 20, marginBottom: 8 }}>Bonus exam + certificate</h3>
+          <p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 16, maxWidth: 460, margin: '0 auto 16px' }}>
+            Sit a timed BGCTUB-style mock (Midterm / Final / CT) drawn from every chapter, then claim your certificate of completion.
+          </p>
+          <Link href="/bonus" className="btn-primary btn-sm"><Icon name="spark" size={14} /> Go to exam prep</Link>
         </div>
-      </div>
-    </div>
+      </main>
+      <Footer />
+    </>
   )
 }

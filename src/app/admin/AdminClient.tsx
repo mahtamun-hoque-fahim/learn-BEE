@@ -68,7 +68,7 @@ export default function AdminClient() {
       {/* Sidebar */}
       <aside className="w-56 border-r border-[var(--line)] bg-[var(--bg-2)] flex flex-col">
         <div className="p-5 border-b border-[var(--line)]">
-          <div className="font-display font-bold text-lg">learn<span className="text-[var(--accent)]">·BEE</span></div>
+          <div className="font-display font-bold text-lg">learn<span className="text-[var(--accent)]">BEE</span></div>
           <div className="text-[var(--dim)] text-xs mt-0.5">Admin Panel</div>
         </div>
         <nav className="p-3 flex-1 space-y-1">

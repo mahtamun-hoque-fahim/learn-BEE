@@ -370,3 +370,16 @@ button { font-family: inherit; cursor: pointer; }
 .rail-stat b { font: 500 12.5px/1 var(--mono); color: var(--ink); }
 .rail-link { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 9px 10px; border-radius: 9px; border: 1px solid transparent; color: var(--ink); font-size: 13.5px; transition: background-color .15s, border-color .15s; }
 .rail-link:hover, .rail-link.active { background: var(--mint-soft); border-color: var(--mint-line); }
+
+/* ─── Chapter list cards (/learn index) ────────────────────────────── */
+.chapter-card { display: flex; align-items: center; gap: 18px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.015); transition: border-color .15s, background-color .15s; }
+[data-theme="light"] .chapter-card { background: var(--surface); }
+.chapter-card:hover { border-color: var(--mint-line); background: var(--mint-soft); }
+.chapter-num { width: 40px; height: 40px; flex-shrink: 0; display: grid; place-items: center; border-radius: 10px; font-size: 14px; font-weight: 700; background: var(--mint-soft); color: var(--accent); border: 1px solid var(--mint-line); }
+.chapter-steps { display: none; align-items: center; gap: 6px; }
+@media (min-width: 768px) { .chapter-steps { display: flex; } }
+.step-chip { font-size: 11px; padding: 3px 8px; border-radius: 6px; background: var(--bg-2); color: var(--muted); border: 1px solid var(--line); }
+.chapter-pp { display: none; font-size: 12px; color: var(--dim); }
+@media (min-width: 1024px) { .chapter-pp { display: block; } }
+.chapter-arrow { flex-shrink: 0; color: var(--dim); display: inline-flex; transition: color .15s, transform .15s; }
+.chapter-card:hover .chapter-arrow { color: var(--accent); transform: translateX(2px); }

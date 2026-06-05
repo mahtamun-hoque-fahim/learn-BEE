@@ -111,7 +111,7 @@ export default function StudentDashboard() {
         <h1 style={{ fontSize: 26, fontWeight: 600, margin: 0 }}>
           Hi, {user?.name?.split(' ')[0] ?? 'Student'}
         </h1>
-        <p style={{ color: 'var(--muted)', margin: '6px 0 0' }}>Your learn·BEE dashboard</p>
+        <p style={{ color: 'var(--muted)', margin: '6px 0 0' }}>Your learnBEE dashboard</p>
       </div>
 
       {/* Progress bar */}
