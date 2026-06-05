@@ -100,8 +100,8 @@ Role checks: `lib/auth-helpers.ts` → `requireAuth` / `requireMod` / `requireAd
 - [x] Nav/footer wiring (Dashboard/Moderator/Admin); connectivity audit (no orphans)
 - [x] Auth migration: **Clerk → Better Auth** (schema, client, route, proxy, sign-in/up)
 - [x] Brand assets wired (BeeMark icon, BeeLogo wordmark, mint favicon); admin/mod server role-gating
-- [ ] OG image route (`app/opengraph-image.tsx`)
-- [ ] Role-gate `/admin/dashboard` + `/admin/content/*` at page level (APIs already enforce)
+- [x] OG image route (`app/opengraph-image.tsx`)
+- [x] Role-gate all `/admin/*` pages server-side (`lib/page-guards.ts` → `gateAdmin`)
 
 ## Next Steps
 
@@ -109,8 +109,6 @@ Role checks: `lib/auth-helpers.ts` → `requireAuth` / `requireMod` / `requireAd
 2. `npm run db:push` to create Better Auth tables + the `books.file_url` column on Neon.
 3. Promote first staff: set `users.role` = `admin` / `moderator` in the DB.
 4. Submit `sitemap.xml` in Search Console; request reindex (clears the stale snippet).
-5. Add `app/opengraph-image.tsx` for social cards.
-6. (Optional) page-level role checks on `/admin/dashboard` and `/admin/content/*`.
 
 ## Notes / Decisions Log
 
