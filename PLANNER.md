@@ -1,273 +1,120 @@
 # PLANNER.md — learn-BEE
 
-> Living technical document. Refreshed on every `update repo`.
-> Last updated: 2026-05-29 (after iteration #3)
-
----
+The technical blueprint for learn-BEE. Living document — sync on "update repo".
 
 ## Overview
 
-| Field | Value |
-|---|---|
-| Project | learn-BEE |
-| Purpose | University-level Basic Electrical Engineering platform for BGCTUB 2nd-semester students — animated theory, KaTeX-typeset formulas, per-chapter interactive simulators, randomised quizzes, exam-mode prep, and moderator-reviewed completion certificates |
-| Target User | BGCTUB CSE/EEE 2nd-semester undergrads; secondary: any BEE student following Sadiku 5th Ed. / Boylestad |
-| Key Value | Six in-scope chapters fully built with animated SVG simulators (current literally flows along the wires), 142 verified questions, instant cheat-sheet, exam-mode bonus prep matching the real BGCTUB exam structure |
-| Status | 🟢 Production-ready feature-complete for in-scope syllabus; deploy + remaining auxiliary features pending |
-| Repo | `https://github.com/mahtamun-hoque-fahim/learn-BEE` |
-| Live URL | _not yet deployed_ |
-| Build | `npx next build` passes clean (28 routes, 6 chapter pages SSG, full TypeScript) |
-
----
-
-## Scope
-
-In-scope chapters (per `instruction.txt`, BGCTUB 2nd-semester syllabus):
-
-| ID | Title | Topics | Formulas | Questions |
-|---|---|---:|---:|---:|
-| ch1 | Basic Concepts                  | 8 | 5  | 28 |
-| ch2 | Basic Laws                      | 9 | 10 | 27 |
-| ch3 | Methods of Analysis             | 7 | 4  | 21 |
-| ch4 | Circuit Theorems                | 6 | 6  | 22 |
-| ch6 | Capacitors and Inductors        | 7 | 10 | 22 |
-| ch7 | First-Order Circuits (RC)       | 7 | 6  | 22 |
-| | **Totals**                          | **44** | **41** | **142** |
-
-Out-of-scope chapters (ch5 Op-Amps, ch8 Second-Order, ch9–ch19 AC/Laplace/Fourier/two-port) are marked `inScope: false` in `curriculum.json` and excluded from listings, `generateStaticParams`, and the bonus exam pool. ~34 legacy questions for those chapters remain in `lib/questions.ts` as reference material but never surface in UI.
-
----
+- **Purpose:** a single home for the BGCTUB 2nd-semester Basic Electrical Engineering (EEE 1201, 3-credit) course — notes, interactive simulators, formula reference, exam practice, and a verifiable certificate.
+- **Target user:** BGCTUB students (45th batch onward); staff (moderators/admins) manage content and the certificate pipeline.
+- **Key value:** one organised, exam-aligned resource (Sadiku + Boylestad) with live circuit simulators and randomized quizzes, replacing scattered Drive links.
+- **Authoritative counts (computed dynamically from `lib/curriculum`):** 6 in-scope chapters (ch1–4, 6, 7), 39 topics, 41 formulas, 142 questions, 6 simulators.
 
 ## Architecture
 
-**Stack:**
-- Framework: **Next.js 16.2** App Router (TypeScript), **React 19.2**
-- Styling: **Tailwind CSS 4**
-- Database: **Neon (PostgreSQL)** via **Drizzle ORM** (`drizzle-orm@^0.45`)
-- Auth: **Clerk** (`@clerk/nextjs@^7.3`)
-- Math typesetting: **KaTeX** (`katex@^0.16.22`) — server-rendered, no client JS for math
-- Charts: **Recharts** (`^3.8`); custom SVG primitives for animated circuits
-- PDF / canvas: **jsPDF** + **html2canvas** (certificate render)
-- Email: hand-rolled `lib/email/send.ts` (Resend-compatible; falls back to `console.log` if `RESEND_API_KEY` unset)
-- Deployment target: Vercel (per Fahim defaults; not yet configured)
+- **Framework:** Next.js 16 (App Router, React 19, Turbopack). TypeScript. Tailwind CSS v4.
+- **Data:** Neon Postgres via Drizzle ORM (`neon-http` driver, lazy `getDb()`).
+- **Auth:** Better Auth (email + password), Drizzle adapter, `role` additional field (`student | moderator | admin`), 7-day sessions refreshed daily. Session gate via `src/proxy.ts` (Next 16 proxy convention) over `/dashboard`, `/admin`, `/mod`; role enforced server-side in pages + API helpers.
+- **Math:** KaTeX through `components/math` (`Tex`, `RichMath`, `Markdown`).
+- **Simulators:** pure-SVG animated circuits in `components/simulator/animated`, one per in-scope chapter, sharing a `C` colour constant + `primitives`.
+- **Theme:** "dy/dx" dark-first design, light variant derived (`[data-theme="light"]`). See DESIGN_GUIDE.md.
+- **SEO:** `app/sitemap.ts`, `app/robots.ts`, metadata + JSON-LD (Organization/WebSite/Course/LearningResource); config in `lib/seo.ts`.
+- **Deploy:** Vercel (primary), Cloudflare-ready.
 
-**Folder Structure:**
-```
-/
-├── knowledge-base/                    # Content single-source-of-truth
-│   ├── curriculum.json                # 19 chapters; key_formulas in LaTeX (+ formula_ascii fallback); inScope flag
-│   ├── question-bank.json             # JSON mirror — valid (line comments stripped iter#3)
-│   ├── simulators.json                # Per-chapter simulator metadata
-│   └── cheat-sheet.md                 # Reference; live page now driven from curriculum.json
-│
-├── src/
-│   ├── app/                           # Next.js routes
-│   │   ├── page.tsx                   # Landing — shows only in-scope chapters
-│   │   ├── layout.tsx                 # Root layout (imports katex.min.css once)
-│   │   ├── learn/page.tsx             # Chapter index + quick-nav (Search · Cheat sheet · Exam prep)
-│   │   ├── learn/[chapterId]/
-│   │   │   ├── page.tsx               # Server component; generateStaticParams = in-scope only
-│   │   │   └── ChapterClient.tsx      # Theory / Simulator / Quiz tabs; all math via RichMath
-│   │   ├── cheat-sheet/               # All formulas, KaTeX, real-time search
-│   │   │   ├── page.tsx
-│   │   │   └── CheatSheetClient.tsx
-│   │   ├── search/page.tsx            # Unified search (chapters/topics/formulas/questions)
-│   │   ├── bonus/                     # Exam prep — five modes (midterm/final/CT1/CT2/full)
-│   │   │   ├── page.tsx
-│   │   │   └── BonusClient.tsx
-│   │   ├── dashboard/                 # Student progress
-│   │   ├── certificate/               # Certificate generator
-│   │   ├── admin/                     # Admin (quote management, approvals)
-│   │   ├── mod/                       # Moderator review queue
-│   │   └── api/                       # API routes
-│   │
-│   ├── components/
-│   │   ├── math/Tex.tsx               # ⭐ Tex (KaTeX server-render) + RichMath (auto-detect mixed prose+math)
-│   │   └── simulator/
-│   │       ├── CircuitSimulator.tsx   # Legacy fallback (unused for in-scope chapters)
-│   │       └── animated/              # ⭐ Per-chapter animated SVG sims
-│   │           ├── primitives.tsx     # AnimatedWire (stroke-dashoffset flow), Capacitor, Resistor,
-│   │           │                      # Battery, Lamp, CurrentArrow, Slider, Readout, CircuitAnimStyles
-│   │           ├── AnimatedSim.tsx    # Dispatcher: chapterId → simulator component (lazy-loaded)
-│   │           ├── Ch1BasicCircuitSim.tsx    # Lamp + battery + switch; brightness ∝ V·i
-│   │           ├── Ch2DividerSim.tsx         # Voltage divider with KVL bar gauge
-│   │           ├── Ch3NodalSim.tsx           # Two-source nodal solver; arrows flip with sign
-│   │           ├── Ch4TheveninSim.tsx        # Thévenin equivalent + max-power transfer curve
-│   │           ├── Ch6CapacitorSim.tsx       # Series/parallel cap combiner + energy split
-│   │           └── Ch7RCTransientSim.tsx     # Real-time RC charging/discharging with run/pause/reset
-│   │
-│   └── lib/
-│       ├── curriculum.ts              # JSON loader + types + IN_SCOPE_IDS + TOTAL_CHAPTERS
-│       ├── questions.ts               # Question bank + getRandomQuestions + getBonusQuestions(count, mode)
-│       ├── search.ts                  # Client-side full-text index across curriculum + questions
-│       ├── auth-helpers.ts            # Clerk session helpers
-│       ├── db/{index,schema}.ts       # Drizzle client + 8-table schema
-│       └── email/send.ts              # Outbound email
-│
-├── public/                            # Static assets
-├── .env.example                       # All env vars with placeholders
-├── AGENTS.md                          # "This is NOT the Next.js you know"
-├── CLAUDE.md                          # → @AGENTS.md
-├── PLANNER.md                         # ⬅ this file
-├── DESIGN_GUIDE.md                    # Design system
-├── README.md                          # Lean dev setup
-└── TODO.md                            # Flat checklist
-```
-
----
-
-## Math Rendering (cross-cutting)
-
-All formulas, options, answers, and explanations on `/learn/*`, `/bonus`, `/cheat-sheet`, `/search` route through `<RichMath>` or `<Tex>` from `src/components/math/Tex.tsx`.
-
-- **`<Tex>`** — server-rendered KaTeX; pass `block` for display math.
-- **`<RichMath>`** — for mixed prose. Detects explicit `$…$` and `$$…$$` delimiters; falls back to whole-string auto-conversion via `asciiToLatex` for any string containing unicode math glyphs (`Ω`, `ρ`, `×`, `²`, `⁻¹⁹`, etc.) or LaTeX commands. Plain text is returned untouched.
-- KaTeX CSS imported once in `src/app/layout.tsx`. No client-side bundle cost for math.
-
-The 41 key formulas in `curriculum.json` are stored as KaTeX-ready LaTeX in `formula`, with the original ASCII preserved in `formula_ascii` for accessibility and tooltip-hover. Audit: 360/360 strings in the question bank render either as plain text (~56%) or correct math (~44%) — **zero failures**.
-
----
-
-## Animated Simulators
-
-Built on `src/components/simulator/animated/primitives.tsx`. The visual signature is `<AnimatedWire>` — two stacked SVG paths, the upper one with `stroke-dasharray` and a CSS `@keyframes bee-flow` that animates `stroke-dashoffset`. Result: dashed segments **literally flow along the wire**, speed inversely proportional to `1/|I|`, direction set by current sign. When current ≈ 0 the overlay fades to invisible.
-
-Other primitives:
-- `Capacitor` — plate-fill opacity ∝ charge (`v/Vs`)
-- `Lamp` — brightness halo with `bee-glow` pulse keyframe when powered
-- `Battery`, `Resistor` (h or v), `CurrentArrow`, `NodeDot`
-- `Slider`, `Readout` for control panels
-
-The reference quality bar is **Ch7 RC Transient**: real-time clock (Run/Pause/Reset), scrubbable `t`, current animation speed bound to the actual exponential equation `(Vs/R)·e^(−t/τ)`, capacitor plates filling to `v_C(t)/Vs`, dual `v(t)` and `i(t)` plots with a moving dot, τ markers at 1τ through 5τ.
-
----
+Folder structure: see README.md → Project structure.
 
 ## User Flows
 
-### Flow 1: Student studies a chapter
-1. `/learn` → pick an in-scope chapter (`/learn/ch7` etc.). Out-of-scope IDs return 404.
-2. Theory tab — formulas render via KaTeX; topics can be ticked off (client-side).
-3. Simulator tab — runs the per-chapter animated SVG demo from `AnimatedSim` (lazy-loaded).
-4. Quiz tab — randomised questions from `getRandomQuestions(chapterId, n)`; instant feedback + LaTeX-typeset explanation on submit.
-5. Progress persists via `/api/progress` (Clerk session → Drizzle `user_progress`).
+### Flow 1 — Student studies a chapter
+Landing → `/learn` → `/learn/[chapterId]` reader: sticky TOC (scrollspy), flowing article (topics, eqn/callout/steps), key-formula blocks, full-width **simulator + graphs**, in-page **quiz**, sticky rail (progress + stats + cross-links), prev/next pager.
 
-### Flow 2: Exam preparation
-1. `/bonus` shows five preset cards.
+### Flow 2 — Exam preparation
+`/bonus` → pick a preset (Midterm / Final / CT-1 / CT-2 / Full mock) → timed or practice → score + review → on pass, link to `/certificate`.
 
-   | Mode | Pool | Marks | Q | Time |
-   |---|---|---:|---:|---:|
-   | Midterm    | Ch1, Ch2, Ch3  | 20 | 15 | 90 min |
-   | Final term | Ch4, Ch6, Ch7  | 50 | 25 | 180 min |
-   | CT-1       | Midterm pool   | 10 |  8 | 30 min |
-   | CT-2       | Final pool     | 10 |  8 | 30 min |
-   | Full mock  | All in-scope   |  — | 20 | 150 min |
+### Flow 3 — Certificate (moderated)
+Student signs in → registers via `/dashboard` (`/api/cert-registration`) → status `pending` → moderator/admin reviews in `/mod` (`/api/mod/submissions`) → admin approves (`/api/admin/approve`) → `/certificate` unlocks (fixed light-paper printable artifact).
 
-2. Each card has Practice (per-question feedback) and Timed (countdown clock) entries.
-3. Score, breakdown, and per-question review at the end, all KaTeX-rendered.
+### Flow 4 — Reference & search
+`/cheat-sheet` (all formulas, per-chapter anchors) and global **Cmd+K command palette** / `/search` across chapters, topics, formulas, questions.
 
-### Flow 3: Certificate request (moderator-gated)
-1. Eligible student visits `/certificate` after completing all 6 in-scope chapters + bonus.
-2. Form posts to `/api/certificate` → inserts a `cert_registrations` row (status `pending`).
-3. Moderator reviews at `/mod` → `/api/mod/submissions[/id]`. Approve, reject, or request changes.
-4. Admin assigns a quote (custom or auto-picked from `default_quotes` pool keyed by gender) via `/api/admin/approve`.
-5. Approved students download via `/api/certificate` (jsPDF render).
+### Flow 5 — Auth
+`/sign-up` (name, email, password) → session. `/sign-in` honours `?redirect=`. Gated routes redirect unauthenticated users to `/sign-in`; wrong-role users to `/dashboard`.
 
-### Flow 4: Cheat-sheet & search
-1. `/cheat-sheet` shows all 41 formulas grouped by chapter, KaTeX-rendered, with sticky search input.
-2. `/search` provides unified search across chapter titles, topics, formulas, and questions. Grouped results, click-through to source.
+## DB Schema (Drizzle — `src/lib/db/schema.ts`)
 
----
+Better Auth core:
+- `users` — id (text pk), email (unique), emailVerified (bool), name, image, **role** (enum student|moderator|admin), createdAt, updatedAt
+- `sessions` — id, userId→users, token (unique), expiresAt, ipAddress, userAgent, timestamps
+- `accounts` — id, userId→users, accountId, providerId, password, access/refresh/idToken (+expiries), scope, timestamps
+- `verifications` — id, identifier, value, expiresAt, timestamps
 
-## DB Schema
-
-Drizzle (PostgreSQL). All defined in `src/lib/db/schema.ts`.
-
-```
-roleEnum            'student' | 'moderator' | 'admin'
-genderEnum          'male' | 'female' | 'other'
-certStatusEnum      'pending_mod_review' | 'pending_admin_quote' | 'approved' | 'rejected'
-
-users               Clerk-linked profile (name, gender, role, ...)
-userProgress        (userId, chapterId, completed, quizScore, theoryRead, simRan, updatedAt)
-quizAttempts        (userId, chapterId, score, total, durationMs, createdAt)
-bonusAttempts       Exam-prep attempts (mode, score, total, createdAt)
-certRegistrations   Certificate request lifecycle — includes studentName, university,
-                    department, semester, gender, adminCustomQuote, finalQuote,
-                    bonusScore, chaptersCompleted, status, reviewedBy, approvedBy
-defaultQuotes       (quote, gender, isActive, addedBy, createdAt) — pool keyed by gender + 'all'
-emailLog            (registrationId, recipient, type, sentAt)
-adminSettings       k/v config
-
-Backward-compat aliases (older imports):
-certificates  → certRegistrations
-adminQuotes   → defaultQuotes
-```
-
-Migrations: currently using `drizzle-kit push` (no migration history). Switching to `generate` is on TODO.
-
----
+App:
+- `user_progress` — per-user per-chapter progress (FK users)
+- `quiz_attempts` — chapter quiz attempts (FK users)
+- `bonus_attempts` — bonus/exam attempts (FK users)
+- `cert_registrations` — certificate pipeline (status enum pending|reviewing|approved|rejected; FKs users/reviewer)
+- `default_quotes` — certificate quote pool (gender/semester targeted)
+- `email_log` — outbound email log (FK users)
+- `admin_settings` — key/value settings
+- `lectures`, `labs`, `papers` — content listings (admin-managed)
+- `books` — textbooks: cover image, external URL, and **file_url** (uploaded PDF); available = PDF or link
 
 ## API Routes
 
-| Method | Path | Auth | Description |
+| Method | Path | Auth | Notes |
 |---|---|---|---|
-| GET / POST | `/api/progress` | Clerk | Read / upsert per-chapter progress |
-| GET / POST | `/api/quiz` | Clerk | Submit quiz attempts; retrieve history |
-| GET / POST | `/api/bonus` | Clerk | Bonus-problem attempts (mode-aware) |
-| POST | `/api/cert-registration` | Clerk | Student submits cert registration |
-| GET / POST | `/api/certificate` | Clerk | Read / create cert; jsPDF render on GET (rewritten iter#2 to match real schema) |
-| GET | `/api/mod/submissions` | Moderator | Review queue |
-| GET / PATCH | `/api/mod/submissions/[id]` | Moderator | Approve / reject / request changes (params upgraded to `Promise<{id}>` per Next 16) |
-| GET / POST | `/api/admin/quotes` | Admin | Manage motivational quote pool |
-| POST | `/api/admin/approve` | Admin | Final admin approval + quote assignment |
-| POST | `/api/admin/reject` | Admin | Final admin rejection |
+| GET/POST | `/api/auth/[...all]` | — | Better Auth handler (Node runtime) |
+| GET/POST | `/api/progress` | session | read/update chapter progress |
+| GET/POST | `/api/quiz` | session | chapter quiz attempts |
+| GET/POST | `/api/bonus` | session | bonus/exam attempts |
+| GET/POST | `/api/certificate` | session | issued certificate data |
+| POST | `/api/cert-registration` | session | submit certificate registration |
+| GET | `/api/mod/submissions` | mod+ | review queue |
+| GET/POST | `/api/mod/submissions/[id]` | mod+ | open / act on a submission |
+| POST | `/api/admin/approve` | admin | approve registration |
+| POST | `/api/admin/reject` | admin | reject with reason |
+| CRUD | `/api/admin/quotes` | admin | certificate quotes |
+| CRUD | `/api/admin/{lectures,labs,papers,books}` | admin | content management |
+| POST | `/api/admin/upload` | admin | file/cover/PDF upload |
 
----
+Role checks: `lib/auth-helpers.ts` → `requireAuth` / `requireMod` / `requireAdmin` (read the Better Auth session).
 
 ## Env Vars
 
-| Variable | Required | Description |
+| Name | Required | Description |
 |---|---|---|
-| `DATABASE_URL` | ✅ | Neon PostgreSQL connection string |
-| `NEXT_PUBLIC_APP_URL` | ✅ | Public base URL (no trailing slash) |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | ✅ | Clerk frontend key |
-| `CLERK_SECRET_KEY` | ✅ | Clerk backend secret |
-| `RESEND_API_KEY` | ⚠️ Optional | Outbound email; falls back to `console.log` if unset |
+| `DATABASE_URL` | yes | Neon pooled connection (app runtime) |
+| `DATABASE_URL_UNPOOLED` | yes (migrations) | Neon direct connection — used by `drizzle.config.ts` |
+| `NEXT_PUBLIC_APP_URL` | yes | canonical origin (SEO canonical/OG, auth fallback). `NEXT_PUBLIC_SITE_URL` accepted as fallback |
+| `BETTER_AUTH_SECRET` | yes | 32+ random chars (`openssl rand -base64 32`) |
+| `BETTER_AUTH_URL` | yes (prod) | auth base URL; falls back to `NEXT_PUBLIC_APP_URL` |
+| `RESEND_API_KEY` | optional | email; falls back to console logging when unset |
 
-All listed in `.env.example`.
+## Timeline / Phases
 
----
+- [x] Curriculum, scope (6 in-scope chapters), question bank, simulators
+- [x] LaTeX/KaTeX throughout; cheat-sheet + search
+- [x] "dy/dx" dark redesign (foundation, chapter reader, dashboards, certificate, Cmd+K palette)
+- [x] Books modal + PDF upload (`books.file_url`)
+- [x] Large full-width simulators with graphs; counts audit (6/39/41/142)
+- [x] Airborne SEO (sitemap, robots, metadata, JSON-LD)
+- [x] Nav/footer wiring (Dashboard/Moderator/Admin); connectivity audit (no orphans)
+- [x] Auth migration: **Clerk → Better Auth** (schema, client, route, proxy, sign-in/up)
+- [x] Brand assets wired (BeeMark icon, BeeLogo wordmark, mint favicon); admin/mod server role-gating
+- [ ] OG image route (`app/opengraph-image.tsx`)
+- [ ] Role-gate `/admin/dashboard` + `/admin/content/*` at page level (APIs already enforce)
 
-## Build & Routes
+## Next Steps
 
-`npx next build` produces **28 routes**, all clean:
-- Static (`○`): all marketing pages, `/cheat-sheet`, `/search`, `/bonus`, `/certificate`, `/admin*`, `/mod`.
-- SSG with `generateStaticParams` (`●`): the 6 in-scope chapter pages.
-- Dynamic server-rendered (`ƒ`): all `/api/*` routes plus `/dashboard`.
-
----
-
-## Phases & Timeline
-
-| Phase | Name | Status | Notes |
-|---|---|---|---|
-| 1 | Foundation — Next.js + schema + scaffolding | ✅ | Prior session |
-| 2 | Content single-source-of-truth | ✅ | `lib/curriculum.ts` imports JSON |
-| 3 | LaTeX (KaTeX) rollout | ✅ | Iteration #1 (`feat/latex-throughout`) |
-| 4 | Scope filter + animated simulators + question bank | ✅ | Iteration #2 (`feat/scope-and-simulators`) |
-| 5 | Cheat-sheet · search · exam modes · env · JSON cleanup | ✅ | Iteration #3 (`feat/cheatsheet-search-polish`) |
-| 6 | Deploy (Vercel + Neon prod branch) | ⏳ | Next priority |
-| 7 | Auxiliary features (bookmarks, streaks, weak-area recs, admin PDF upload) | ⏳ | Decisions needed per item |
-
----
+1. Set prod env in Vercel: `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `NEXT_PUBLIC_APP_URL`, `DATABASE_URL`, `DATABASE_URL_UNPOOLED`.
+2. `npm run db:push` to create Better Auth tables + the `books.file_url` column on Neon.
+3. Promote first staff: set `users.role` = `admin` / `moderator` in the DB.
+4. Submit `sitemap.xml` in Search Console; request reindex (clears the stale snippet).
+5. Add `app/opengraph-image.tsx` for social cards.
+6. (Optional) page-level role checks on `/admin/dashboard` and `/admin/content/*`.
 
 ## Notes / Decisions Log
 
-- **2026-05-29 (iter #3)** — Bonus exam modes derived directly from the BGCTUB exam structure in `instruction.txt`: Midterm covers ch1–ch3 ("beginning → supernode"), Final covers ch4/6/7 ("supernode onward"). CT-1 and CT-2 mirror those syllabuses with 10-mark / 8-question / 30-min sessions.
-- **2026-05-29 (iter #3)** — `/cheat-sheet` and `/search` are **static** pages — index is built client-side from the bundled JSON, so no server round-trip per keystroke.
-- **2026-05-29 (iter #2)** — Animated wires use `stroke-dashoffset` **CSS** animation, not JS `requestAnimationFrame`, so they run smoothly on mobile and pause when the tab is backgrounded.
-- **2026-05-29 (iter #2)** — Out-of-scope chapters kept in `curriculum.json` (and ~34 legacy questions kept in `lib/questions.ts`) instead of being deleted, so the file remains a complete BEE reference even though only 6 chapters surface in the UI.
-- **2026-05-29 (iter #1)** — KaTeX server-render chosen over MathJax/client-side: zero client JS for math, works in Server and Client Components alike. Pre-converted all 41 in-scope formulas to LaTeX with KaTeX validation; hand-curated the ones where heuristics would lose meaning (matrices, Fourier sums, `√(LC)`, etc.).
-- **2026-05-29 (iter #1)** — `lib/curriculum.ts` rewritten to import from `knowledge-base/curriculum.json` instead of inlining a duplicate.
-- **Pre-existing bug fixes in passing**: `api/certificate/route.ts` rewritten against real schema; `api/mod/submissions/[id]/route.ts` upgraded to Next 16's `params: Promise<...>`; `StudentDashboard` curriculum.filter bug; nullable `curriculum.parts`.
-- **Security**: GitHub PAT in `instruction.txt` (`ghp_K5Lq…`) returned HTTP 401 — pre-rotated. Subsequent PATs used in chat have been single-use; rotation after each merge is recommended.
+- Auth is Better Auth (not Clerk). The old client-side admin password gate is removed; staff routes are session-gated by `proxy.ts` and role-gated server-side.
+- `kysely` is pinned to `0.28.17` via `overrides` (0.29 dropped an export Better Auth's bundled adapter imports); `better-auth`/`kysely` are in `serverExternalPackages`.
+- The certificate is an intentionally fixed light-paper artifact (theme-independent) so it prints cleanly.
+- Hard rule: no emojis anywhere — SVG icons only.

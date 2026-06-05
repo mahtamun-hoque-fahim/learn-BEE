@@ -1,5 +1,5 @@
-/** Central SEO config. Override the canonical origin with NEXT_PUBLIC_SITE_URL. */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://learn-basic-electrical-engineering.vercel.app').replace(/\/+$/, '')
+/** Central SEO config. Canonical origin from NEXT_PUBLIC_APP_URL (NEXT_PUBLIC_SITE_URL accepted as fallback). */
+export const SITE_URL = (process.env.NEXT_PUBLIC_APP_URL ?? process.env.NEXT_PUBLIC_SITE_URL ?? 'https://learn-basic-electrical-engineering.vercel.app').replace(/\/+$/, '')
 
 export const SITE_NAME = 'learnBEE'
 export const SITE_TAGLINE = 'Basic Electrical Engineering, organised — BGCTUB'

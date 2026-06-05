@@ -98,10 +98,8 @@ Radius:
 - Used in `/cheat-sheet` and `ChapterClient` theory tab.
 - `overflow-x-auto` keeps long matrix formulas from breaking layout.
 
-### Tab Strip (chapter page)
-- Three buttons: Theory / Simulator / Quiz, each `font-syne font-semibold`.
-- Active: white text, accent underline (`border-b-2 border-[#00e676]`).
-- Inactive: `text-[#888]`.
+### ~~Tab Strip (chapter page)~~ — deprecated
+Replaced by the **Chapter Reader** layout (see v2 components below). Chapter pages no longer use Theory/Simulator/Quiz tabs.
 
 ### Quiz Option
 - Default: `bg-[#0a0a0a] border border-[#222] rounded-lg p-3 text-left`.
@@ -133,6 +131,35 @@ Radius:
   - `text-green-400 bg-green-900/20 border border-green-900` (beginner / pass)
   - `text-yellow-400 bg-yellow-900/20 border border-yellow-900` (intermediate)
   - `text-red-400 bg-red-900/20 border border-red-900` (advanced / fail)
+
+> Note: new UI uses CSS-var tokens (`var(--accent)`, `var(--line)`, `var(--surface)`, `var(--mint-soft)`, `var(--mint-line)`) rather than raw hex. The hex in older snippets above maps to those tokens.
+
+---
+
+## Components (v2)
+
+### Brand
+- `BeeMark` (`components/design/icons.tsx`) — the bee glyph, `fill="currentColor"`, `size` prop. Used in Nav, sign-in, sign-up; inherits the surrounding text colour so it themes automatically.
+- `BeeLogo` — full "learnBEE" wordmark, `currentColor`, `height` prop. Used in the footer.
+- Favicon: `app/icon.svg` — the mark in `--on-mint` on a mint (`#3DF49A`) rounded square (rx 112/496), legible on light and dark browser tabs. Brand sources in `public/brand/`.
+
+### Chapter Reader (`/learn/[chapterId]`)
+3-column grid `.reader` (`240px minmax(0,1fr) 264px`, collapses to 1 column below 1120px):
+- `.toc` — sticky (`top: 84px`), decimal-leading-zero list; `.active` item in `var(--accent)`. Scroll-spy via IntersectionObserver.
+- `.article` — max-width 720; `h1` clamp(34–56px) 800; `.lead` 18px muted; `h2` with `.h2num` chip (mono, `var(--mint-soft)` bg + `var(--mint-line)` border); prose at 15.5px/1.65 `var(--ink-2)`.
+- `.pager` — prev/next cards, hover lifts border.
+- `.rail` — sticky cards: `.rail-card`, `.rail-stat` (label + mono value), `.rail-link` (jump/active in `var(--mint-soft)`), plus `.progress-track`/`.progress-fill`.
+- The simulator is a full-width band (max 1120) below the reader; the quiz is centered (max 860).
+
+### Command Palette (Cmd+K)
+- Global overlay (`components/design/CommandPalette.tsx`), opens on Cmd/Ctrl+K or `open-command-palette` event (Nav search button dispatches it).
+- Panel: `var(--surface)` + `var(--line-2)`, radius 16, `var(--shadow-md)`. Active row `var(--mint-soft)` + `var(--mint-line)`; arrow/enter/esc nav; grouped chapters/topics/formulas/questions.
+
+### Auth input (`/sign-in`, `/sign-up`)
+- `.auth-input`: `var(--surface)` bg, `var(--line-2)` border, radius 12, 13×16 padding; focus → `var(--accent)` border + `0 0 0 3px var(--mint-soft)` ring. Submit uses `.btn-primary`.
+
+### Simulator panel (`AnimatedSim`)
+- Themed wrapper: `var(--bg-2)` bg, `var(--line-2)` border, radius 18, `var(--shadow-md)`, bottom-left mint glow. Header: `badge-pill` "Live" + display-font title + mono "Interactive". The simulator canvas inside stays a dark scope-style surface in both themes.
 
 ---
 
@@ -167,7 +194,7 @@ import { Tex, RichMath } from '@/components/math/Tex'
 | Primitive | What it does |
 |---|---|
 | `<AnimatedWire d=… current=… direction=…>` | Two stacked paths. Bottom one is a dim base. Top one has `strokeDasharray="6 8"` and a CSS `bee-flow` keyframe animating `stroke-dashoffset` from 0 to -14, period `max(0.25, min(3, 1.5/|I|))` seconds. `direction` flips `animationDirection`. Fades to opacity 0 when current ≈ 0. |
-| `<Capacitor x=… y=… charge=…>` | Two parallel plates with terminals. A `<rect>` between the plates fills with `rgba(0,230,118, charge·0.45)` — visualises stored energy. |
+| `<Capacitor x=… y=… charge=…>` | Two parallel plates with terminals. A `<rect>` between the plates fills with the accent at `charge·0.45` alpha — visualises stored energy. |
 | `<Resistor x=… y=… active=…>` | Zigzag body; turns green when current flows. |
 | `<Battery x=… y=… label=…>` | Standard battery symbol (long line +, short line −). |
 | `<Lamp x=… y=… power=…>` | Circle with X cross, inner yellow fill ∝ power, plus a `bee-glow` halo pulse when `power > 0.1`. |
@@ -175,7 +202,7 @@ import { Tex, RichMath } from '@/components/math/Tex'
 | `<Slider>` / `<Readout>` | Range slider with accent-coloured value pill; dark readout pill with mono number + unit. |
 | `<CircuitAnimStyles/>` | Injects `@keyframes bee-flow`, `bee-glow`, `bee-pulse` once. |
 
-**Design rule for new simulators:** include `<CircuitAnimStyles/>` exactly once at the top of each sim. Keep `viewBox` aspect ratios tight; pair the schematic SVG with control panel + readouts in a `grid sm:grid-cols-2` so the layout works on mobile.
+**Design rule for new simulators:** include `<CircuitAnimStyles/>` exactly once at the top of each sim. Keep `viewBox` aspect ratios tight; pair the schematic SVG with control panel + readouts in a `grid sm:grid-cols-2` so the layout works on mobile. All colours come from the shared `C` constant (`primitives.tsx`): `wireOn`/`current` `#3DF49A`, `bg` `#070807`, `surface` `#0E1110`, `text` `#CDD3D0`, `warn` `#F5A85C`, `danger` `#F26B6B` — the dy/dx palette.
 
 ---
 

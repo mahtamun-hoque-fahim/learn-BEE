@@ -1,88 +1,71 @@
 # learn-BEE
 
-University-level Basic Electrical Engineering platform: animated theory, KaTeX-typeset formulas, per-chapter interactive simulators (current literally flows along the wires), randomised quizzes, exam-mode prep, and moderator-reviewed completion certificates. Built for BGCTUB 2nd-semester students; aligned with Sadiku 5th Ed. & Boylestad.
-
----
+Study platform for the 2nd-semester Basic Electrical Engineering (EEE 1201) course at BGCTUB: chapter reader, animated circuit simulators, formula cheat-sheet, exam-style quizzes, a moderated certificate pipeline, and an admin/moderator console.
 
 ## Stack
 
-- Next.js 16 App Router (TypeScript), React 19
-- Tailwind CSS 4
+- Next.js 16 (App Router, React 19, Turbopack)
+- TypeScript + Tailwind CSS v4
 - Neon (PostgreSQL) + Drizzle ORM
-- Clerk auth
-- KaTeX (server-rendered math)
-- Recharts (charts); custom SVG primitives for animated circuits
-- jsPDF + html2canvas (certificate render)
-
----
+- Better Auth (email + password, role-based)
+- KaTeX (math), pure-SVG animated simulators
+- Vercel (primary); Cloudflare-ready
 
 ## Prerequisites
 
-- Node.js 18+
-- npm
-- Neon account + database
-- Clerk application (publishable + secret keys)
+- Node.js 20+
+- A Neon Postgres database
+- `BETTER_AUTH_SECRET` (`openssl rand -base64 32`)
 
----
-
-## Local Setup
+## Local setup
 
 ```bash
-# 1. Clone
-git clone https://github.com/mahtamun-hoque-fahim/learn-BEE.git
-cd learn-BEE
-
-# 2. Install
+# 1. Install
 npm install
 
-# 3. Env
+# 2. Env — copy and fill in
 cp .env.example .env.local
-# Fill in DATABASE_URL and Clerk keys.
 
-# 4. Push DB schema to Neon
-npx drizzle-kit push
+# 3. Push the schema to Neon (creates Better Auth + app tables)
+npm run db:push
 
-# 5. Run
+# 4. Run
 npm run dev
 ```
 
-Open <http://localhost:3000>.
+To grant staff access, set a user's `role` to `moderator` or `admin` directly in the `users` table (sign-up always creates `student`).
 
----
+## Env vars
+
+`DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEXT_PUBLIC_APP_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `RESEND_API_KEY` (optional). See PLANNER.md → Env Vars for details.
 
 ## Commands
 
 ```bash
-npm run dev              # Dev server on localhost:3000
-npm run build            # Production build
-npm start                # Production server
-npm run lint             # ESLint
-npx drizzle-kit push     # Apply Drizzle schema to Neon
-npx drizzle-kit studio   # Drizzle Studio UI
+npm run dev          # local dev (Turbopack)
+npm run build        # production build
+npm run start        # serve the production build
+npm run db:generate  # generate a Drizzle migration from schema
+npm run db:push      # push schema to Neon (dev / first setup)
 ```
 
----
-
-## Project Structure (brief)
+## Project structure (top level)
 
 ```
-knowledge-base/   # JSON content (curriculum, questions, simulators, cheat-sheet)
-src/app/          # Next.js routes (learn, cheat-sheet, search, bonus, dashboard, admin, mod, api)
-src/components/   # math/Tex (KaTeX), simulator/animated/* (per-chapter)
-src/lib/          # curriculum loader, questions, search, db schema, auth helpers
-public/           # Static assets
+src/
+  app/                 routes (App Router) + api/, sign-in, sign-up, icon.svg
+  components/
+    design/            Nav, Footer, ThemeProvider, CommandPalette, icons (BeeMark/BeeLogo)
+    simulator/animated/ per-chapter SVG simulators + primitives
+    math/              KaTeX wrappers (Tex, RichMath, Markdown)
+    admin/             ContentCRUD
+  lib/                 auth, auth-client, auth-helpers, db (Drizzle), curriculum, questions, search, seo
+  proxy.ts             Next 16 proxy — session gate for /dashboard, /admin, /mod
+drizzle/               generated SQL migrations
+public/brand/          brand SVG sources
 ```
 
-Full details → `PLANNER.md`. Design tokens → `DESIGN_GUIDE.md`. Remaining work → `TODO.md`.
+## Contributing
 
----
-
-## Math Rendering
-
-All formulas — in the cheat-sheet, theory cards, question text, options, and explanations — render via KaTeX. The `<RichMath>` component auto-detects math: explicit `$...$` / `$$...$$` delimiters, plus any string containing unicode math glyphs (`Ω`, `ρ`, `×`, `²`, …) is converted to LaTeX automatically. See `src/components/math/Tex.tsx`.
-
----
-
-## Animated Simulators
-
-Every in-scope chapter has a topic-tailored animated SVG simulator under `src/components/simulator/animated/`. The visual signature is `AnimatedWire` — dashed-stroke `stroke-dashoffset` animation makes current literally flow along the wires; speed scales with `|I|`, direction with sign. The reference quality bar is `Ch7RCTransientSim` (real-time RC charging/discharging with run/pause/reset). See `DESIGN_GUIDE.md` for the primitive vocabulary.
+- Production branch: `main`. Hard rule: no emojis anywhere (code, UI, commits, docs) — SVG icons only.
+- Living docs: PLANNER.md (technical blueprint), DESIGN_GUIDE.md (design system). Keep them in sync on "update repo".
