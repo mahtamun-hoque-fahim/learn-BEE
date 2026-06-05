@@ -113,6 +113,6 @@ Role checks: `lib/auth-helpers.ts` → `requireAuth` / `requireMod` / `requireAd
 ## Notes / Decisions Log
 
 - Auth is Better Auth (not Clerk). The old client-side admin password gate is removed; staff routes are session-gated by `proxy.ts` and role-gated server-side.
-- `kysely` is pinned to `0.28.17` via `overrides` (0.29 dropped an export Better Auth's bundled adapter imports); `better-auth`/`kysely` are in `serverExternalPackages`.
+- `kysely` is pinned to `0.28.17` via `overrides` (0.29 dropped an export Better Auth's bundled adapter imports); `@better-auth/kysely-adapter`/`kysely` are in `serverExternalPackages` (better-auth itself stays bundled so its React client renders in SSR).
 - The certificate is an intentionally fixed light-paper artifact (theme-independent) so it prints cleanly.
 - Hard rule: no emojis anywhere — SVG icons only.
