@@ -4,10 +4,12 @@ import ContentCRUD, { type FieldType } from '@/components/admin/ContentCRUD'
 import { requireMod } from '@/lib/auth-helpers'
 import { redirect } from 'next/navigation'
 import { inScopeChapters } from '@/lib/curriculum'
+import { gateAdmin } from '@/lib/page-guards'
 
 export const metadata = { title: 'Lectures · admin' }
 
 export default async function AdminLecturesPage() {
+  await gateAdmin('/admin/content/lectures')
   try { await requireMod() } catch { redirect('/') }
 
   const chapterIds = inScopeChapters.map(c => c.id)

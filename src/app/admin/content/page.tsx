@@ -5,6 +5,7 @@ import { SectionHeader } from '@/components/design/SectionHeader'
 import { Icon } from '@/components/design/icons'
 import { requireMod } from '@/lib/auth-helpers'
 import { redirect } from 'next/navigation'
+import { gateAdmin } from '@/lib/page-guards'
 
 export const metadata = { title: 'Content management — learnBEE admin' }
 
@@ -20,6 +21,7 @@ const TILES = [
 ] as const
 
 export default async function AdminContentPage() {
+  await gateAdmin('/admin/content')
   try {
     await requireMod()
   } catch {

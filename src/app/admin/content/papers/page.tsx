@@ -3,10 +3,12 @@ import { Footer } from '@/components/design/Footer'
 import ContentCRUD, { type FieldType } from '@/components/admin/ContentCRUD'
 import { requireMod } from '@/lib/auth-helpers'
 import { redirect } from 'next/navigation'
+import { gateAdmin } from '@/lib/page-guards'
 
 export const metadata = { title: 'Past papers · admin' }
 
 export default async function AdminPapersPage() {
+  await gateAdmin('/admin/content/papers')
   try { await requireMod() } catch { redirect('/') }
 
   const fields: FieldType[] = [
