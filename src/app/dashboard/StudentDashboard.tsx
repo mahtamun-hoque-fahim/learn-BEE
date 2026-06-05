@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import { useSession } from '@/lib/auth-client'
 import Link from 'next/link'
 import { Icon } from '@/components/design/icons'
-import { curriculum, TOTAL_CHAPTERS } from '@/lib/curriculum'
+import { Nav } from '@/components/design/Nav'
+import { curriculum, TOTAL_CHAPTERS, IN_SCOPE_IDS } from '@/lib/curriculum'
 
 type RegStatus = 'none' | 'pending' | 'reviewing' | 'approved' | 'rejected'
 
@@ -98,20 +99,28 @@ export default function StudentDashboard() {
   const cfg = STATUS_CONFIG[status]
 
   if (loading) return (
-    <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--dim)' }}>
-      Loading…
-    </div>
+    <>
+      <Nav />
+      <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--dim)' }}>
+        Loading…
+      </div>
+    </>
   )
 
   return (
-    <div style={{ maxWidth: 860, margin: '0 auto', padding: '32px 20px', color: 'var(--ink)' }}>
+    <>
+      <Nav />
+      <div style={{ maxWidth: 860, margin: '0 auto', padding: '32px 20px', color: 'var(--ink)' }}>
 
       {/* Header */}
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 26, fontWeight: 600, margin: 0 }}>
-          Hi, {user?.name?.split(' ')[0] ?? 'Student'}
-        </h1>
-        <p style={{ color: 'var(--muted)', margin: '6px 0 0' }}>Your learnBEE dashboard</p>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 32 }}>
+        <div>
+          <h1 style={{ fontSize: 26, fontWeight: 600, margin: 0 }}>
+            Hi, {user?.name?.split(' ')[0] ?? 'Student'}
+          </h1>
+          <p style={{ color: 'var(--muted)', margin: '6px 0 0' }}>Your learnBEE dashboard</p>
+        </div>
+        <Link href="/learn" className="btn-primary"><Icon name="book" size={15} /> Continue learning <Icon name="arrow" size={14} className="arr" /></Link>
       </div>
 
       {/* Progress bar */}
@@ -128,19 +137,24 @@ export default function StudentDashboard() {
           }}/>
         </div>
         <div style={{ display: 'flex', gap: 20, marginTop: 16, flexWrap: 'wrap' }}>
-          {['DC Circuits', 'AC Circuits', 'Advanced'].map((part, pi) => {
-            const partId = `part${pi + 1}`
-            const chapters = curriculum.chapters.filter(c => c.part === partId)
-            const done = chapters.filter(c => progress.find(p => p.chapterId === c.id && p.completed)).length
-            return (
-              <div key={part} style={{ flex: 1, minWidth: 120 }}>
-                <div style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 4 }}>{part}</div>
-                <div style={{ fontSize: 18, fontWeight: 700, color: done === chapters.length ? 'var(--accent)' : 'var(--ink)' }}>
-                  {done}/{chapters.length}
+          {[
+            { id: 'part1', label: 'DC Circuits' },
+            { id: 'part2', label: 'AC Circuits' },
+            { id: 'part3', label: 'Advanced' },
+          ]
+            .map(p => ({ ...p, chapters: curriculum.chapters.filter(c => c.part === p.id && IN_SCOPE_IDS.has(c.id)) }))
+            .filter(p => p.chapters.length > 0)
+            .map(part => {
+              const done = part.chapters.filter(c => progress.find(p => p.chapterId === c.id && p.completed)).length
+              return (
+                <div key={part.id} style={{ flex: 1, minWidth: 120 }}>
+                  <div style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 4 }}>{part.label}</div>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: done === part.chapters.length ? 'var(--accent)' : 'var(--ink)' }}>
+                    {done}/{part.chapters.length}
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
           <div style={{ flex: 1, minWidth: 120 }}>
             <div style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 4 }}>Bonus exam</div>
             <div style={{ fontSize: 18, fontWeight: 700, color: bonusPassed ? 'var(--accent)' : 'var(--ink)' }}>
@@ -238,6 +252,7 @@ export default function StudentDashboard() {
         />
       )}
     </div>
+    </>
   )
 }
 
